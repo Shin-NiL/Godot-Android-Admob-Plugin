@@ -1,0 +1,6 @@
+*.pyc
+.DS_Store
+*.import
+.import
+*.o
+android

@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://main.gd" type="Script" id=1]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"__editor_plugin_screen__": "3D"
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="BtnBanner" type="Button" parent="CanvasLayer"]
+margin_left = 437.0
+margin_top = 220.0
+margin_right = 587.0
+margin_bottom = 295.0
+disabled = true
+toggle_mode = true
+text = "Show/Hide Banner"
+
+[node name="BtnInterstitial" type="Button" parent="CanvasLayer"]
+margin_left = 437.0
+margin_top = 305.0
+margin_right = 587.0
+margin_bottom = 380.0
+disabled = true
+text = "Show Interstitial"
+
+[node name="BtnRewardedVideo" type="Button" parent="CanvasLayer"]
+margin_left = 437.0
+margin_top = 394.0
+margin_right = 588.0
+margin_bottom = 469.0
+disabled = true
+text = "Show Rewarded Video"
+
+[node name="LblRewarded" type="Label" parent="CanvasLayer"]
+margin_right = 1026.0
+margin_bottom = 32.0
+text = "REWARDED VIDEO RETURN"
+align = 1
+valign = 1
+[connection signal="toggled" from="CanvasLayer/BtnBanner" to="." method="_on_BtnBanner_toggled"]
+[connection signal="pressed" from="CanvasLayer/BtnInterstitial" to="." method="_on_BtnInterstitial_pressed"]
+[connection signal="pressed" from="CanvasLayer/BtnRewardedVideo" to="." method="_on_BtnRewardedVideo_pressed"]

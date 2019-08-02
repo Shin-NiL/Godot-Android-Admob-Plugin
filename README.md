@@ -73,6 +73,9 @@ _on_admob_ad_loaded()
 # Callback on ad network error (Banner)
 _on_admob_network_error()
 
+# Callback for banner on ad failed to load (other than network error)
+_on_admob_banner_failed_to_load()
+
 # Interstitial Methods
 # --------------------
 

@@ -245,6 +245,7 @@ public class GodotAdMob extends Godot.SingletonBase
 					public void onAdFailedToLoad(int errorCode)
 					{
 						String	str;
+						String callbackFunctionName = "_on_admob_banner_failed_to_load";
 						switch(errorCode) {
 							case AdRequest.ERROR_CODE_INTERNAL_ERROR:
 								str	= "ERROR_CODE_INTERNAL_ERROR";
@@ -254,8 +255,8 @@ public class GodotAdMob extends Godot.SingletonBase
 								break;
 							case AdRequest.ERROR_CODE_NETWORK_ERROR:
 								str	= "ERROR_CODE_NETWORK_ERROR";
-								GodotLib.calldeferred(instance_id, "_on_admob_network_error", new Object[]{ });
-								break;
+								callbackFunctionName = "_on_admob_network_error";
+								break;								
 							case AdRequest.ERROR_CODE_NO_FILL:
 								str	= "ERROR_CODE_NO_FILL";
 								break;
@@ -264,6 +265,9 @@ public class GodotAdMob extends Godot.SingletonBase
 								break;
 						}
 						Log.w("godot", "AdMob: onAdFailedToLoad -> " + str);
+						Log.w("godot", "AdMob: callbackfunction -> " + callbackFunctionName);
+						
+						GodotLib.calldeferred(instance_id, callbackFunctionName, new Object[]{ });
 					}
 				});
 				layout.addView(adView, adParams);

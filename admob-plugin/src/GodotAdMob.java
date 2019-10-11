@@ -227,6 +227,11 @@ public class GodotAdMob extends Godot.SingletonBase
 				if(isOnTop) adParams.gravity = Gravity.TOP;
 				else adParams.gravity = Gravity.BOTTOM;
 
+				if (adView != null)
+				{
+					layout.removeView(adView); // Remove the old view
+				}
+
 				adView = new AdView(activity);
 				adView.setAdUnitId(id);
 

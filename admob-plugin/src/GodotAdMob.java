@@ -8,7 +8,6 @@ import java.security.NoSuchAlgorithmException;
 
 import android.app.Activity;
 import android.widget.FrameLayout;
-import android.view.ViewGroup.LayoutParams;
 import android.provider.Settings;
 import android.graphics.Color;
 import android.util.Log;
@@ -219,7 +218,6 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				layout = ((Godot) activity).layout;
 				adParams = new FrameLayout.LayoutParams(
 					FrameLayout.LayoutParams.MATCH_PARENT,
 					FrameLayout.LayoutParams.WRAP_CONTENT
@@ -320,7 +318,6 @@ public class GodotAdMob extends Godot.SingletonBase
 				// Extract params
 
 				int gravity = adParams.gravity;
-				FrameLayout	layout = ((Godot)activity).layout;
 				adParams = new FrameLayout.LayoutParams(
 					FrameLayout.LayoutParams.MATCH_PARENT,
 					FrameLayout.LayoutParams.WRAP_CONTENT

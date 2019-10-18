@@ -42,6 +42,13 @@ public class GodotAdMob extends Godot.SingletonBase
 	private FrameLayout.LayoutParams adParams = null; // Store the layout params
 
 	private RewardedVideoAd rewardedVideoAd = null; // Rewarded Video object
+	
+	// create and add a new layout to Godot
+	@Override
+	public View onMainCreateView(Activity activity) {
+		layout = new FrameLayout(activity);
+		return layout;
+	}
 
 	/* Init
 	 * ********************************************************************** */

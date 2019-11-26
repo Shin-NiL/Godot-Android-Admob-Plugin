@@ -147,6 +147,7 @@ _on_rewarded_video_started()
 
 Troubleshooting
 --------------
+* First of all, please make sure you're able to compile the custom build for Android without the Admob plugin, this way we can isolate the cause of the issue.
 
 * Using logcat for Android is the best way to troubleshoot most issues. You can filter Godot only messages with logcat using the command: 
 ```

@@ -254,30 +254,8 @@ public class GodotAdMob extends Godot.SingletonBase
 					@Override
 					public void onAdFailedToLoad(int errorCode)
 					{
-						String	str;
-						String callbackFunctionName = "_on_admob_banner_failed_to_load";
-						switch(errorCode) {
-							case AdRequest.ERROR_CODE_INTERNAL_ERROR:
-								str	= "ERROR_CODE_INTERNAL_ERROR";
-								break;
-							case AdRequest.ERROR_CODE_INVALID_REQUEST:
-								str	= "ERROR_CODE_INVALID_REQUEST";
-								break;
-							case AdRequest.ERROR_CODE_NETWORK_ERROR:
-								str	= "ERROR_CODE_NETWORK_ERROR";
-								callbackFunctionName = "_on_admob_network_error";
-								break;								
-							case AdRequest.ERROR_CODE_NO_FILL:
-								str	= "ERROR_CODE_NO_FILL";
-								break;
-							default:
-								str	= "Code: " + errorCode;
-								break;
-						}
-						Log.w("godot", "AdMob: onAdFailedToLoad -> " + str);
-						Log.w("godot", "AdMob: callbackfunction -> " + callbackFunctionName);
-						
-						GodotLib.calldeferred(instance_id, callbackFunctionName, new Object[]{ });
+						Log.w("godot", "AdMob: onAdFailedToLoad. errorCode: " + errorCode);
+						GodotLib.calldeferred(instance_id, "_on_admob_banner_failed_to_load", new Object[] { errorCode });
 					}
 				});
 				layout.addView(adView, adParams);
@@ -352,8 +330,6 @@ public class GodotAdMob extends Godot.SingletonBase
 	}
 
 
-
-
 	/**
 	 * Hide the banner
 	 */
@@ -415,8 +391,7 @@ public class GodotAdMob extends Godot.SingletonBase
 					@Override
 					public void onAdFailedToLoad(int errorCode) {
 						Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(errorCode));
-						Log.w("godot", "AdMob: _on_interstitial_not_loaded");
-						GodotLib.calldeferred(instance_id, "_on_interstitial_not_loaded", new Object[] { });
+						GodotLib.calldeferred(instance_id, "_on_insterstitial_failed_to_load", new Object[] { errorCode });
 					}
 
 					@Override
@@ -432,14 +407,10 @@ public class GodotAdMob extends Godot.SingletonBase
 					@Override
 					public void onAdClosed() {
 						GodotLib.calldeferred(instance_id, "_on_interstitial_close", new Object[] { });
-
 						interstitialAd.loadAd(getAdRequest());
-
 						Log.w("godot", "AdMob: onAdClosed");
 					}
 				});
-
-
 
 				interstitialAd.loadAd(getAdRequest());
 			}

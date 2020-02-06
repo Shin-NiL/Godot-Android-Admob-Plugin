@@ -12,6 +12,7 @@ How to use
 - Configure, install  and enable the "Android Custom Template" for your project, just follow the [official documentation](https://docs.godotengine.org/en/latest/getting_started/workflow/export/android_custom_build.html);
 - download or clone this repository;
 - drop the ```admob-plugin``` directory (from this repository) inside the ```res://android/``` directory on your Godot project.
+- drop the ```admob-lib``` directory (from this repository) inside the ```res://``` directory on your Godot project.
 - on the Project -> Export -> Android -> Options -> Permissions: check the permissions for _Access Network State_ and _Internet_
 - on the Project Settings -> Android -> Modules, add the string:
 
@@ -19,9 +20,21 @@ How to use
 org/godotengine/godot/GodotAdMob
 ```
 
+Now you'll able to add an Admob Node to your scene
+
+![Searching Admob node](images/search_node.png)
+
+Edit its properties
+
+![Admob properties](images/properties.png)
+
+And connect its signals
+
+![Admob signals](images/signals.png)
+
 Sample code
 -----
-In the demo directory you'll find a working sample project where you can see how the things works (specially the callbacks) on the scripting side.
+In the demo directory you'll find a working sample project where you can see how the things works on the scripting side.
 
 Donations
 ---------
@@ -42,108 +55,111 @@ If you're already a Brave user, please consider donating some BATs ;)
 API Reference
 -------------
 
-The following methods are available:
+### Properties
+```python
+# If true use your real ad, if false use test ads. Make sure to only set it to true with your published apk, otherwise you can be banned by Google
+# type bool, default false
+is_real
+
+# If true, displays banner on the top of the screen, if false displays on the bottom 
+# type bool, default true
+banner_on_top
+
+# Your app banner ad ID
+# type String, optional
+banner_id
+
+# Your app interstitial ad ID
+# type String, optional
+interstitial_id
+
+# Your app rewarded video ad ID
+# type String, optional
+rewarded_id
+
+# If true, set the ads to children directed. If true, max_ad_content_rate will be ignored (your max_ad_content_rate would can not be other than "G")
+# type bool, default false
+child_directed
+
+# Its value must be "G", "PG", "T" or "MA". If the rating of your app in Play Console and your config of max_ad_content_rate in AdMob are not matched, your app can be banned by Google
+# type String, default G
+max_ad_content_rate 
+```
+
+### Methods
 ```python
 
-# Init AdMob
-# @param bool isReal Show real ad or test ad
-# @param int instance_id The instance id from Godot (get_instance_ID())
-init(isReal, instance_id)
+# Load the banner (and show inmediatly)
+load_banner()
 
-# Init AdMob with additional Content Rating parameters
-# @param bool isReal Show real ad or test ad
-# @param int instance_id The instance id from Godot (get_instance_ID())
-# @param boolean isForChildDirectedTreatment If isForChildDirectedTreatment is true, maxAdContetRating will be ignored (your maxAdContentRating would can not be other than "G")
-# @param String maxAdContentRating It's value must be "G", "PG", "T" or "MA". If the rating of your app in Play Console and your config of maxAdContentRating in AdMob are not matched, your app can be banned by Google.
-initWithContentRating(isReal, instance_id, isForChildDirectedTreatment, maxAdContentRating)
+# Load the interstitial ad
+load_interstitial()
 
+# Load the rewarded video ad
+load_rewarded_video()
 
-# Banner Methods
-# --------------
+# Show the banner ad
+show_banner()
 
-# Load Banner Ads (and show inmediatly)
-# @param String id The banner unit id
-# @param boolean isTop Show the banner on top or bottom
-loadBanner(id, isTop)
-
-# Show the banner
-showBanner()
-
-# Hide the banner
-hideBanner()
-
-# Resize the banner (when orientation change for example)
-resize()
-
-# Get the Banner width
-# @return int Banner width
-getBannerWidth()
-
-# Get the Banner height
-# @return int Banner height
-getBannerHeight()
-
-# Callback on ad loaded (Banner)
-_on_admob_ad_loaded()
-
-# Callback on ad network error (Banner)
-_on_admob_network_error()
-
-# Callback for banner on ad failed to load (other than network error)
-_on_admob_banner_failed_to_load()
-
-# Interstitial Methods
-# --------------------
-
-# Load Interstitial Ads
-# @param String id The interstitial unit id
-loadInterstitial(id)
+# Hide the banner ad		
+hide_banner()
 
 # Show the interstitial ad
-showInterstitial()
-
-# Callback for interstitial ad fail on load
-_on_interstitial_not_loaded()
-
-# Callback for interstitial loaded
-_on_interstitial_loaded
-
-# Callback for insterstitial ad close action
-_on_interstitial_close()
-
-# Rewarded Videos Methods
-# -----------------------
-
-# Load rewarded videos ads
-# @param String id The rewarded video unit id
-loadRewardedVideo(id)
+show_interstitial()
 
 # Show the rewarded video ad
-showRewardedVideo()
+show_rewarded_video()
 
-# Callback for rewarded video ad left application
-_on_rewarded_video_ad_left_application()
+# Resize the banner (useful when the orientation changes for example)
+banner_resize()
 
-# Callback for rewarded video ad closed 
-_on_rewarded_video_ad_closed()
+# Get the current banner dimension 
+# Returns a Vector2(width, height)
+get_banner_dimension()
 
-# Callback for rewarded video ad failed to load
-# @param int errorCode the code of error
-_on_rewarded_video_ad_failed_to_load(errorCode)
+```
+### Signals
+```python
+# Banner ad was loaded with success
+banner_loaded
 
-# Callback for rewarded video ad loaded
-_on_rewarded_video_ad_loaded()
+# Banner ad has failed to load
+# @param int error_code the error code
+banner_failed_to_load(error_code)
 
-# Callback for rewarded video ad opened
-_on_rewarded_video_ad_opened()
+# Interstitial ad was loaded with success
+interstitial_loaded
 
-# Callback for rewarded video ad reward user
+# Interstitial ad was closed
+interstitial_closed
+
+# Interstitial ad has failed to load
+# @param int error_code the error code
+insterstitial_failed_to_load(error_code)
+
+# Rewarded video ad was loaded with success
+rewarded_video_loaded
+
+# Rewarded video ad was closed
+rewarded_video_closed
+
+# Rewarded video ad was watched and will reward the user
 # @param String currency The reward item description, ex: coin
 # @param int amount The reward item amount
-_on_rewarded(currency, amount)
+rewarded(currency, ammount)
 
-# Callback for rewarded video ad started do play
-_on_rewarded_video_started()
+# The user has left application from a rewarded video ad
+rewarded_video_left_application
+
+# Rewarded video has opened
+rewarded_video_opened
+
+# Rewarded video has started to play
+rewarded_video_started
+
+# Rewarded video ad has failed to load
+# @param int error_code the error code
+rewarded_video_failed_to_load(error_code)
 ```
 
 Troubleshooting
@@ -155,7 +171,7 @@ Troubleshooting
 adb logcat -s godot
 ```
 
-* _ERROR_CODE_NO_FILL_ is a common issue with Admob, but out of the scope to this module. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL)
+* Error code 3 (_ERROR_CODE_NO_FILL_) is a common issue with Admob, but out of the scope to this module. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL)
 
 References
 -------------

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
+[ext_resource path="res://admob-lib/admob.gd" type="Script" id=2]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -10,37 +11,89 @@ __meta__ = {
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="DebugOut" type="RichTextLabel" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -186.0
+margin_top = 120.0
+margin_right = 194.0
+margin_bottom = 179.0
+text = "
+"
+scroll_following = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="BtnBanner" type="Button" parent="CanvasLayer"]
-margin_left = 437.0
-margin_top = 220.0
-margin_right = 587.0
-margin_bottom = 295.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -65.6294
+margin_right = 75.0
+margin_bottom = 9.37061
 disabled = true
 toggle_mode = true
 text = "Show/Hide Banner"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BtnInterstitial" type="Button" parent="CanvasLayer"]
-margin_left = 437.0
-margin_top = 305.0
-margin_right = 587.0
-margin_bottom = 380.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -166.077
+margin_right = 75.0
+margin_bottom = -91.0766
 disabled = true
 text = "Show Interstitial"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BtnRewardedVideo" type="Button" parent="CanvasLayer"]
-margin_left = 437.0
-margin_top = 394.0
-margin_right = 588.0
-margin_bottom = 469.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = 31.0654
+margin_right = 76.0
+margin_bottom = 106.065
 disabled = true
 text = "Show Rewarded Video"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="LblRewarded" type="Label" parent="CanvasLayer"]
-margin_right = 1026.0
-margin_bottom = 32.0
-text = "REWARDED VIDEO RETURN"
-align = 1
-valign = 1
+[node name="Admob" type="Node" parent="."]
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
+banner_id = "ca-app-pub-3940256099942544/6300978111"
+interstitial_id = "ca-app-pub-3940256099942544/1033173712"
+rewarded_id = "ca-app-pub-3940256099942544/5224354917"
+max_ad_content_rate = "G"
 [connection signal="toggled" from="CanvasLayer/BtnBanner" to="." method="_on_BtnBanner_toggled"]
 [connection signal="pressed" from="CanvasLayer/BtnInterstitial" to="." method="_on_BtnInterstitial_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnRewardedVideo" to="." method="_on_BtnRewardedVideo_pressed"]
+[connection signal="banner_failed_to_load" from="Admob" to="." method="_on_Admob_banner_failed_to_load"]
+[connection signal="banner_loaded" from="Admob" to="." method="_on_Admob_banner_loaded"]
+[connection signal="insterstitial_failed_to_load" from="Admob" to="." method="_on_Admob_insterstitial_failed_to_load"]
+[connection signal="interstitial_closed" from="Admob" to="." method="_on_Admob_interstitial_closed"]
+[connection signal="interstitial_loaded" from="Admob" to="." method="_on_Admob_interstitial_loaded"]
+[connection signal="rewarded" from="Admob" to="." method="_on_Admob_rewarded"]
+[connection signal="rewarded_video_closed" from="Admob" to="." method="_on_Admob_rewarded_video_closed"]
+[connection signal="rewarded_video_failed_to_load" from="Admob" to="." method="_on_Admob_rewarded_video_failed_to_load"]
+[connection signal="rewarded_video_left_application" from="Admob" to="." method="_on_Admob_rewarded_video_left_application"]
+[connection signal="rewarded_video_loaded" from="Admob" to="." method="_on_Admob_rewarded_video_loaded"]
+[connection signal="rewarded_video_opened" from="Admob" to="." method="_on_Admob_rewarded_video_opened"]
+[connection signal="rewarded_video_started" from="Admob" to="." method="_on_Admob_rewarded_video_started"]

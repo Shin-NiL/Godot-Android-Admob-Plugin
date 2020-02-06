@@ -11,8 +11,8 @@ How to use
 ----------
 - Configure, install  and enable the "Android Custom Template" for your project, just follow the [official documentation](https://docs.godotengine.org/en/latest/getting_started/workflow/export/android_custom_build.html);
 - go to the [release tab](https://github.com/Shin-NiL/Godot-Android-Admob-Plugin/releases), choose a version and download the respective zip package;
-- drop the ```admob-plugin``` directory (from this repository) inside the ```res://android/``` directory on your Godot project.
-- drop the ```admob-lib``` directory (from this repository) inside the ```res://``` directory on your Godot project.
+- drop the ```admob-plugin``` directory (from the zip package) inside the ```res://android/``` directory on your Godot project.
+- drop the ```admob-lib``` directory (from the zip package) inside the ```res://``` directory on your Godot project.
 - on the Project -> Export -> Android -> Options -> Permissions: check the permissions for _Access Network State_ and _Internet_
 - on the Project Settings -> Android -> Modules, add the string:
 

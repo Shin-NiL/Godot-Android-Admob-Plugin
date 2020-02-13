@@ -25,7 +25,10 @@ export var rewarded_id:String
 export var child_directed:bool = false
 export(String, "G", "PG", "T", "MA") var max_ad_content_rate
 
+# "private" properties
 var _admob_singleton = null
+var _is_interstitial_loaded:bool = false
+var _is_rewarded_video_loaded:bool = false
 
 
 func _enter_tree():
@@ -59,7 +62,6 @@ func init() -> bool:
 		return true
 	return false
 	
-
 # load
 
 func load_banner() -> void:
@@ -70,9 +72,19 @@ func load_interstitial() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.loadInterstitial(interstitial_id)
 		
+func is_interstitial_loaded() -> bool:
+	if _admob_singleton != null:
+		return _is_interstitial_loaded
+	return false
+		
 func load_rewarded_video() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.loadRewardedVideo(rewarded_id)
+		
+func is_rewarded_video_loaded() -> bool:
+	if _admob_singleton != null:
+		return _is_rewarded_video_loaded
+	return false
 
 # show / hide
 
@@ -87,10 +99,12 @@ func hide_banner() -> void:
 func show_interstitial() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.showInterstitial()
+		_is_interstitial_loaded = false
 		
 func show_rewarded_video() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.showRewardedVideo()
+		_is_rewarded_video_loaded = false
 
 # resize
 
@@ -113,15 +127,18 @@ func _on_admob_banner_failed_to_load(error_code:int) -> void:
 	emit_signal("banner_failed_to_load", error_code)
 	
 func _on_insterstitial_failed_to_load(error_code:int) -> void:
+	_is_interstitial_loaded = false
 	emit_signal("insterstitial_failed_to_load", error_code)
 
 func _on_interstitial_loaded() -> void:
+	_is_interstitial_loaded = true
 	emit_signal("interstitial_loaded")
 
 func _on_interstitial_close() -> void:
 	emit_signal("interstitial_closed")
 
 func _on_rewarded_video_ad_loaded() -> void:
+	_is_rewarded_video_loaded = true
 	emit_signal("rewarded_video_loaded")
 
 func _on_rewarded_video_ad_closed() -> void:
@@ -134,6 +151,7 @@ func _on_rewarded_video_ad_left_application() -> void:
 	emit_signal("rewarded_video_left_application")
 	
 func _on_rewarded_video_ad_failed_to_load(error_code:int) -> void:
+	_is_rewarded_video_loaded = false
 	emit_signal("rewarded_video_failed_to_load", error_code)
 	
 func _on_rewarded_video_ad_opened() -> void:

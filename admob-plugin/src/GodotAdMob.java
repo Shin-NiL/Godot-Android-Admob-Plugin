@@ -188,9 +188,7 @@ public class GodotAdMob extends Godot.SingletonBase
 					initRewardedVideo();
 				}
 
-				if (!rewardedVideoAd.isLoaded()) {
-					rewardedVideoAd.loadAd(id, getAdRequest());
-				}
+				rewardedVideoAd.loadAd(id, getAdRequest());
 			}
 		});
 	}

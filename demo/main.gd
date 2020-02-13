@@ -16,10 +16,14 @@ func _on_BtnBanner_toggled(button_pressed):
 		else: admob.hide_banner()
 
 func _on_BtnInterstitial_pressed():
+	debug_out.text = debug_out.text + "Interstitial loaded before shown = " + str(admob.is_interstitial_loaded()) +"\n"
 	admob.show_interstitial()
+	debug_out.text = debug_out.text + "Interstitial loaded after shown = " + str(admob.is_interstitial_loaded()) +"\n"
 
 func _on_BtnRewardedVideo_pressed():
+	debug_out.text = debug_out.text + "Rewarded loaded before shown = " + str(admob.is_rewarded_video_loaded()) +"\n"
 	admob.show_rewarded_video()
+	debug_out.text = debug_out.text + "Rewarded loaded after shown = " + str(admob.is_rewarded_video_loaded()) +"\n"
 
 # Admob callbacks
 func _on_resize():

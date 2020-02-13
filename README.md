@@ -110,11 +110,19 @@ show_interstitial()
 # Show the rewarded video ad
 show_rewarded_video()
 
+# Check if the interstitial ad is loaded
+# @return bool true if is loaded
+is_interstitial_loaded()
+
+# Check if the rewarded video ad is loaded
+# @return bool true if is loaded
+is_rewarded_video_loaded()
+
 # Resize the banner (useful when the orientation changes for example)
 banner_resize()
 
 # Get the current banner dimension 
-# Returns a Vector2(width, height)
+# @return Vector2 (width, height)
 get_banner_dimension()
 
 ```

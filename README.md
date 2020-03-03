@@ -81,6 +81,10 @@ rewarded_id
 # type bool, default false
 child_directed
 
+# If ads should be personalized. In the European Economic Area, GDPR requires ad personalization to be opt-in.
+# type bool, default true
+is_personalized
+
 # Its value must be "G", "PG", "T" or "MA". If the rating of your app in Play Console and your config of max_ad_content_rate in AdMob are not matched, your app can be banned by Google
 # type String, default G
 max_ad_content_rate 

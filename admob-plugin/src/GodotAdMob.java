@@ -34,6 +34,7 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	private boolean isReal = false; // Store if is real or not
 	private boolean isForChildDirectedTreatment = false; // Store if is children directed treatment desired
+	private boolean isPersonalized = true; // ads are personalized by default, GDPR compliance within the European Economic Area may require you to disable personalization.
 	private String maxAdContentRating = ""; // Store maxAdContentRating ("G", "PG", "T" or "MA")
 	private Bundle extras = null;
 
@@ -59,7 +60,7 @@ public class GodotAdMob extends Godot.SingletonBase
 	 * @param int gdscript instance id
 	 */
 	public void init(boolean isReal, int instance_id) {
-		this.initWithContentRating(isReal, instance_id, false, "");
+		this.initWithContentRating(isReal, instance_id, false, true, "");
 	}
 
 	/**
@@ -67,18 +68,37 @@ public class GodotAdMob extends Godot.SingletonBase
 	 * @param boolean isReal Tell if the enviroment is for real or test
 	 * @param int gdscript instance id
 	 * @param boolean isForChildDirectedTreatment
+	 * @param boolean isPersonalized If ads should be personalized or not.
+	 *  GDPR compliance within the European Economic Area requires that you
+	 *  disable ad personalization if the user does not wish to opt into
+	 *  ad personalization.
 	 * @param String maxAdContentRating must be "G", "PG", "T" or "MA"
 	 */
-	public void initWithContentRating(boolean isReal, int instance_id, boolean isForChildDirectedTreatment, String maxAdContentRating)
+	public void initWithContentRating(
+		boolean isReal,
+		int instance_id,
+		boolean isForChildDirectedTreatment,
+		boolean isPersonalized,
+		String maxAdContentRating)
 	{
 		this.isReal = isReal;
 		this.instance_id = instance_id;
 		this.isForChildDirectedTreatment = isForChildDirectedTreatment;
+		this.isPersonalized = isPersonalized;
 		this.maxAdContentRating = maxAdContentRating;
 		if (maxAdContentRating != null && maxAdContentRating != "")
 		{
 			extras = new Bundle();
 			extras.putString("max_ad_content_rating", maxAdContentRating);
+		}
+		if(!isPersonalized)
+		{
+			// https://developers.google.com/admob/android/eu-consent#forward_consent_to_the_google_mobile_ads_sdk
+			if(extras == null)
+			{
+				extras = new Bundle();
+			}
+			extras.putString("npa", "1");
 		}
 		Log.d("godot", "AdMob: init with content rating options");
 	}

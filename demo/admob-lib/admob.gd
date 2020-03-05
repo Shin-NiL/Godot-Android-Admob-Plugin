@@ -23,6 +23,7 @@ export var banner_id:String
 export var interstitial_id:String
 export var rewarded_id:String
 export var child_directed:bool = false
+export var is_personalized:bool = true
 export(String, "G", "PG", "T", "MA") var max_ad_content_rate
 
 # "private" properties
@@ -46,6 +47,11 @@ func child_directed_set(new_val) -> void:
 # warning-ignore:return_value_discarded
 	init()
 
+func is_personalized_set(new_val) -> void:
+	is_personalized = new_val
+# warning-ignore:return_value_discarded
+	init()
+
 func max_ad_content_rate_set(new_val) -> void:
 	if new_val != "G" and new_val != "PG" \
 		and new_val != "T" and new_val != "MA":
@@ -58,7 +64,13 @@ func max_ad_content_rate_set(new_val) -> void:
 func init() -> bool:
 	if(Engine.has_singleton("AdMob")):
 		_admob_singleton = Engine.get_singleton("AdMob")
-		_admob_singleton.initWithContentRating(is_real, get_instance_id(), child_directed, max_ad_content_rate)
+		_admob_singleton.initWithContentRating(
+			is_real,
+			get_instance_id(),
+			child_directed,
+			is_personalized,
+			max_ad_content_rate
+		)
 		return true
 	return false
 	

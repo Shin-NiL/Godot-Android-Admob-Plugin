@@ -293,7 +293,15 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (adView.getVisibility() == View.VISIBLE) return;
+				if (adView == null) {
+					Log.w("w", "AdMob: showBanner - banner not loaded");
+					return;	
+				}
+
+				if (adView.getVisibility() == View.VISIBLE) {
+					return;
+				}
+
 				adView.setVisibility(View.VISIBLE);
 				adView.resume();
 				Log.d("godot", "AdMob: Show Banner");
@@ -444,7 +452,7 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (interstitialAd.isLoaded()) {
+				if (interstitialAd != null && interstitialAd.isLoaded()) {
 					interstitialAd.show();
 				} else {
 					Log.w("w", "AdMob: showInterstitial - interstitial not loaded");

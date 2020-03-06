@@ -158,7 +158,7 @@ rewarded_video_closed
 # Rewarded video ad was watched and will reward the user
 # @param String currency The reward item description, ex: coin
 # @param int amount The reward item amount
-rewarded(currency, ammount)
+rewarded(currency, amount)
 
 # The user has left application from a rewarded video ad
 rewarded_video_left_application

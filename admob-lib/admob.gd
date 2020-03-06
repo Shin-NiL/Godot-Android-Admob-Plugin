@@ -10,7 +10,7 @@ signal interstitial_loaded
 signal interstitial_closed
 signal rewarded_video_loaded
 signal rewarded_video_closed
-signal rewarded(currency, ammount)
+signal rewarded(currency, amount)
 signal rewarded_video_left_application
 signal rewarded_video_failed_to_load(error_code)
 signal rewarded_video_opened

@@ -20,7 +20,7 @@ How to use
 org/godotengine/godot/GodotAdMob
 ```
 
-Now you'll able to add an Admob Node to your scene
+Now you'll able to add an Admob Node to your scene (**only one node should be added per scene**)
 
 ![Searching Admob node](images/search_node.png)
 

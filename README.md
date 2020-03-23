@@ -182,6 +182,7 @@ Troubleshooting
 ```
 adb logcat -s godot
 ```
+* _Admob Java Singleton not found_: this module is Android only, so the Admob Java singleton will only exists on Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform.
 
 * Error code 3 (_ERROR_CODE_NO_FILL_) is a common issue with Admob, but out of the scope to this module. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL)
 

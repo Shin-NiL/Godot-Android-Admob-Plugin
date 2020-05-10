@@ -147,7 +147,7 @@ interstitial_closed
 
 # Interstitial ad has failed to load
 # @param int error_code the error code
-insterstitial_failed_to_load(error_code)
+interstitial_failed_to_load(error_code)
 
 # Rewarded video ad was loaded with success
 rewarded_video_loaded

@@ -45,7 +45,7 @@ func _on_Admob_interstitial_closed():
 	debug_out.text = debug_out.text + "Interstitial closed\n"
 	$"CanvasLayer/BtnInterstitial".disabled = true
 
-func _on_Admob_insterstitial_failed_to_load(error_code):
+func _on_Admob_interstitial_failed_to_load(error_code):
 	debug_out.text = debug_out.text + "Interstitial failed to load: Error code " + str(error_code) + "\n"
 
 func _on_Admob_network_error():

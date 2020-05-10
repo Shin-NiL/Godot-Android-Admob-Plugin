@@ -417,7 +417,7 @@ public class GodotAdMob extends Godot.SingletonBase
 					@Override
 					public void onAdFailedToLoad(int errorCode) {
 						Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(errorCode));
-						GodotLib.calldeferred(instance_id, "_on_insterstitial_failed_to_load", new Object[] { errorCode });
+						GodotLib.calldeferred(instance_id, "_on_interstitial_failed_to_load", new Object[] { errorCode });
 					}
 
 					@Override

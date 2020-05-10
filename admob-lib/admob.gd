@@ -5,7 +5,7 @@ class_name Admob, "res://admob-lib/icon.png"
 # signals
 signal banner_loaded
 signal banner_failed_to_load(error_code)
-signal insterstitial_failed_to_load(error_code)
+signal interstitial_failed_to_load(error_code)
 signal interstitial_loaded
 signal interstitial_closed
 signal rewarded_video_loaded
@@ -138,9 +138,9 @@ func _on_admob_ad_loaded() -> void:
 func _on_admob_banner_failed_to_load(error_code:int) -> void:
 	emit_signal("banner_failed_to_load", error_code)
 	
-func _on_insterstitial_failed_to_load(error_code:int) -> void:
+func _on_interstitial_failed_to_load(error_code:int) -> void:
 	_is_interstitial_loaded = false
-	emit_signal("insterstitial_failed_to_load", error_code)
+	emit_signal("interstitial_failed_to_load", error_code)
 
 func _on_interstitial_loaded() -> void:
 	_is_interstitial_loaded = true

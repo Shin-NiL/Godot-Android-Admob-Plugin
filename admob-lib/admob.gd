@@ -19,6 +19,7 @@ signal rewarded_video_started
 # properties
 export var is_real:bool setget is_real_set
 export var banner_on_top:bool = true
+export var app_id:String
 export var banner_id:String
 export var interstitial_id:String
 export var rewarded_id:String

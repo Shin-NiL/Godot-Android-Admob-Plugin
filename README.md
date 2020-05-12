@@ -19,6 +19,16 @@ How to use
 ```
 org/godotengine/godot/GodotAdMob
 ```
+- Edit the file ```res//android/build/gradle.properties``` addind the following lines at the end:
+```
+android.useAndroidX=true
+android.enableJetifier=true
+```
+- Edit the file ```res//android/admob-plugin/AndroidManifest.conf``` changing the sample id (_ca-app-pub-3940256099942544~3347511713_) for your _APPLICATION ID_ on the line
+```
+android:value="ca-app-pub-3940256099942544~3347511713"/
+```
+
 
 Now you'll able to add an Admob Node to your scene (**only one node should be added per scene**)
 
@@ -35,6 +45,8 @@ And connect its signals
 Sample code
 -----
 In the demo directory you'll find a working sample project where you can see how the things works on the scripting side.
+
+__REMEMBER__: You still need to configure the project as described in the "How to use" section to be able to run the demo project.
 
 Donations
 ---------

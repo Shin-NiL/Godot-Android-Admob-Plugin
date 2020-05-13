@@ -1,19 +1,15 @@
 package org.godotengine.godot;
 
-import com.google.android.gms.ads.*;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.app.Activity;
-import android.widget.FrameLayout;
 import android.provider.Settings;
-import android.graphics.Color;
 import android.util.Log;
 import java.util.Locale;
-import android.view.Gravity;
-import android.view.View;
 import android.os.Bundle;
+import android.widget.FrameLayout;
+import android.view.View;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
@@ -23,12 +19,8 @@ import org.godotengine.godot.*;
 
 public class GodotAdMob extends Godot.SingletonBase
 {
-
 	private Activity activity = null; // The main activity of the game
-	private int instance_id = 0;
-
-	private InterstitialAd interstitialAd = null; // Interstitial object
-	private AdView adView = null; // Banner view
+	private int instanceId = 0;
 
 	private boolean isReal = false; // Store if is real or not
 	private boolean isForChildDirectedTreatment = false; // Store if is children directed treatment desired
@@ -36,11 +28,11 @@ public class GodotAdMob extends Godot.SingletonBase
 	private String maxAdContentRating = ""; // Store maxAdContentRating ("G", "PG", "T" or "MA")
 	private Bundle extras = null;
 
-
 	private FrameLayout layout = null; // Store the layout
-	private FrameLayout.LayoutParams adParams = null; // Store the layout params
 
-	private GodotRewardedVideo rewardedVideo = null; // Rewarded Video object
+	private RewardedVideo rewardedVideo = null; // Rewarded Video object
+	private Interstitial interstitial = null; // Interstitial object
+	private Banner banner = null; // Banner object
 	
 	// create and add a new layout to Godot
 	@Override
@@ -57,8 +49,8 @@ public class GodotAdMob extends Godot.SingletonBase
 	 * @param boolean isReal Tell if the enviroment is for real or test
 	 * @param int gdscript instance id
 	 */
-	public void init(boolean isReal, int instance_id) {
-		this.initWithContentRating(isReal, instance_id, false, true, "");
+	public void init(boolean isReal, int instanceId) {
+		this.initWithContentRating(isReal, instanceId, false, true, "");
 	}
 
 	/**
@@ -74,13 +66,13 @@ public class GodotAdMob extends Godot.SingletonBase
 	 */
 	public void initWithContentRating(
 		boolean isReal,
-		int instance_id,
+		int instanceId,
 		boolean isForChildDirectedTreatment,
 		boolean isPersonalized,
 		String maxAdContentRating)
 	{
 		this.isReal = isReal;
-		this.instance_id = instance_id;
+		this.instanceId = instanceId;
 		this.isForChildDirectedTreatment = isForChildDirectedTreatment;
 		this.isPersonalized = isPersonalized;
 		this.maxAdContentRating = maxAdContentRating;
@@ -128,14 +120,13 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/* Rewarded Video
 	 * ********************************************************************** */
-
+	
 	public void initRewardedVideo() {
 		activity.runOnUiThread(new Runnable()
 		{
 			@Override public void run()
 			{
-				rewardedVideo = new GodotRewardedVideo();
-				rewardedVideo.init(activity, instance_id);
+				rewardedVideo = new RewardedVideo(activity, instanceId);
 			}
 		});	
 	}
@@ -189,43 +180,7 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				adParams = new FrameLayout.LayoutParams(
-					FrameLayout.LayoutParams.MATCH_PARENT,
-					FrameLayout.LayoutParams.WRAP_CONTENT
-				);
-				if(isOnTop) adParams.gravity = Gravity.TOP;
-				else adParams.gravity = Gravity.BOTTOM;
-
-				if (adView != null)
-				{
-					layout.removeView(adView); // Remove the old view
-				}
-
-				adView = new AdView(activity);
-				adView.setAdUnitId(id);
-
-				adView.setBackgroundColor(Color.TRANSPARENT);
-
-				adView.setAdSize(AdSize.SMART_BANNER);
-				adView.setAdListener(new AdListener()
-				{
-					@Override
-					public void onAdLoaded() {
-						Log.w("godot", "AdMob: onAdLoaded");
-						GodotLib.calldeferred(instance_id, "_on_admob_ad_loaded", new Object[]{ });
-					}
-
-					@Override
-					public void onAdFailedToLoad(int errorCode)
-					{
-						Log.w("godot", "AdMob: onAdFailedToLoad. errorCode: " + errorCode);
-						GodotLib.calldeferred(instance_id, "_on_admob_banner_failed_to_load", new Object[] { errorCode });
-					}
-				});
-				layout.addView(adView, adParams);
-
-				// Request
-				adView.loadAd(getAdRequest());
+				banner = new Banner(id, getAdRequest(), activity, instanceId, isOnTop, layout);
 			}
 		});
 	}
@@ -239,18 +194,9 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (adView == null) {
-					Log.w("w", "AdMob: showBanner - banner not loaded");
-					return;	
+				if (banner != null) {
+					banner.show();
 				}
-
-				if (adView.getVisibility() == View.VISIBLE) {
-					return;
-				}
-
-				adView.setVisibility(View.VISIBLE);
-				adView.resume();
-				Log.d("godot", "AdMob: Show Banner");
 			}
 		});
 	}
@@ -265,38 +211,9 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (layout == null || adView == null || adParams == null)
-				{
-					return;
+				if (banner != null) {
+					banner.resize();
 				}
-
-				layout.removeView(adView); // Remove the old view
-
-				// Extract params
-
-				int gravity = adParams.gravity;
-				adParams = new FrameLayout.LayoutParams(
-					FrameLayout.LayoutParams.MATCH_PARENT,
-					FrameLayout.LayoutParams.WRAP_CONTENT
-				);
-				adParams.gravity = gravity;
-				AdListener adListener = adView.getAdListener();
-				String id = adView.getAdUnitId();
-
-				// Create new view & set old params
-				adView = new AdView(activity);
-				adView.setAdUnitId(id);
-				adView.setBackgroundColor(Color.TRANSPARENT);
-				adView.setAdSize(AdSize.SMART_BANNER);
-				adView.setAdListener(adListener);
-
-				// Add to layout and load ad
-				layout.addView(adView, adParams);
-
-				// Request
-				adView.loadAd(getAdRequest());
-
-				Log.d("godot", "AdMob: Banner Resized");
 			}
 		});
 	}
@@ -311,10 +228,9 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (adView.getVisibility() == View.GONE) return;
-				adView.setVisibility(View.GONE);
-				adView.pause();
-				Log.d("godot", "AdMob: Hide Banner");
+				if (banner != null) {
+					banner.hide();
+				}
 			}
 		});
 	}
@@ -325,7 +241,10 @@ public class GodotAdMob extends Godot.SingletonBase
 	 */
 	public int getBannerWidth()
 	{
-		return AdSize.SMART_BANNER.getWidthInPixels(activity);
+		if (banner != null) {
+			return banner.getWidth();
+		}
+		return 0;
 	}
 
 	/**
@@ -334,7 +253,10 @@ public class GodotAdMob extends Godot.SingletonBase
 	 */
 	public int getBannerHeight()
 	{
-		return AdSize.SMART_BANNER.getHeightInPixels(activity);
+		if (banner != null) {
+			return banner.getHeight();
+		}
+		return 0;
 	}
 
 	/* Interstitial
@@ -350,41 +272,7 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				interstitialAd = new InterstitialAd(activity);
-				interstitialAd.setAdUnitId(id);
-		        interstitialAd.setAdListener(new AdListener()
-				{
-					@Override
-					public void onAdLoaded() {
-						Log.w("godot", "AdMob: onAdLoaded");
-						GodotLib.calldeferred(instance_id, "_on_interstitial_loaded", new Object[] { });
-					}
-
-					@Override
-					public void onAdFailedToLoad(int errorCode) {
-						Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(errorCode));
-						GodotLib.calldeferred(instance_id, "_on_interstitial_failed_to_load", new Object[] { errorCode });
-					}
-
-					@Override
-					public void onAdOpened() {
-						Log.w("godot", "AdMob: onAdOpened()");
-					}
-
-					@Override
-					public void onAdLeftApplication() {
-						Log.w("godot", "AdMob: onAdLeftApplication()");
-					}
-
-					@Override
-					public void onAdClosed() {
-						GodotLib.calldeferred(instance_id, "_on_interstitial_close", new Object[] { });
-						interstitialAd.loadAd(getAdRequest());
-						Log.w("godot", "AdMob: onAdClosed");
-					}
-				});
-
-				interstitialAd.loadAd(getAdRequest());
+				interstitial = new Interstitial(id, getAdRequest(), activity, instanceId);
 			}
 		});
 	}
@@ -398,10 +286,8 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (interstitialAd != null && interstitialAd.isLoaded()) {
-					interstitialAd.show();
-				} else {
-					Log.w("w", "AdMob: showInterstitial - interstitial not loaded");
+				if (interstitial != null) {
+					interstitial.show();
 				}
 			}
 		});

@@ -2,7 +2,6 @@ package org.godotengine.godot;
 
 import com.google.android.gms.ads.*;
 
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,9 +18,8 @@ import android.os.Bundle;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.ads.mediation.admob.AdMobAdapter;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
+import org.godotengine.godot.*;
 
 public class GodotAdMob extends Godot.SingletonBase
 {
@@ -42,7 +40,7 @@ public class GodotAdMob extends Godot.SingletonBase
 	private FrameLayout layout = null; // Store the layout
 	private FrameLayout.LayoutParams adParams = null; // Store the layout params
 
-	private RewardedVideoAd rewardedVideoAd = null; // Rewarded Video object
+	private GodotRewardedVideo rewardedVideo = null; // Rewarded Video object
 	
 	// create and add a new layout to Godot
 	@Override
@@ -130,69 +128,16 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/* Rewarded Video
 	 * ********************************************************************** */
-	private void initRewardedVideo()
-	{
+
+	public void initRewardedVideo() {
 		activity.runOnUiThread(new Runnable()
 		{
 			@Override public void run()
 			{
-				MobileAds.initialize(activity);
-				rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity);
-				rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener()
-				{
-					@Override
-					public void onRewardedVideoAdLeftApplication() {
-						Log.w("godot", "AdMob: onRewardedVideoAdLeftApplication");
-						GodotLib.calldeferred(instance_id, "_on_rewarded_video_ad_left_application", new Object[] { });
-					}
-
-					@Override
-					public void onRewardedVideoAdClosed() {
-						Log.w("godot", "AdMob: onRewardedVideoAdClosed");
-						GodotLib.calldeferred(instance_id, "_on_rewarded_video_ad_closed", new Object[] { });
-					}
-
-					@Override
-					public void onRewardedVideoAdFailedToLoad(int errorCode) {
-						Log.w("godot", "AdMob: onRewardedVideoAdFailedToLoad. errorCode: " + errorCode);
-						GodotLib.calldeferred(instance_id, "_on_rewarded_video_ad_failed_to_load", new Object[] { errorCode });
-					}
-
-					@Override
-					public void onRewardedVideoAdLoaded() {
-						Log.w("godot", "AdMob: onRewardedVideoAdLoaded");
-						GodotLib.calldeferred(instance_id, "_on_rewarded_video_ad_loaded", new Object[] { });
-					}
-
-					@Override
-					public void onRewardedVideoAdOpened() {
-						Log.w("godot", "AdMob: onRewardedVideoAdOpened");
-						GodotLib.calldeferred(instance_id, "_on_rewarded_video_ad_opened", new Object[] { });
-					}
-
-					@Override
-					public void onRewarded(RewardItem reward) {
-						Log.w("godot", "AdMob: " + String.format(" onRewarded! currency: %s amount: %d", reward.getType(),
-								reward.getAmount()));
-						GodotLib.calldeferred(instance_id, "_on_rewarded", new Object[] { reward.getType(), reward.getAmount() });
-					}
-
-					@Override
-					public void onRewardedVideoStarted() {
-						Log.w("godot", "AdMob: onRewardedVideoStarted");
-						GodotLib.calldeferred(instance_id, "_on_rewarded_video_started", new Object[] { });
-					}
-
-					@Override
-					public void onRewardedVideoCompleted() {
-						Log.w("godot", "AdMob: onRewardedVideoCompleted");
-						GodotLib.calldeferred(instance_id, "_on_rewarded_video_completed", new Object[] { });
-					}
-				});
-
+				rewardedVideo = new GodotRewardedVideo();
+				rewardedVideo.init(activity, instance_id);
 			}
-		});
-
+		});	
 	}
 
 	/**
@@ -200,15 +145,15 @@ public class GodotAdMob extends Godot.SingletonBase
 	 * @param String id AdMod Rewarded video ID
 	 */
 	public void loadRewardedVideo(final String id) {
+
 		activity.runOnUiThread(new Runnable()
 		{
 			@Override public void run()
 			{
-				if (rewardedVideoAd == null) {
+				if (rewardedVideo == null) {
 					initRewardedVideo();
 				}
-
-				rewardedVideoAd.loadAd(id, getAdRequest());
+				rewardedVideo.load(id, getAdRequest());
 			}
 		});
 	}
@@ -221,9 +166,10 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (rewardedVideoAd.isLoaded()) {
-					rewardedVideoAd.show();
+				if (rewardedVideo == null) {
+					return;
 				}
+				rewardedVideo.show();
 			}
 		});
 	}

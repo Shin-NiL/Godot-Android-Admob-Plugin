@@ -10,7 +10,7 @@ signal interstitial_loaded
 signal interstitial_closed
 signal rewarded_video_loaded
 signal rewarded_video_closed
-signal rewarded(currency, amount)
+signal rewarded(currency, ammount)
 signal rewarded_video_left_application
 signal rewarded_video_failed_to_load(error_code)
 signal rewarded_video_opened
@@ -62,8 +62,8 @@ func max_ad_content_rate_set(new_val) -> void:
 
 # initialization
 func init() -> bool:
-	if(Engine.has_singleton("AdMob")):
-		_admob_singleton = Engine.get_singleton("AdMob")
+	if(Engine.has_singleton("GodotAdMob")):
+		_admob_singleton = Engine.get_singleton("GodotAdMob")
 		_admob_singleton.initWithContentRating(
 			is_real,
 			get_instance_id(),

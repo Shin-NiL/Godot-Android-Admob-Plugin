@@ -62,8 +62,8 @@ func max_ad_content_rate_set(new_val) -> void:
 
 # initialization
 func init() -> bool:
-	if(Engine.has_singleton("AdMob")):
-		_admob_singleton = Engine.get_singleton("AdMob")
+	if(Engine.has_singleton("GodotAdMob")):
+		_admob_singleton = Engine.get_singleton("GodotAdMob")
 		_admob_singleton.initWithContentRating(
 			is_real,
 			get_instance_id(),

@@ -18,10 +18,6 @@ _global_script_class_icons={
 "Admob": "res://admob-lib/icon.png"
 }
 
-[android]
-
-modules="org/godotengine/godot/GodotAdMob"
-
 [application]
 
 config/name="Admob Plugin Test"

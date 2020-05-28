@@ -17,10 +17,7 @@ How to use
     - Permissions: check the permissions for _Access Network State_ and _Internet_
     - Custom Template: check the _Use Custom Build_
     - Plugins: check the _Godot Ad Mob_ (this plugin)
-- Edit the file ```res//android/plugins/AndroidManifest.conf``` changing the sample id (_ca-app-pub-3940256099942544~3347511713_) for your _APPLICATION ID_ on the line
-```
-android:value="ca-app-pub-3940256099942544~3347511713"/
-```
+- Edit the file ```res//android/build/AndroidManifest.xml``` to add your App ID as described [here](https://developers.google.com/admob/android/quick-start#update_your_androidmanifestxml).
 
 
 Now you'll able to add an Admob Node to your scene (**only one node should be added per scene**)

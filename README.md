@@ -1,6 +1,6 @@
 GodotAdMob
 =====
-This is an Android AdMob plugin for Godot Engine (https://github.com/okamstudio/godot) 3.2 or higher. For Godot < 3.2 or iOS support you can use the [old module](https://github.com/kloder-games/godot-admob).
+This is an Android AdMob plugin for Godot Engine (https://github.com/okamstudio/godot) 3.2.2 or higher. For Godot < 3.2 or iOS support you can use the [old module](https://github.com/kloder-games/godot-admob).
 
 Currently, this plugin supports:
 - Banner

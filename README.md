@@ -48,6 +48,10 @@ In the demo directory you'll find a working sample project where you can see how
 
 __REMEMBER__: You still need to configure the project as described in the "How to use" section to be able to run the demo project.
 
+Showcase
+--------
+Does this plugin really work? You can see a list of published games [here](showcase.md).
+
 Donations
 ---------
 Was this project useful for you? Wanna make a donation? These are the options:

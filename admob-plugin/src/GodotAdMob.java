@@ -33,7 +33,7 @@ public class GodotAdMob extends Godot.SingletonBase
 	private RewardedVideo rewardedVideo = null; // Rewarded Video object
 	private Interstitial interstitial = null; // Interstitial object
 	private Banner banner = null; // Banner object
-	
+
 	// create and add a new layout to Godot
 	@Override
 	public View onMainCreateView(Activity activity) {
@@ -46,23 +46,23 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/**
 	 * Prepare for work with AdMob
-	 * @param boolean isReal Tell if the enviroment is for real or test
-	 * @param int gdscript instance id
+	 * @param isReal Tell if the enviroment is for real or test
+	 * @param instanceId gdscript instance id
 	 */
 	public void init(boolean isReal, int instanceId) {
 		this.initWithContentRating(isReal, instanceId, false, true, "");
 	}
 
 	/**
-	 * Init with content rating additional options 
-	 * @param boolean isReal Tell if the enviroment is for real or test
-	 * @param int gdscript instance id
-	 * @param boolean isForChildDirectedTreatment
-	 * @param boolean isPersonalized If ads should be personalized or not.
+	 * Init with content rating additional options
+	 * @param isReal Tell if the enviroment is for real or test
+	 * @param instanceId gdscript instance id
+	 * @param isForChildDirectedTreatment
+	 * @param isPersonalized If ads should be personalized or not.
 	 *  GDPR compliance within the European Economic Area requires that you
 	 *  disable ad personalization if the user does not wish to opt into
 	 *  ad personalization.
-	 * @param String maxAdContentRating must be "G", "PG", "T" or "MA"
+	 * @param maxAdContentRating must be "G", "PG", "T" or "MA"
 	 */
 	public void initWithContentRating(
 		boolean isReal,
@@ -120,16 +120,6 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/* Rewarded Video
 	 * ********************************************************************** */
-	
-	public void initRewardedVideo() {
-		activity.runOnUiThread(new Runnable()
-		{
-			@Override public void run()
-			{
-				rewardedVideo = new RewardedVideo(activity, instanceId);
-			}
-		});	
-	}
 
 	/**
 	 * Load a Rewarded Video
@@ -141,9 +131,7 @@ public class GodotAdMob extends Godot.SingletonBase
 		{
 			@Override public void run()
 			{
-				if (rewardedVideo == null) {
-					initRewardedVideo();
-				}
+				rewardedVideo = new RewardedVideo(activity, instanceId);
 				rewardedVideo.load(id, getAdRequest());
 			}
 		});
@@ -171,8 +159,8 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/**
 	 * Load a banner
-	 * @param String id AdMod Banner ID
-	 * @param boolean isOnTop To made the banner top or bottom
+	 * @param id AdMod Banner ID
+	 * @param isOnTop To made the banner top or bottom
 	 */
 	public void loadBanner(final String id, final boolean isOnTop)
 	{
@@ -264,7 +252,7 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/**
 	 * Load a interstitial
-	 * @param String id AdMod Interstitial ID
+	 * @param id AdMod Interstitial ID
 	 */
 	public void loadInterstitial(final String id)
 	{
@@ -298,8 +286,8 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/**
 	 * Generate MD5 for the deviceID
-	 * @param String s The string to generate de MD5
-	 * @return String The MD5 generated
+	 * @param s The string to generate de MD5
+	 * @return The MD5 generated
 	 */
 	private String md5(final String s)
 	{
@@ -339,7 +327,7 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/**
 	 * Initilization Singleton
-	 * @param Activity The main activity
+	 * @param activity The main activity
 	 */
  	static public Godot.SingletonBase initialize(Activity activity)
  	{
@@ -348,7 +336,7 @@ public class GodotAdMob extends Godot.SingletonBase
 
 	/**
 	 * Constructor
-	 * @param Activity Main activity
+	 * @param p_activity Main activity
 	 */
 	public GodotAdMob(Activity p_activity) {
 		registerClass("AdMob", new String[] {

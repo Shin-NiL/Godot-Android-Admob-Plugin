@@ -146,28 +146,16 @@ public class GodotAdMob extends GodotPlugin {
     /* Rewarded Video
      * ********************************************************************** */
 
-    public void initRewardedVideo() {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                rewardedVideo = new RewardedVideo(activity, instanceId);
-            }
-        });
-    }
-
     /**
      * Load a Rewarded Video
      *
      * @param id AdMod Rewarded video ID
      */
     public void loadRewardedVideo(final String id) {
-
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (rewardedVideo == null) {
-                    initRewardedVideo();
-                }
+                rewardedVideo = new RewardedVideo(activity, instanceId);
                 rewardedVideo.load(id, getAdRequest());
             }
         });
@@ -345,6 +333,5 @@ public class GodotAdMob extends GodotPlugin {
         String deviceId = md5(android_id).toUpperCase(Locale.US);
         return deviceId;
     }
-
 
 }

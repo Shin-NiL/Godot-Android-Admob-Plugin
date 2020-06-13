@@ -17,16 +17,16 @@ How to use
     - Permissions: check the permissions for _Access Network State_ and _Internet_
     - Custom Template: check the _Use Custom Build_
     - Plugins: check the _Godot Ad Mob_ (this plugin)
-- Edit the file ```res//android/build/AndroidManifest.xml``` to add your App ID as described [here](https://developers.google.com/admob/android/quick-start#update_your_androidmanifestxml). For the demo project, for example, you should use:
+- edit the file ```res//android/build/AndroidManifest.xml``` to add your App ID as described [here](https://developers.google.com/admob/android/quick-start#update_your_androidmanifestxml). For the demo project, for example, you should use:
 ```
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
 ```
-*NOTE: everytime you install a new version of the Android Build Template this step must be done again, as the ```AndroidManifest.xml``` file will be overriden.
+**NOTE**: everytime you install a new version of the Android Build Template this step must be done again, as the ```AndroidManifest.xml``` file will be overriden.
 
 
-Now you'll able to add an Admob Node to your scene (**only one node should be added per scene**)
+Now you'll be able to add an Admob Node to your scene (**only one node should be added per scene**)
 
 ![Searching Admob node](images/search_node.png)
 

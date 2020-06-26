@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="shinnil.godot.plugin.android.godotadmob">
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <meta-data
             android:name="org.godotengine.plugin.v1.GodotAdMob"

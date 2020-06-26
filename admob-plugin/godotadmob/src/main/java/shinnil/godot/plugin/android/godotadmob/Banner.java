@@ -2,7 +2,9 @@ package shinnil.godot.plugin.android.godotadmob;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -100,7 +102,8 @@ public class Banner {
         adView = new AdView(activity);
         adView.setAdUnitId(id);
         adView.setBackgroundColor(Color.TRANSPARENT);
-        adView.setAdSize(AdSize.SMART_BANNER);
+        AdSize adSize = getAdSize();
+        adView.setAdSize(adSize);
         adView.setAdListener(adListener);
 
         // Add to layout and load ad
@@ -120,12 +123,27 @@ public class Banner {
         Log.d("godot", "AdMob: Hide Banner");
     }
 
+    private AdSize getAdSize() {
+        // Determine the screen width (less decorations) to use for the ad width.
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float widthPixels = outMetrics.widthPixels;
+        float density = outMetrics.density;
+
+        int adWidth = (int) (widthPixels / density);
+
+        // Get adaptive ad size and return for setting on the ad view.
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth);
+    }
+
     public int getWidth() {
-        return AdSize.SMART_BANNER.getWidthInPixels(activity);
+        return getAdSize().getWidthInPixels(activity);
     }
 
     public int getHeight() {
-        return AdSize.SMART_BANNER.getHeightInPixels(activity);
+        return getAdSize().getHeightInPixels(activity);
     }
 
 

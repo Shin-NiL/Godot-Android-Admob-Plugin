@@ -45,7 +45,7 @@ public class GodotAdMob extends GodotPlugin {
 
     // create and add a new layout to Godot
     @Override
-    public View onMainCreateView(Activity activity) {
+    public View onMainCreate(Activity activity) {
         layout = new FrameLayout(activity);
         return layout;
     }

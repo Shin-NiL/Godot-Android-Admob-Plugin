@@ -10,17 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
-"class": "Admob",
+"class": "AdMob",
 "language": "GDScript",
 "path": "res://admob-lib/admob.gd"
 } ]
 _global_script_class_icons={
-"Admob": "res://admob-lib/icon.png"
+"AdMob": "res://admob-lib/icon.png"
 }
 
 [application]
 
-config/name="Admob Plugin Test"
+config/name="AdMob Plugin Test"
 run/main_scene="res://main.tscn"
 config/icon="res://icon.png"
 

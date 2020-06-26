@@ -10,7 +10,7 @@ Currently, this plugin supports:
 How to use
 ----------
 - Configure, install  and enable the "Android Custom Template" for your project, just follow the [official documentation](https://docs.godotengine.org/en/latest/getting_started/workflow/export/android_custom_build.html);
-- go to the [release tab](https://github.com/Shin-NiL/Godot-Android-Admob-Plugin/releases), choose a version and download the respective zip package;
+- go to the [release tab](https://github.com/Shin-NiL/Godot-Android-AdMob-Plugin/releases), choose a version and download the respective zip package;
 - extract the content of the ```admob-plugin``` directory (from the zip package) inside the ```res://android/plugins``` directory on your Godot project.
 - extract the ```admob-lib``` directory (from the zip package) inside the ```res://``` directory on your Godot project.
 - on the Project -> Export... -> Android -> Options -> 
@@ -26,17 +26,17 @@ How to use
 **NOTE**: everytime you install a new version of the Android Build Template this step must be done again, as the ```AndroidManifest.xml``` file will be overriden.
 
 
-Now you'll be able to add an Admob Node to your scene (**only one node should be added per scene**)
+Now you'll be able to add an AdMob Node to your scene (**only one node should be added per scene**)
 
-![Searching Admob node](images/search_node.png)
+![Searching AdMob node](images/search_node.png)
 
 Edit its properties
 
-![Admob properties](images/properties.png)
+![AdMob properties](images/properties.png)
 
 And connect its signals
 
-![Admob signals](images/signals.png)
+![AdMob signals](images/signals.png)
 
 Sample code
 -----
@@ -189,13 +189,13 @@ rewarded_video_failed_to_load(error_code)
 
 Troubleshooting
 --------------
-* First of all, please make sure you're able to compile the custom build for Android without the Admob plugin, this way we can isolate the cause of the issue.
+* First of all, please make sure you're able to compile the custom build for Android without the AdMob plugin, this way we can isolate the cause of the issue.
 
 * Using logcat for Android is the best way to troubleshoot most issues. You can filter Godot only messages with logcat using the command: 
 ```
 adb logcat -s godot
 ```
-* _Admob Java Singleton not found_: this module is Android only, so the Admob Java singleton will only exists on the Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform.
+* _AdMob Java Singleton not found_: this module is Android only, so the AdMob Java singleton will only exists on the Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform.
 
 * Error code 3 (_ERROR_CODE_NO_FILL_) is a common issue with Admob, but out of the scope to this module. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL) You can find more information about the error codes [here](https://support.google.com/admob/thread/3494603).
 

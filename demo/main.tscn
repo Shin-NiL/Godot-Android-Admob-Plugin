@@ -73,7 +73,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Admob" type="Node" parent="."]
+[node name="AdMob" type="Node" parent="."]
 script = ExtResource( 2 )
 __meta__ = {
 "_editor_description_": ""
@@ -85,15 +85,15 @@ max_ad_content_rate = "G"
 [connection signal="toggled" from="CanvasLayer/BtnBanner" to="." method="_on_BtnBanner_toggled"]
 [connection signal="pressed" from="CanvasLayer/BtnInterstitial" to="." method="_on_BtnInterstitial_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnRewardedVideo" to="." method="_on_BtnRewardedVideo_pressed"]
-[connection signal="banner_failed_to_load" from="Admob" to="." method="_on_Admob_banner_failed_to_load"]
-[connection signal="banner_loaded" from="Admob" to="." method="_on_Admob_banner_loaded"]
-[connection signal="interstitial_closed" from="Admob" to="." method="_on_Admob_interstitial_closed"]
-[connection signal="interstitial_failed_to_load" from="Admob" to="." method="_on_Admob_interstitial_failed_to_load"]
-[connection signal="interstitial_loaded" from="Admob" to="." method="_on_Admob_interstitial_loaded"]
-[connection signal="rewarded" from="Admob" to="." method="_on_Admob_rewarded"]
-[connection signal="rewarded_video_closed" from="Admob" to="." method="_on_Admob_rewarded_video_closed"]
-[connection signal="rewarded_video_failed_to_load" from="Admob" to="." method="_on_Admob_rewarded_video_failed_to_load"]
-[connection signal="rewarded_video_left_application" from="Admob" to="." method="_on_Admob_rewarded_video_left_application"]
-[connection signal="rewarded_video_loaded" from="Admob" to="." method="_on_Admob_rewarded_video_loaded"]
-[connection signal="rewarded_video_opened" from="Admob" to="." method="_on_Admob_rewarded_video_opened"]
-[connection signal="rewarded_video_started" from="Admob" to="." method="_on_Admob_rewarded_video_started"]
+[connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
+[connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]
+[connection signal="interstitial_closed" from="AdMob" to="." method="_on_AdMob_interstitial_closed"]
+[connection signal="interstitial_failed_to_load" from="AdMob" to="." method="_on_AdMob_interstitial_failed_to_load"]
+[connection signal="interstitial_loaded" from="AdMob" to="." method="_on_AdMob_interstitial_loaded"]
+[connection signal="rewarded" from="AdMob" to="." method="_on_AdMob_rewarded"]
+[connection signal="rewarded_video_closed" from="AdMob" to="." method="_on_AdMob_rewarded_video_closed"]
+[connection signal="rewarded_video_failed_to_load" from="AdMob" to="." method="_on_AdMob_rewarded_video_failed_to_load"]
+[connection signal="rewarded_video_left_application" from="AdMob" to="." method="_on_AdMob_rewarded_video_left_application"]
+[connection signal="rewarded_video_loaded" from="AdMob" to="." method="_on_AdMob_rewarded_video_loaded"]
+[connection signal="rewarded_video_opened" from="AdMob" to="." method="_on_AdMob_rewarded_video_opened"]
+[connection signal="rewarded_video_started" from="AdMob" to="." method="_on_AdMob_rewarded_video_started"]

@@ -195,9 +195,11 @@ Troubleshooting
 ```
 adb logcat -s godot
 ```
-* _AdMob Java Singleton not found_: this module is Android only, so the AdMob Java singleton will only exists on the Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform.
+* _AdMob Java Singleton not found_: this plugin is Android only, so the AdMob Java singleton will only exists on the Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform.
 
-* Error code 3 (_ERROR_CODE_NO_FILL_) is a common issue with Admob, but out of the scope to this module. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL) You can find more information about the error codes [here](https://support.google.com/admob/thread/3494603).
+* Error code 3 (_ERROR_CODE_NO_FILL_) is a common issue with Admob, but out of the scope to this plugin. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL) You can find more information about the error codes [here](https://support.google.com/admob/thread/3494603).
+
+* Banner sizes: this plugin uses [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive), you can find more information on how its sizes works on the [official AdMob documentation](https://developers.google.com/admob/android/banner/adaptive).
 
 References
 -------------

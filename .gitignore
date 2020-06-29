@@ -4,3 +4,4 @@
 .import
 *.o
 demo/android
+tools/releases

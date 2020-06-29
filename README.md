@@ -46,7 +46,7 @@ __REMEMBER__: You still need to configure the project as described in the "How t
 
 Showcase
 --------
-Does this plugin really work? You can see a list of published games [here](showcase.md).
+Does this plugin really work? Yes sir! You can see a list of published games [here](showcase.md).
 
 
 Donations

@@ -11,3 +11,4 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [Walls of Stone - Puzzle Game](https://play.google.com/store/apps/details?id=dev.mintstudios.wos)
 - [Future Funk Soccer Racing](https://play.google.com/store/apps/details?id=org.godotengine.cargame)
 - [Turzzle](https://play.google.com/store/apps/details?id=com.bananaonfire.turzzle)
+- [Piranha Escape (FREE)](https://play.google.com/store/apps/details?id=com.bitmagine.piranhaescape.free)

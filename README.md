@@ -195,7 +195,9 @@ Troubleshooting
 ```
 adb logcat -s godot
 ```
-* _AdMob Java Singleton not found_: this plugin is Android only, so the AdMob Java singleton will only exists on the Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform.
+* _AdMob Java Singleton not found_: 
+    1. this plugin is Android only, so the AdMob Java singleton will only exists on the Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform;
+    2. make sure you checked the _Use Custom Build_ and _Godot Ad Mob_ options in the export window.
 
 * Error code 3 (_ERROR_CODE_NO_FILL_) is a common issue with Admob, but out of the scope to this plugin. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL)
 

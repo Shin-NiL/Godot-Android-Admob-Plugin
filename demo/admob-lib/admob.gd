@@ -64,9 +64,22 @@ func max_ad_content_rate_set(new_val) -> void:
 func init() -> bool:
 	if(Engine.has_singleton("GodotAdMob")):
 		_admob_singleton = Engine.get_singleton("GodotAdMob")
+
+		_admob_singleton.connect("on_admob_ad_loaded", self, "_on_admob_ad_loaded");
+		_admob_singleton.connect("on_admob_banner_failed_to_load", self, "_on_admob_banner_failed_to_load");
+		_admob_singleton.connect("on_interstitial_failed_to_load", self, "_on_interstitial_failed_to_load");
+		_admob_singleton.connect("on_interstitial_loaded", self, "_on_interstitial_loaded");
+		_admob_singleton.connect("on_interstitial_close", self, "_on_interstitial_close");
+		_admob_singleton.connect("on_rewarded_video_ad_loaded", self, "_on_rewarded_video_ad_loaded");
+		_admob_singleton.connect("on_rewarded_video_ad_closed", self, "_on_rewarded_video_ad_closed");
+		_admob_singleton.connect("on_rewarded", self, "_on_rewarded");
+		_admob_singleton.connect("on_rewarded_video_ad_left_application", self, "_on_rewarded_video_ad_left_application");
+		_admob_singleton.connect("on_rewarded_video_ad_failed_to_load", self, "_on_rewarded_video_ad_failed_to_load");
+		_admob_singleton.connect("on_rewarded_video_ad_opened", self, "_on_rewarded_video_ad_opened");
+		_admob_singleton.connect("on_rewarded_video_started", self, "_on_rewarded_video_started");
+
 		_admob_singleton.initWithContentRating(
 			is_real,
-			get_instance_id(),
 			child_directed,
 			is_personalized,
 			max_ad_content_rate
@@ -107,6 +120,11 @@ func show_banner() -> void:
 func hide_banner() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.hideBanner()
+
+func move_banner(on_top: bool) -> void:
+	if _admob_singleton != null:
+		banner_on_top = on_top
+		_admob_singleton.move(banner_on_top)
 
 func show_interstitial() -> void:
 	if _admob_singleton != null:

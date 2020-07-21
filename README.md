@@ -121,6 +121,9 @@ show_banner()
 # Hide the banner ad		
 hide_banner()
 
+# Move banner after loaded
+move_banner(on_top: bool)
+
 # Show the interstitial ad
 show_interstitial()
 

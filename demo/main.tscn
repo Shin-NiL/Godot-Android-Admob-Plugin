@@ -27,6 +27,50 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="BtnReload" type="Button" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -291.0
+margin_top = -217.0
+margin_right = -213.0
+margin_bottom = -142.0
+text = "Reload"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnInterstitial" type="Button" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -166.077
+margin_right = 75.0
+margin_bottom = -91.0766
+disabled = true
+text = "Show Interstitial"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnBannerResize" type="Button" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -251.0
+margin_top = -65.6294
+margin_right = -101.0
+margin_bottom = 9.37061
+disabled = true
+text = "Resize Banner"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="BtnBanner" type="Button" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -43,17 +87,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BtnInterstitial" type="Button" parent="CanvasLayer"]
+[node name="BtnBannerMove" type="Button" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -75.0
-margin_top = -166.077
-margin_right = 75.0
-margin_bottom = -91.0766
+margin_left = 103.0
+margin_top = -65.6294
+margin_right = 253.0
+margin_bottom = 9.37061
 disabled = true
-text = "Show Interstitial"
+toggle_mode = true
+text = "Move Banner"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -81,9 +126,13 @@ __meta__ = {
 banner_id = "ca-app-pub-3940256099942544/6300978111"
 interstitial_id = "ca-app-pub-3940256099942544/1033173712"
 rewarded_id = "ca-app-pub-3940256099942544/5224354917"
+is_personalized = false
 max_ad_content_rate = "G"
-[connection signal="toggled" from="CanvasLayer/BtnBanner" to="." method="_on_BtnBanner_toggled"]
+[connection signal="pressed" from="CanvasLayer/BtnReload" to="." method="_on_BtnReload_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnInterstitial" to="." method="_on_BtnInterstitial_pressed"]
+[connection signal="pressed" from="CanvasLayer/BtnBannerResize" to="." method="_on_BtnBannerResize_pressed"]
+[connection signal="toggled" from="CanvasLayer/BtnBanner" to="." method="_on_BtnBanner_toggled"]
+[connection signal="toggled" from="CanvasLayer/BtnBannerMove" to="." method="_on_BtnBannerMove_toggled"]
 [connection signal="pressed" from="CanvasLayer/BtnRewardedVideo" to="." method="_on_BtnRewardedVideo_pressed"]
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]

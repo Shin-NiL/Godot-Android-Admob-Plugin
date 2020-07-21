@@ -7,42 +7,52 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
-import org.godotengine.godot.GodotLib;
+interface InterstitialListener {
+    void onInterstitialLoaded();
+    void onInterstitialFailedToLoad(int errorCode);
+    void onInterstitialOpened();
+    void onInterstitialLeftApplication();
+    void onInterstitialClosed();
+}
 
 public class Interstitial {
     private InterstitialAd interstitialAd = null; // Interstitial object
+    private InterstitialListener defaultInterstitialListener;
 
-    public Interstitial(final String id, final AdRequest adRequest, final Activity activity, final int instanceId) {
+    public Interstitial(final String id, final AdRequest adRequest, final Activity activity, final InterstitialListener defaultInterstitialListener) {
+        this.defaultInterstitialListener = defaultInterstitialListener;
         interstitialAd = new InterstitialAd(activity);
         interstitialAd.setAdUnitId(id);
         interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 Log.w("godot", "AdMob: onAdLoaded");
-                GodotLib.calldeferred(instanceId, "_on_interstitial_loaded", new Object[]{});
+                defaultInterstitialListener.onInterstitialLoaded();
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(errorCode));
-                GodotLib.calldeferred(instanceId, "_on_interstitial_failed_to_load", new Object[]{errorCode});
+                defaultInterstitialListener.onInterstitialFailedToLoad(errorCode);
             }
 
             @Override
             public void onAdOpened() {
                 Log.w("godot", "AdMob: onAdOpened()");
+                defaultInterstitialListener.onInterstitialOpened();
             }
 
             @Override
             public void onAdLeftApplication() {
                 Log.w("godot", "AdMob: onAdLeftApplication()");
+                defaultInterstitialListener.onInterstitialLeftApplication();
             }
 
             @Override
             public void onAdClosed() {
-                GodotLib.calldeferred(instanceId, "_on_interstitial_close", new Object[]{});
                 interstitialAd.loadAd(adRequest);
                 Log.w("godot", "AdMob: onAdClosed");
+                defaultInterstitialListener.onInterstitialClosed();
             }
         });
 

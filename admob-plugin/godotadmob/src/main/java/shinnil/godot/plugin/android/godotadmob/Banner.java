@@ -14,7 +14,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
-import org.godotengine.godot.GodotLib;
+interface BannerListener {
+    void onBannerLoaded();
+    void onBannerFailedToLoad(int errorCode);
+}
 
 public class Banner {
     private AdView adView = null; // Banner view
@@ -22,22 +25,20 @@ public class Banner {
     private FrameLayout.LayoutParams adParams = null;
     private AdRequest adRequest = null;
     private Activity activity = null;
+    private BannerListener defaultBannerListener;
 
-    public Banner(final String id, final AdRequest adRequest, final Activity activity, final int instanceId, final boolean isOnTop, final FrameLayout layout) {
+
+    public Banner(final String id, final AdRequest adRequest, final Activity activity, final BannerListener defaultBannerListener, final boolean isOnTop, final FrameLayout layout) {
         this.activity = activity;
         this.layout = layout;
         this.adRequest = adRequest;
-
+        this.defaultBannerListener = defaultBannerListener;
         adParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
         );
         if (isOnTop) adParams.gravity = Gravity.TOP;
         else adParams.gravity = Gravity.BOTTOM;
-
-        if (adView != null) {
-            layout.removeView(adView); // Remove the old view
-        }
 
         adView = new AdView(activity);
         adView.setAdUnitId(id);
@@ -49,13 +50,13 @@ public class Banner {
             @Override
             public void onAdLoaded() {
                 Log.w("godot", "AdMob: onAdLoaded");
-                GodotLib.calldeferred(instanceId, "_on_admob_ad_loaded", new Object[]{});
+                defaultBannerListener.onBannerLoaded();
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 Log.w("godot", "AdMob: onAdFailedToLoad. errorCode: " + errorCode);
-                GodotLib.calldeferred(instanceId, "_on_admob_banner_failed_to_load", new Object[]{errorCode});
+                defaultBannerListener.onBannerFailedToLoad(errorCode);
             }
         });
         layout.addView(adView, adParams);
@@ -78,6 +79,13 @@ public class Banner {
         adView.setVisibility(View.VISIBLE);
         adView.resume();
         Log.d("godot", "AdMob: Show Banner");
+    }
+
+    public void move(final boolean isOnTop)
+    {
+        if (isOnTop) adParams.gravity = Gravity.TOP;
+        else adParams.gravity = Gravity.BOTTOM;
+        resize();
     }
 
     public void resize() {
@@ -115,6 +123,11 @@ public class Banner {
         Log.d("godot", "AdMob: Banner Resized");
     }
 
+    public void remove() {
+        if (adView != null) {
+            layout.removeView(adView); // Remove the old view
+        }
+    }
 
     public void hide() {
         if (adView.getVisibility() == View.GONE) return;

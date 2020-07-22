@@ -78,7 +78,7 @@ public class GodotAdMob extends GodotPlugin {
         Set<SignalInfo> signals = new ArraySet<>();
 
         signals.add(new SignalInfo("on_admob_ad_loaded"));
-        signals.add(new SignalInfo("on_admob_banner_failed_to_load"));
+        signals.add(new SignalInfo("on_admob_banner_failed_to_load", Integer.class));
 
 
         signals.add(new SignalInfo("on_interstitial_loaded"));

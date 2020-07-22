@@ -12,18 +12,20 @@ import com.google.android.gms.ads.AdRequest;
 
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
+import org.godotengine.godot.plugin.SignalInfo;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
+import androidx.collection.ArraySet;
 
 public class GodotAdMob extends GodotPlugin {
     private Activity activity = null; // The main activity of the game
-    private int instanceId = 0;
 
     private boolean isReal = false; // Store if is real or not
     private boolean isForChildDirectedTreatment = false; // Store if is children directed treatment desired
@@ -63,11 +65,37 @@ public class GodotAdMob extends GodotPlugin {
                 "init",
                 "initWithContentRating",
                 // banner
-                "loadBanner", "showBanner", "hideBanner", "getBannerWidth", "getBannerHeight", "resize",
+                "loadBanner", "showBanner", "hideBanner", "getBannerWidth", "getBannerHeight", "resize", "move",
                 // Interstitial
                 "loadInterstitial", "showInterstitial",
                 // Rewarded video
                 "loadRewardedVideo", "showRewardedVideo");
+    }
+
+    @NonNull
+    @Override
+    public Set<SignalInfo> getPluginSignals() {
+        Set<SignalInfo> signals = new ArraySet<>();
+
+        signals.add(new SignalInfo("on_admob_ad_loaded"));
+        signals.add(new SignalInfo("on_admob_banner_failed_to_load"));
+
+
+        signals.add(new SignalInfo("on_interstitial_loaded"));
+        signals.add(new SignalInfo("on_interstitial_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("on_interstitial_close"));
+
+
+        signals.add(new SignalInfo("on_rewarded_video_ad_left_application"));
+        signals.add(new SignalInfo("on_rewarded_video_ad_closed"));
+        signals.add(new SignalInfo("on_rewarded_video_ad_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("on_rewarded_video_ad_loaded"));
+        signals.add(new SignalInfo("on_rewarded_video_ad_opened"));
+        signals.add(new SignalInfo("on_rewarded", String.class, Integer.class));
+        signals.add(new SignalInfo("on_rewarded_video_started"));
+        signals.add(new SignalInfo("on_rewarded_video_completed"));
+
+        return signals;
     }
 
     /* Init
@@ -77,17 +105,15 @@ public class GodotAdMob extends GodotPlugin {
      * Prepare for work with AdMob
      *
      * @param isReal     Tell if the enviroment is for real or test
-     * @param instanceId gdscript instance id
      */
-    public void init(boolean isReal, int instanceId) {
-        this.initWithContentRating(isReal, instanceId, false, true, "");
+    public void init(boolean isReal) {
+        this.initWithContentRating(isReal, false, true, "");
     }
 
     /**
      * Init with content rating additional options
      *
      * @param isReal                      Tell if the enviroment is for real or test
-     * @param instanceId                  gdscript instance id
      * @param isForChildDirectedTreatment
      * @param isPersonalized              If ads should be personalized or not.
      *                                    GDPR compliance within the European Economic Area requires that you
@@ -97,12 +123,10 @@ public class GodotAdMob extends GodotPlugin {
      */
     public void initWithContentRating(
             boolean isReal,
-            int instanceId,
             boolean isForChildDirectedTreatment,
             boolean isPersonalized,
             String maxAdContentRating) {
         this.isReal = isReal;
-        this.instanceId = instanceId;
         this.isForChildDirectedTreatment = isForChildDirectedTreatment;
         this.isPersonalized = isPersonalized;
         this.maxAdContentRating = maxAdContentRating;
@@ -155,7 +179,47 @@ public class GodotAdMob extends GodotPlugin {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                rewardedVideo = new RewardedVideo(activity, instanceId);
+                rewardedVideo = new RewardedVideo(activity, new RewardedVideoListener() {
+                    @Override
+                    public void onRewardedVideoLoaded() {
+                        emitSignal("on_rewarded_video_ad_loaded");
+                    }
+
+                    @Override
+                    public void onRewardedVideoFailedToLoad(int errorCode) {
+                        emitSignal("on_rewarded_video_ad_failed_to_load", errorCode);
+                    }
+
+                    @Override
+                    public void onRewardedVideoLeftApplication() {
+                        emitSignal("on_rewarded_video_ad_left_application");
+                    }
+
+                    @Override
+                    public void onRewardedVideoOpened() {
+                        emitSignal("on_rewarded_video_ad_opened");
+                    }
+
+                    @Override
+                    public void onRewardedVideoClosed() {
+                        emitSignal("on_rewarded_video_ad_closed");
+                    }
+
+                    @Override
+                    public void onRewarded(String type, int amount) {
+                        emitSignal("on_rewarded", type, amount);
+                    }
+
+                    @Override
+                    public void onRewardedVideoStarted() {
+                        emitSignal("on_rewarded_video_started");
+                    }
+
+                    @Override
+                    public void onRewardedVideoCompleted() {
+                        emitSignal("on_rewarded_video_completed");
+                    }
+                });
                 rewardedVideo.load(id, getAdRequest());
             }
         });
@@ -190,7 +254,18 @@ public class GodotAdMob extends GodotPlugin {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                banner = new Banner(id, getAdRequest(), activity, instanceId, isOnTop, layout);
+                if (banner != null) banner.remove();
+                banner = new Banner(id, getAdRequest(), activity, new BannerListener() {
+                    @Override
+                    public void onBannerLoaded() {
+                        emitSignal("on_admob_ad_loaded");
+                    }
+
+                    @Override
+                    public void onBannerFailedToLoad(int errorCode) {
+                        emitSignal("on_admob_banner_failed_to_load", errorCode);
+                    }
+                }, isOnTop, layout);
             }
         });
     }
@@ -204,6 +279,21 @@ public class GodotAdMob extends GodotPlugin {
             public void run() {
                 if (banner != null) {
                     banner.show();
+                }
+            }
+        });
+    }
+
+    /**
+     * Resize the banner
+     * @param isOnTop To made the banner top or bottom
+     */
+    public void move(final boolean isOnTop) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (banner != null) {
+                    banner.move(isOnTop);
                 }
             }
         });
@@ -274,7 +364,34 @@ public class GodotAdMob extends GodotPlugin {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                interstitial = new Interstitial(id, getAdRequest(), activity, instanceId);
+                interstitial = new Interstitial(id, getAdRequest(), activity, new InterstitialListener() {
+                    @Override
+                    public void onInterstitialLoaded() {
+                        emitSignal("on_interstitial_loaded");
+                    }
+
+                    @Override
+                    public void onInterstitialFailedToLoad(int errorCode) {
+                        emitSignal("on_interstitial_failed_to_load", errorCode);
+                    }
+
+                    @Override
+                    public void onInterstitialOpened() {
+                        // Not Implemented
+                        // emitSignal("on_interstitial_opened");
+                    }
+
+                    @Override
+                    public void onInterstitialLeftApplication() {
+                        // Not Implemented
+                        // emitSignal("on_interstitial_left_application");
+                    }
+
+                    @Override
+                    public void onInterstitialClosed() {
+                        emitSignal("on_interstitial_close");
+                    }
+                });
             }
         });
     }

@@ -9,64 +9,71 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
-import org.godotengine.godot.GodotLib;
-
+interface RewardedVideoListener {
+    void onRewardedVideoLoaded();
+    void onRewardedVideoFailedToLoad(int errorCode);
+    void onRewardedVideoLeftApplication();
+    void onRewardedVideoOpened();
+    void onRewardedVideoClosed();
+    void onRewarded(String type, int amount);
+    void onRewardedVideoStarted();
+    void onRewardedVideoCompleted();
+}
 
 public class RewardedVideo {
     private RewardedVideoAd rewardedVideoAd = null;
 
-    public RewardedVideo(Activity activity, final int instanceId) {
+    public RewardedVideo(Activity activity, final RewardedVideoListener defaultRewardedVideoListener) {
         MobileAds.initialize(activity);
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity);
         rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
-            public void onRewardedVideoAdLeftApplication() {
-                Log.w("godot", "AdMob: onRewardedVideoAdLeftApplication");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_left_application", new Object[]{});
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-                Log.w("godot", "AdMob: onRewardedVideoAdClosed");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_closed", new Object[]{});
+            public void onRewardedVideoAdLoaded() {
+                Log.w("godot", "AdMob: onRewardedVideoAdLoaded");
+                defaultRewardedVideoListener.onRewardedVideoLoaded();
             }
 
             @Override
             public void onRewardedVideoAdFailedToLoad(int errorCode) {
                 Log.w("godot", "AdMob: onRewardedVideoAdFailedToLoad. errorCode: " + errorCode);
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_failed_to_load", new Object[]{errorCode});
+                defaultRewardedVideoListener.onRewardedVideoFailedToLoad(errorCode);
             }
 
             @Override
-            public void onRewardedVideoAdLoaded() {
-                Log.w("godot", "AdMob: onRewardedVideoAdLoaded");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_loaded", new Object[]{});
+            public void onRewardedVideoAdLeftApplication() {
+                Log.w("godot", "AdMob: onRewardedVideoAdLeftApplication");
+                defaultRewardedVideoListener.onRewardedVideoLeftApplication();
             }
 
             @Override
             public void onRewardedVideoAdOpened() {
                 Log.w("godot", "AdMob: onRewardedVideoAdOpened");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_opened", new Object[]{});
+                defaultRewardedVideoListener.onRewardedVideoOpened();
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                Log.w("godot", "AdMob: onRewardedVideoAdClosed");
+                defaultRewardedVideoListener.onRewardedVideoClosed();
             }
 
             @Override
             public void onRewarded(RewardItem reward) {
                 Log.w("godot", "AdMob: "
                         + String.format(" onRewarded! currency: %s amount: %d", reward.getType(), reward.getAmount()));
-                GodotLib.calldeferred(instanceId, "_on_rewarded",
-                        new Object[]{reward.getType(), reward.getAmount()});
+                defaultRewardedVideoListener.onRewarded(reward.getType(), reward.getAmount());
             }
 
             @Override
             public void onRewardedVideoStarted() {
                 Log.w("godot", "AdMob: onRewardedVideoStarted");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_started", new Object[]{});
+                defaultRewardedVideoListener.onRewardedVideoStarted();
             }
 
             @Override
             public void onRewardedVideoCompleted() {
                 Log.w("godot", "AdMob: onRewardedVideoCompleted");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_completed", new Object[]{});
+                defaultRewardedVideoListener.onRewardedVideoCompleted();
             }
         });
     }

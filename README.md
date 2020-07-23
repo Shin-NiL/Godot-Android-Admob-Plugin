@@ -1,5 +1,5 @@
-GodotAdMob
-=====
+# GodotAdMob
+
 This is an Android AdMob plugin for Godot Engine (https://github.com/okamstudio/godot) 3.2.2 or higher. For Godot < 3.2 or iOS support you can use the [old module](https://github.com/kloder-games/godot-admob).
 
 Currently, this plugin supports:
@@ -7,8 +7,8 @@ Currently, this plugin supports:
 - Interstitial
 - Rewarded Video
 
-How to use
-----------
+## Setup
+
 - Configure, install  and enable the "Android Custom Template" for your project, just follow the [official documentation](https://docs.godotengine.org/en/latest/getting_started/workflow/export/android_custom_build.html);
 - go to the [release tab](https://github.com/Shin-NiL/Godot-Android-AdMob-Plugin/releases), choose a version and download the respective ```GodotAdMobPlugin-x.x.x.zip``` package;
 - extract the content of the ```admob-plugin``` directory (```GodotAdmob.gdap``` and ```GodotAdmob.release.aar``` from the zip package) inside the ```res://android/plugins``` directory on your Godot project.
@@ -38,26 +38,26 @@ And connect its signals
 
 ![AdMob signals](images/signals.png)
 
-Sample code
------
+## Sample Code
+
 In the demo directory you'll find a working sample project where you can see how the things works on the scripting side.
 
 __REMEMBER__: You still need to configure the project as described in the "How to use" section to be able to run the demo project.
 
-Showcase
---------
+## Showcase
+
 Does this plugin really work? Yes sir! You can see a list of published games [here](showcase.md).
 
 
-Donations
----------
+## Donations
+
 Was this project useful for you? Wanna make a donation? These are the options:
 
 ### Paypal
 
 My [Paypal donation link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3MJE3M4FMJYGN&lc=BR&item_name=Shin%2dNiL%27s%20Github&item_number=Github&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)
 
-### Brave browser
+### Brave Browser
 
 If you don't have any money, but still willing to help me you can install [Brave browser](https://brave.com/) using my [referral link](https://brave.com/shi012	). 
 If you do so and keep using the browser, I'll receive some reward.
@@ -65,8 +65,7 @@ If you do so and keep using the browser, I'll receive some reward.
 If you're already a Brave user, please consider donating some BATs ;) 
 
 
-API Reference
--------------
+## API Reference
 
 ### Properties
 ```python
@@ -190,8 +189,18 @@ rewarded_video_started
 rewarded_video_failed_to_load(error_code)
 ```
 
-Troubleshooting
---------------
+## Compiling the Plugin (optional)
+
+If you want to compile the plugin by yourself, it's very easy:
+1. clone this repository;
+2. checkout the desired version;
+3. using command line go to the ```admob-plugin``` directory;
+4. run ```gradlew build```.
+
+If everything goes fine, you'll find the ```.aar``` files at ```admob-plugin/godotadmob/build/outputs/aar/```.
+
+## Troubleshooting
+
 * First of all, please make sure you're able to compile the custom build for Android without the AdMob plugin, this way we can isolate the cause of the issue.
 
 * Using logcat for Android is the best way to troubleshoot most issues. You can filter Godot only messages with logcat using the command: 
@@ -208,12 +217,12 @@ adb logcat -s godot
 
 * Banner sizes: this plugin uses [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive), you can find more information on how its sizes works on the [official AdMob documentation](https://developers.google.com/admob/android/banner/adaptive).
 
-References
--------------
+## References
+
 Based on the works of:
 * https://github.com/Mavhod/GodotAdmob
 * https://github.com/kloder-games/godot-admob
 
-License
--------------
+## License
+
 MIT license

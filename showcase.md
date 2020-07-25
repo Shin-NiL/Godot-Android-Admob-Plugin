@@ -4,8 +4,7 @@ I've created this file because I love to see what people create using this plugi
 If you like to add your game in this list open an issue or send me a pull request with the link and title of your published game.
 
 ## List of Published Games using this Plugin
-- [Ionitron - ion magnet puzzle game](https://play.google.com/store/apps/details?id=godot.pizzajuggler.ionitron)
-- [HoverFlow - Endless Driver](https://play.google.com/store/apps/details?id=godot.pizzajuggler.hoverflow)
+
 - [12345 Rotors - Puzzle Game](https://play.google.com/store/apps/details?id=com.ross.numbergame12345)
 - [Help Luigi!](https://play.google.com/store/apps/details?id=com.bananaonfire.helpluigi)
 - [SLID - Letter Sliding Puzzle](https://play.google.com/store/apps/details?id=com.kamofa.slid)
@@ -14,3 +13,6 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [Future Funk Soccer Racing](https://play.google.com/store/apps/details?id=org.godotengine.cargame)
 - [Turzzle](https://play.google.com/store/apps/details?id=com.bananaonfire.turzzle)
 - [Piranha Escape (FREE)](https://play.google.com/store/apps/details?id=com.bitmagine.piranhaescape.free)
+- [Ionitron - ion magnet puzzle game](https://play.google.com/store/apps/details?id=godot.pizzajuggler.ionitron)
+- [HoverFlow - Endless Driver](https://play.google.com/store/apps/details?id=godot.pizzajuggler.hoverflow)
+- [SpeedSnake](https://play.google.com/store/apps/details?id=com.mosscrow.speedsnake)

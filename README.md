@@ -59,7 +59,7 @@ My [Paypal donation link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&b
 
 ### Brave Browser
 
-If you don't have any money, but still willing to help me you can install [Brave browser](https://brave.com/) using my [referral link](https://brave.com/shi012	). 
+Even without spending any money you can still help me installing [Brave browser](https://brave.com/) using my [referral link](https://brave.com/shi012	). 
 If you do so and keep using the browser, I'll receive some reward.
 
 If you're already a Brave user, please consider donating some BATs ;) 

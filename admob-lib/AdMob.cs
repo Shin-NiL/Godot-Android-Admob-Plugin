@@ -3,7 +3,11 @@ using System;
 
 ///AUTHOR: Alexander Jungert - 28/08/2020
 public class AdMob : Node {
+	#region ClassEnums
+	public enum AdResponse { Closed, Opened, Loaded, Started, Finished, Error, Rewarded }
+	#endregion
 	#region Signals
+	[Signal] public delegate void AdCallback(AdResponse response);
 	[Signal] public delegate void BannerLoaded();
 	[Signal] public delegate void BannerFailedToLoad(int error_code);
 	[Signal] public delegate void InterstitialFailedToLoad(int error_code);
@@ -20,9 +24,9 @@ public class AdMob : Node {
 	#region Properties
 	[Export] bool isReal;
 	[Export] bool bannerOnTop = true;
-	[Export] String bannerId;
-	[Export] String interstitialId;
-	[Export] String rewardedId;
+	[Export] String bannerId = "MISSING_ID";
+	[Export] String interstitialId = "MISSING_ID";
+	[Export] String rewardedId = "ca-app-pub-3940256099942544/5224354917";
 	[Export] bool childDirected = false;
 	[Export] bool isPersonalized = true;
 	//(PropertyHint.Flags, "G,PG,T,MA")
@@ -34,24 +38,14 @@ public class AdMob : Node {
 	bool isRewardedVideoLoaded = false;
 	#endregion
 	public override void _EnterTree() {
-		GD.Print("GodotAdMob SINGLETON FOUND!: " + Engine.HasSingleton("GodotAdMob"));
 		if (!Init()) {
-			GD.Print("AdMob can not be loaded. We may be not on android.");
-		} else GD.Print("AdMob:" + this);
-	}
-
-	private void GetLib() {
-		admobSingleton = Engine.GetSingleton("GodotAdMob");
+			GD.Print("[AdMob.cs]: can not be loaded. We may be not on android.");
+		}
 	}
 	public bool Init() {
 		if (Engine.HasSingleton("GodotAdMob")) {
 			GetLib();
-			GD.Print("AdMob:" + admobSingleton);
-			GD.Print("AdMob:" + admobSingleton);
-			GD.Print("AdMob:" + admobSingleton);
-			GD.Print("GetSignalList" + admobSingleton.GetSignalList());
-			GD.Print("GetMethodList" + admobSingleton.GetMethodList());
-			admobSingleton.Connect("on_admob_ad_loaded", this, "OnAdmobAdLoaded");
+			admobSingleton.Connect("on_admob_ad_loaded", this, nameof(OnAdmobAdLoaded));
 			admobSingleton.Connect("on_admob_banner_failed_to_load", this, nameof(OnAdmobBannerFailedToLoad));
 			admobSingleton.Connect("on_interstitial_failed_to_load", this, nameof(OnInterstitialFailedToLoad));
 			admobSingleton.Connect("on_interstitial_loaded", this, nameof(OnInterstitialLoaded));
@@ -69,72 +63,60 @@ public class AdMob : Node {
 		}
 		return false;
 	}
+	private void GetLib() {
+		admobSingleton = Engine.GetSingleton("GodotAdMob");
+	}
 	#region LoaderFunctions
 	public void LoadBanner() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("loadBanner", bannerId, bannerOnTop);
-		}
+		admobSingleton?.Call("loadBanner", bannerId, bannerOnTop);
+	}
+	public void LoadBanner(string IdFromCode, bool? bannerOnTop) {
+		admobSingleton?.Call("loadBanner", IdFromCode, bannerOnTop);
 	}
 	public void LoadInterstitial() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("loadInterstitial", interstitialId);
-		}
+		admobSingleton?.Call("loadInterstitial", interstitialId);
+	}
+	public void LoadInterstitial(string IdFromCode) {
+		admobSingleton?.Call("loadInterstitial", IdFromCode);
 	}
 	public bool IsInterstitialLoaded() {
-		if (admobSingleton != null) {
-			return isInterstitialLoaded;
-		}
-		return false;
+		return isInterstitialLoaded;
 	}
 	public void LoadRewardedVideo() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("loadRewardedVideo", rewardedId);
-			GD.Print("Try LoadRewardedVideo");
-		}
+		GD.Print("[AdMob]: rewardedId:", rewardedId);
+		admobSingleton?.Call("loadRewardedVideo", rewardedId);
+	}
+	public void LoadRewardedVideo(string IdFromCode) {
+		GD.Print("[AdMob]: custom rewardedId:", rewardedId);
+		admobSingleton?.Call("loadRewardedVideo", IdFromCode);
 	}
 	public bool IsRewardedVideoLoaded() {
-		if (admobSingleton != null) {
-			return isRewardedVideoLoaded;
-		}
-		return false;
+		return isRewardedVideoLoaded;
 	}
 	#endregion
 	#region ShowHide
 
 	public void ShowBanner() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("showBanner");
-
-		}
+		admobSingleton?.Call("showBanner");
 	}
 	public void HideBanner() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("hideBanner");
-		}
+		admobSingleton?.Call("hideBanner");
 	}
 	public void MoveBanner(bool onTop) {
-		if (admobSingleton != null) {
-			bannerOnTop = onTop;
-			admobSingleton.Call("move", bannerOnTop);
-		}
+		bannerOnTop = onTop;
+		admobSingleton?.Call("move", bannerOnTop);
 	}
 	public void ShowInterstitial() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("showInterstitial");
-			isInterstitialLoaded = false;
-		}
+		admobSingleton?.Call("showInterstitial");
+		isInterstitialLoaded = false;
 	}
 	public void ShowRewardedVideo() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("showRewardedVideo");
-			isRewardedVideoLoaded = false;
-		}
+		admobSingleton?.Call("showRewardedVideo");
+		isRewardedVideoLoaded = false;
 	}
 	#endregion
 	public void BannerResize() {
-		if (admobSingleton != null) {
-			admobSingleton.Call("resize");
-		}
+		admobSingleton.Call("resize");
 	}
 	//TODO: We need to learn how to get variables from the java lib
 	//public void GetBannerDimension() {
@@ -145,43 +127,58 @@ public class AdMob : Node {
 	#region Callbacks
 	public void OnAdmobAdLoaded() {
 		EmitSignal(nameof(BannerLoaded));
+		EmitSignal(nameof(AdCallback), AdResponse.Loaded);
 	}
-	public void OnAdmobBannerFailedToLoad(int error_code) {
+	public int OnAdmobBannerFailedToLoad(int error_code = 0) {
 		EmitSignal(nameof(BannerFailedToLoad), error_code);
+		EmitSignal(nameof(AdCallback), AdResponse.Error);
+		return error_code;
 	}
-	public void OnInterstitialFailedToLoad(int error_code) {
+	public int OnInterstitialFailedToLoad(int error_code) {
 		isInterstitialLoaded = false;
 		EmitSignal(nameof(InterstitialFailedToLoad), error_code);
+		EmitSignal(nameof(AdCallback), AdResponse.Error);
+		return error_code;
 	}
 	public void OnInterstitialLoaded() {
 		isInterstitialLoaded = true;
 		EmitSignal(nameof(InterstitialLoaded));
+		EmitSignal(nameof(AdCallback), AdResponse.Loaded);
 	}
 	public void OnInterstitialClose() {
 		EmitSignal(nameof(InterstitialClosed));
+		EmitSignal(nameof(AdCallback), AdResponse.Closed);
 	}
 	public void OnRewardedVideoAdLoaded() {
 		isRewardedVideoLoaded = true;
 		EmitSignal(nameof(RewardedVideoLoaded));
+		EmitSignal(nameof(AdCallback), AdResponse.Loaded);
 	}
 	public void OnRewardedVideoAdClosed() {
 		EmitSignal(nameof(RewardedVideoClosed));
+		EmitSignal(nameof(AdCallback), AdResponse.Closed);
 	}
 	public void OnRewarded(String currency, int amount) {
 		EmitSignal(nameof(Rewarded), currency, amount);
+		EmitSignal(nameof(AdCallback), AdResponse.Rewarded);
 	}
 	public void OnRewardedVideoAdLeftApplication() {
 		EmitSignal(nameof(RewardedVideoLeftApplication));
+		EmitSignal(nameof(AdCallback), AdResponse.Finished);
 	}
-	public void OnRewardedVideoAdFailedToLoad(int error_code) {
+	public int OnRewardedVideoAdFailedToLoad(int error_code) {
 		isRewardedVideoLoaded = false;
 		EmitSignal(nameof(RewardedVideoFailedToLoad), error_code);
+		EmitSignal(nameof(AdCallback), AdResponse.Error);
+		return error_code;
 	}
 	public void OnRewardedVideoAdOpened() {
 		EmitSignal(nameof(RewardedVideoOpened));
+		EmitSignal(nameof(AdCallback), AdResponse.Opened);
 	}
 	public void OnRewardedVideoStarted() {
 		EmitSignal(nameof(RewardedVideoStarted));
+		EmitSignal(nameof(AdCallback), AdResponse.Started);
 	}
 	#endregion
 }

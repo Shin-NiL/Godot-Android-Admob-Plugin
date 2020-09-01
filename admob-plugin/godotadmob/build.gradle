@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
 
+ext.pluginVersionCode = 2
+ext.pluginVersionName = "4.1.0"
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -7,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode pluginVersionCode
+        versionName pluginVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -16,7 +19,7 @@ android {
 
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
-            output.outputFileName = "GodotAdMob.${variant.name}.aar"
+            output.outputFileName = "GodotAdMob.$pluginVersionName.${variant.name}.aar"
         }
     }
 

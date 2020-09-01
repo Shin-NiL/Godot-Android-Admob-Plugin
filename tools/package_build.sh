@@ -10,7 +10,7 @@ fi
 
 mkdir -p $PLUGIN_DIR
 cp -r ../admob-lib $VERSION_DIR
-cp ../config/GodotAdmob.gdap ../admob-plugin/godotadmob/build/outputs/aar/GodotAdmob.release.aar $PLUGIN_DIR 
+cp ../config/GodotAdmob.gdap ../admob-plugin/godotadmob/build/outputs/aar/GodotAdMob.${1}.release.aar $PLUGIN_DIR
 
 cd $VERSION_DIR
 zip -r "../GodotAdmobPlugin-${1}.zip" .

@@ -23,6 +23,13 @@ Currently, this plugin supports:
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
 ```
+One good place to add this metadata is just below these lines:
+```
+<!-- Custom application XML added by add-ons. -->
+<!--CHUNK_APPLICATION_BEGIN-->
+<!--CHUNK_APPLICATION_END-->
+```
+
 **NOTE**: everytime you install a new version of the Android Build Template this step must be done again, as the ```AndroidManifest.xml``` file will be overriden.
 
 
@@ -194,10 +201,12 @@ rewarded_video_failed_to_load(error_code)
 If you want to compile the plugin by yourself, it's very easy:
 1. clone this repository;
 2. checkout the desired version;
-3. using command line go to the ```admob-plugin``` directory;
-4. run ```gradlew build```.
+3. download the AAR library for Android plugin from the official Godot website;
+4. copy the downloaded AAR file into the `admob-plugin/godot-lib.release/` directory and rename it to `godot-lib.release.aar`;
+5. using command line go to the `admob-plugin/` directory;
+6. run `gradlew build`.
 
-If everything goes fine, you'll find the ```.aar``` files at ```admob-plugin/godotadmob/build/outputs/aar/```.
+If everything goes fine, you'll find the `.aar` files at `admob-plugin/godotadmob/build/outputs/aar/`.
 
 ## Troubleshooting
 
@@ -210,6 +219,8 @@ adb logcat -s godot
 * _AdMob Java Singleton not found_: 
     1. this plugin is Android only, so the AdMob Java singleton will only exists on the Android platform. In other words, you will be able to run it on an Android device (or emulator) only, it will not work on editor or on another platform;
     2. make sure you checked the _Use Custom Build_ and _Godot Ad Mob_ options in the export window.
+
+* App is crashing at startup: use the `logcat` to check what's happening. It can be caused for many different reasons, if you forgot to or not configure correctly you App ID on the `AndroidManifest.xml`, for example, your app will crash. 
 
 * Error code 3 (_ERROR_CODE_NO_FILL_) is a common issue with Admob, but out of the scope to this plugin. Here's the description on the API page: [ERROR_CODE_NO_FILL: The ad request was successful, but no ad was returned due to lack of ad inventory.](https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest.html#ERROR_CODE_NO_FILL)
 

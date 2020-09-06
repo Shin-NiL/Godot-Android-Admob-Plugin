@@ -9,6 +9,8 @@ import android.widget.FrameLayout;
 
 import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
@@ -23,6 +25,8 @@ import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
+
+import static com.google.android.gms.ads.RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE;
 
 public class GodotAdMob extends GodotPlugin {
     private Activity activity = null; // The main activity of the game
@@ -126,14 +130,14 @@ public class GodotAdMob extends GodotPlugin {
             boolean isForChildDirectedTreatment,
             boolean isPersonalized,
             String maxAdContentRating) {
+
         this.isReal = isReal;
         this.isForChildDirectedTreatment = isForChildDirectedTreatment;
         this.isPersonalized = isPersonalized;
         this.maxAdContentRating = maxAdContentRating;
-        if (maxAdContentRating != null && maxAdContentRating != "") {
-            extras = new Bundle();
-            extras.putString("max_ad_content_rating", maxAdContentRating);
-        }
+
+        this.setRequestConfigurations();
+
         if (!isPersonalized) {
             // https://developers.google.com/admob/android/eu-consent#forward_consent_to_the_google_mobile_ads_sdk
             if (extras == null) {
@@ -141,12 +145,41 @@ public class GodotAdMob extends GodotPlugin {
             }
             extras.putString("npa", "1");
         }
+
         Log.d("godot", "AdMob: init with content rating options");
     }
 
 
+    private void setRequestConfigurations() {
+        if (!this.isReal) {
+            List<String> testDeviceIds = Arrays.asList(AdRequest.DEVICE_ID_EMULATOR, getAdMobDeviceId());
+            RequestConfiguration requestConfiguration = MobileAds.getRequestConfiguration()
+                    .toBuilder()
+                    .setTestDeviceIds(testDeviceIds)
+                    .build();
+            MobileAds.setRequestConfiguration(requestConfiguration);
+        }
+
+        if (this.isForChildDirectedTreatment) {
+            RequestConfiguration requestConfiguration = MobileAds.getRequestConfiguration()
+                    .toBuilder()
+                    .setTagForChildDirectedTreatment(TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
+                    .build();
+            MobileAds.setRequestConfiguration(requestConfiguration);
+        }
+
+        if (this.maxAdContentRating != null && this.maxAdContentRating != "") {
+            RequestConfiguration requestConfiguration = MobileAds.getRequestConfiguration()
+                    .toBuilder()
+                    .setMaxAdContentRating(this.maxAdContentRating)
+                    .build();
+            MobileAds.setRequestConfiguration(requestConfiguration);
+        }
+    }
+
+
     /**
-     * Returns AdRequest object constructed considering the parameters set in constructor of this class.
+     * Returns AdRequest object constructed considering the extras.
      *
      * @return AdRequest object
      */
@@ -156,13 +189,7 @@ public class GodotAdMob extends GodotPlugin {
         if (!this.isForChildDirectedTreatment && extras != null) {
             adBuilder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
         }
-        if (this.isForChildDirectedTreatment) {
-            adBuilder.tagForChildDirectedTreatment(true);
-        }
-        if (!isReal) {
-            adBuilder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
-            adBuilder.addTestDevice(getAdMobDeviceId());
-        }
+
         adRequest = adBuilder.build();
         return adRequest;
     }

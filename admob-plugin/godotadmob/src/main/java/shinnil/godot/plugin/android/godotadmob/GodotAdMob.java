@@ -250,7 +250,7 @@ public class GodotAdMob extends GodotPlugin {
      * @param id      AdMod Banner ID
      * @param isOnTop To made the banner top or bottom
      */
-    public void loadBanner(final String id, final boolean isOnTop) {
+    public void loadBanner(final String id, final boolean isOnTop, final String bannerSize) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -265,7 +265,7 @@ public class GodotAdMob extends GodotPlugin {
                     public void onBannerFailedToLoad(int errorCode) {
                         emitSignal("on_admob_banner_failed_to_load", errorCode);
                     }
-                }, isOnTop, layout);
+                }, isOnTop, layout, bannerSize);
             }
         });
     }

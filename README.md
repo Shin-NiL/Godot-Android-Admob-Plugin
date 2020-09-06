@@ -84,6 +84,10 @@ is_real
 # type bool, default true
 banner_on_top
 
+# The banner size constants
+# Valid values are: "ADAPTIVE_BANNER", "SMART_BANNER", "BANNER", "LARGE_BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD"
+banner_size
+
 # Your app banner ad ID
 # type String, optional
 banner_id
@@ -226,7 +230,9 @@ adb logcat -s godot
 
 * Any other error code: you can find more information about the error codes [here](https://support.google.com/admob/thread/3494603). Please don't open issues on this repository asking for help about that, as we can't provide any, sorry.
 
-* Banner sizes: this plugin uses [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive), you can find more information on how its sizes works on the [official AdMob documentation](https://developers.google.com/admob/android/banner/adaptive).
+* Banner sizes: [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive) and [Smart Banners](https://developers.google.com/admob/android/banner/smart) uses dynamic banner sizes, the [other options](https://developers.google.com/admob/android/banner) uses fixed sizes, please check its respectives documentation for more details.
+
+this plugin uses [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive), you can find more information on how its sizes works on the [official AdMob documentation](https://developers.google.com/admob/android/banner/adaptive).
 
 ## References
 

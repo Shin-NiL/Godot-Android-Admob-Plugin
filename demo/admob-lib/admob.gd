@@ -19,6 +19,7 @@ signal rewarded_video_started
 # properties
 export var is_real:bool setget is_real_set
 export var banner_on_top:bool = true
+export(String, "ADAPTIVE_BANNER", "SMART_BANNER", "BANNER", "LARGE_BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD") var banner_size
 export var banner_id:String
 export var interstitial_id:String
 export var rewarded_id:String
@@ -91,7 +92,7 @@ func init() -> bool:
 
 func load_banner() -> void:
 	if _admob_singleton != null:
-		_admob_singleton.loadBanner(banner_id, banner_on_top)
+		_admob_singleton.loadBanner(banner_id, banner_on_top, banner_size)
 
 func load_interstitial() -> void:
 	if _admob_singleton != null:

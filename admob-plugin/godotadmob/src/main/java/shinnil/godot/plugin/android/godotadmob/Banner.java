@@ -27,15 +27,17 @@ public class Banner {
     private AdRequest adRequest = null;
     private Activity activity = null;
     private BannerListener defaultBannerListener;
+    private String bannerSize;
 
 
-    public Banner(final String id, final AdRequest adRequest, final Activity activity, final BannerListener defaultBannerListener, final boolean isOnTop, final FrameLayout layout) {
+    public Banner(final String id, final AdRequest adRequest, final Activity activity, final BannerListener defaultBannerListener, final boolean isOnTop, final FrameLayout layout, final String bannerSize) {
         this.activity = activity;
         this.layout = layout;
         this.adRequest = adRequest;
         this.defaultBannerListener = defaultBannerListener;
+        this.bannerSize = bannerSize;
                 
-        AddBanner(id, (isOnTop ? Gravity.TOP : Gravity.BOTTOM), AdSize.SMART_BANNER, new AdListener() {
+        AddBanner(id, (isOnTop ? Gravity.TOP : Gravity.BOTTOM), getAdSize(bannerSize), new AdListener() {
             @Override
             public void onAdLoaded() {
                 Log.w("godot", "AdMob: onAdLoaded");
@@ -89,7 +91,7 @@ public class Banner {
 
         AdListener adListener = adView.getAdListener();
         String id = adView.getAdUnitId();
-        AddBanner(id, adParams.gravity, getAdSize(), adListener);
+        AddBanner(id, adParams.gravity, getAdSize(bannerSize), adListener);
 
         Log.d("godot", "AdMob: Banner Resized");
     }
@@ -128,7 +130,7 @@ public class Banner {
         Log.d("godot", "AdMob: Hide Banner");
     }
 
-    private AdSize getAdSize() {
+    private AdSize getAdaptiveAdSize() {
         // Determine the screen width (less decorations) to use for the ad width.
         Display display = activity.getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -143,12 +145,31 @@ public class Banner {
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth);
     }
 
+    private AdSize getAdSize(final String bannerSize) {
+        switch (bannerSize) {
+            case "SMART_BANNER":
+                return AdSize.SMART_BANNER;
+            case "BANNER":
+                return AdSize.BANNER;
+            case "LARGE_BANNER":
+                return AdSize.LARGE_BANNER;
+            case "MEDIUM_RECTANGLE":
+                return AdSize.MEDIUM_RECTANGLE;
+            case "FULL_BANNER":
+                return AdSize.FULL_BANNER;
+            case "LEADERBOARD":
+                return AdSize.LEADERBOARD;
+            default:
+                return getAdaptiveAdSize();
+        }
+    }
+
     public int getWidth() {
-        return getAdSize().getWidthInPixels(activity);
+        return getAdSize(bannerSize).getWidthInPixels(activity);
     }
 
     public int getHeight() {
-        return getAdSize().getHeightInPixels(activity);
+        return getAdSize(bannerSize).getHeightInPixels(activity);
     }
 
 

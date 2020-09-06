@@ -17,5 +17,5 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [SpeedSnake](https://play.google.com/store/apps/details?id=com.mosscrow.speedsnake)
 - [Turzzle](https://play.google.com/store/apps/details?id=com.bananaonfire.turzzle)
 - [Walls of Stone - Puzzle Game](https://play.google.com/store/apps/details?id=dev.mintstudios.wos)
-- [Zeptris](https://play.google.com/store/apps/details?id=net.wynoo.zeptris)
 - [Warzone 2 - Top down shooter](https://play.google.com/store/apps/details?id=com.raptor.inc)
+- [Zeptris](https://play.google.com/store/apps/details?id=net.wynoo.zeptris)

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 
 interface InterstitialListener {
     void onInterstitialLoaded();
@@ -31,9 +32,9 @@ public class Interstitial {
             }
 
             @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(errorCode));
-                defaultInterstitialListener.onInterstitialFailedToLoad(errorCode);
+            public void onAdFailedToLoad(LoadAdError adError) {
+                Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(adError.getCode()));
+                defaultInterstitialListener.onInterstitialFailedToLoad(adError.getCode());
             }
 
             @Override

@@ -49,7 +49,7 @@ And connect its signals
 
 In the demo directory you'll find a working sample project where you can see how the things works on the scripting side.
 
-__REMEMBER__: You still need to configure the project as described in the "How to use" section to be able to run the demo project.
+__REMEMBER__: You still need to configure the project as described in the "Setup" section to be able to run the demo project.
 
 ## Showcase
 

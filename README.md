@@ -232,8 +232,6 @@ adb logcat -s godot
 
 * Banner sizes: [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive) and [Smart Banners](https://developers.google.com/admob/android/banner/smart) uses dynamic banner sizes, the [other options](https://developers.google.com/admob/android/banner) uses fixed sizes, please check its respectives documentation for more details.
 
-this plugin uses [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive), you can find more information on how its sizes works on the [official AdMob documentation](https://developers.google.com/admob/android/banner/adaptive).
-
 ## References
 
 Based on the works of:

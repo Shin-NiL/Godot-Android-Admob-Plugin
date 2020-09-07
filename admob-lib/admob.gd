@@ -19,13 +19,13 @@ signal rewarded_video_started
 # properties
 export var is_real:bool setget is_real_set
 export var banner_on_top:bool = true
-export(String, "ADAPTIVE_BANNER", "SMART_BANNER", "BANNER", "LARGE_BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD") var banner_size
+export(String, "ADAPTIVE_BANNER", "SMART_BANNER", "BANNER", "LARGE_BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD") var banner_size = "ADAPTIVE_BANNER"
 export var banner_id:String
 export var interstitial_id:String
 export var rewarded_id:String
 export var child_directed:bool = false
 export var is_personalized:bool = true
-export(String, "G", "PG", "T", "MA") var max_ad_content_rate
+export(String, "G", "PG", "T", "MA") var max_ad_content_rate = "G"
 
 # "private" properties
 var _admob_singleton = null

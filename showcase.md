@@ -12,7 +12,7 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [HoverFlow - Endless Driver](https://play.google.com/store/apps/details?id=godot.pizzajuggler.hoverflow)
 - [iDrink – Drinking Game 🍻](https://play.google.com/store/apps/details?id=com.garfsapps.umgole)
 - [Ionitron - ion magnet puzzle game](https://play.google.com/store/apps/details?id=godot.pizzajuggler.ionitron)
-- [Piranha Escape (FREE)](https://play.google.com/store/apps/details?id=com.bitmagine.piranhaescape.free)
+- [Piranha Escape](https://play.google.com/store/apps/details?id=com.bitmagine.piranhaescape)
 - [SLID - Letter Sliding Puzzle](https://play.google.com/store/apps/details?id=com.kamofa.slid)
 - [SpeedSnake](https://play.google.com/store/apps/details?id=com.mosscrow.speedsnake)
 - [Turzzle](https://play.google.com/store/apps/details?id=com.bananaonfire.turzzle)

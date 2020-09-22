@@ -35,7 +35,7 @@ var _is_rewarded_video_loaded:bool = false
 
 func _enter_tree():
 	if not init():
-		print("AdMob Java Singleton not found")
+		print("AdMob Java Singleton not found. This plugin will only work on Android")
 
 # setters
 func is_real_set(new_val) -> void:
@@ -66,18 +66,9 @@ func init() -> bool:
 	if(Engine.has_singleton("GodotAdMob")):
 		_admob_singleton = Engine.get_singleton("GodotAdMob")
 
-		_admob_singleton.connect("on_admob_ad_loaded", self, "_on_admob_ad_loaded");
-		_admob_singleton.connect("on_admob_banner_failed_to_load", self, "_on_admob_banner_failed_to_load");
-		_admob_singleton.connect("on_interstitial_failed_to_load", self, "_on_interstitial_failed_to_load");
-		_admob_singleton.connect("on_interstitial_loaded", self, "_on_interstitial_loaded");
-		_admob_singleton.connect("on_interstitial_close", self, "_on_interstitial_close");
-		_admob_singleton.connect("on_rewarded_video_ad_loaded", self, "_on_rewarded_video_ad_loaded");
-		_admob_singleton.connect("on_rewarded_video_ad_closed", self, "_on_rewarded_video_ad_closed");
-		_admob_singleton.connect("on_rewarded", self, "_on_rewarded");
-		_admob_singleton.connect("on_rewarded_video_ad_left_application", self, "_on_rewarded_video_ad_left_application");
-		_admob_singleton.connect("on_rewarded_video_ad_failed_to_load", self, "_on_rewarded_video_ad_failed_to_load");
-		_admob_singleton.connect("on_rewarded_video_ad_opened", self, "_on_rewarded_video_ad_opened");
-		_admob_singleton.connect("on_rewarded_video_started", self, "_on_rewarded_video_started");
+		# check if one signal is already connected
+		if not _admob_singleton.is_connected("on_admob_ad_loaded", self, "_on_admob_ad_loaded"):
+			connect_signals()
 
 		_admob_singleton.initWithContentRating(
 			is_real,
@@ -87,6 +78,21 @@ func init() -> bool:
 		)
 		return true
 	return false
+
+# connect the AdMob Java signals
+func connect_signals() -> void:
+	_admob_singleton.connect("on_admob_ad_loaded", self, "_on_admob_ad_loaded")
+	_admob_singleton.connect("on_admob_banner_failed_to_load", self, "_on_admob_banner_failed_to_load")
+	_admob_singleton.connect("on_interstitial_failed_to_load", self, "_on_interstitial_failed_to_load")
+	_admob_singleton.connect("on_interstitial_loaded", self, "_on_interstitial_loaded")
+	_admob_singleton.connect("on_interstitial_close", self, "_on_interstitial_close")
+	_admob_singleton.connect("on_rewarded_video_ad_loaded", self, "_on_rewarded_video_ad_loaded")
+	_admob_singleton.connect("on_rewarded_video_ad_closed", self, "_on_rewarded_video_ad_closed")
+	_admob_singleton.connect("on_rewarded", self, "_on_rewarded")
+	_admob_singleton.connect("on_rewarded_video_ad_left_application", self, "_on_rewarded_video_ad_left_application")
+	_admob_singleton.connect("on_rewarded_video_ad_failed_to_load", self, "_on_rewarded_video_ad_failed_to_load")
+	_admob_singleton.connect("on_rewarded_video_ad_opened", self, "_on_rewarded_video_ad_opened")
+	_admob_singleton.connect("on_rewarded_video_started", self, "_on_rewarded_video_started")
 	
 # load
 

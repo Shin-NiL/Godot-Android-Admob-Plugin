@@ -20,3 +20,4 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [Walls of Stone - Puzzle Game](https://play.google.com/store/apps/details?id=dev.mintstudios.wos)
 - [Warzone 2 - Top down shooter](https://play.google.com/store/apps/details?id=com.raptor.inc)
 - [Zeptris](https://play.google.com/store/apps/details?id=net.wynoo.zeptris)
+- [Spin Mania](https://play.google.com/store/apps/details?id=com.kalzcoat.spinmania)

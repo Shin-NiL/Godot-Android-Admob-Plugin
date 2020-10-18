@@ -23,11 +23,16 @@ Currently, this plugin supports:
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
 ```
-One good place to add this metadata is just below these lines:
+One good place to add this metadata is just below these lines, inside of the **application** tag:
 ```
+<application>
+...
 <!-- Custom application XML added by add-ons. -->
 <!--CHUNK_APPLICATION_BEGIN-->
 <!--CHUNK_APPLICATION_END-->
+
+Here
+</application>
 ```
 
 **NOTE**: everytime you install a new version of the Android Build Template this step must be done again, as the ```AndroidManifest.xml``` file will be overriden.

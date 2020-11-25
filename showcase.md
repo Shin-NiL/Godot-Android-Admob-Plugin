@@ -25,3 +25,4 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [Warzone 2 - Top down shooter](https://play.google.com/store/apps/details?id=com.raptor.inc)
 - [WoW Death Roll Simulator](https://play.google.com/store/apps/details?id=ch.jackfruit.deathrollsimulator)
 - [Zeptris](https://play.google.com/store/apps/details?id=net.wynoo.zeptris)
+- [Zone Crush - A Match 3 Game 2020](https://play.google.com/store/apps/details?id=com.GamesForLife.ZoneCrush)

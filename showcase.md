@@ -15,6 +15,7 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [iDrink – Drinking Game 🍻](https://play.google.com/store/apps/details?id=com.garfsapps.umgole)
 - [Ionitron - ion magnet puzzle game](https://play.google.com/store/apps/details?id=godot.pizzajuggler.ionitron)
 - [Landbox](https://play.google.com/store/apps/details?id=org.hideckies.landbox)
+- [Mad Crab Grab](https://play.google.com/store/apps/details?id=org.godotengine.madcrabgrab)
 - [No Rush - Puzzle/Platformer Game](https://play.google.com/store/apps/details?id=org.turkmenh.norush)
 - [Piranha Escape](https://play.google.com/store/apps/details?id=com.bitmagine.piranhaescape)
 - [Reverse Babylon](https://play.google.com/store/apps/details?id=com.PlastilinLepim.babylon)

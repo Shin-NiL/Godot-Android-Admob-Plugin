@@ -61,6 +61,7 @@ func max_ad_content_rate_set(new_val) -> void:
 		print("Invalid max_ad_content_rate, using 'G'")
 	else:
 		max_ad_content_rate = new_val
+	init()
 
 
 # initialization

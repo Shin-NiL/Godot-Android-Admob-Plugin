@@ -70,11 +70,7 @@ Was this project useful for you? Wanna make a donation? These are the options:
 My [Paypal donation link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3MJE3M4FMJYGN&lc=BR&item_name=Shin%2dNiL%27s%20Github&item_number=Github&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)
 
 ### Brave Browser
-
-Even without spending any money you can still help me installing [Brave browser](https://brave.com/) using my [referral link](https://brave.com/shi012	). 
-If you do so and keep using the browser, I'll receive some reward.
-
-If you're already a Brave user, please consider donating some BATs ;) 
+If you're a Brave browser user, please consider donating some BATs ;) 
 
 
 ## API Reference

@@ -23,6 +23,7 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [Office Kiss Game](https://play.google.com/store/apps/details?id=org.godotengine.secretkisses)
 - [Piranha Escape](https://play.google.com/store/apps/details?id=com.bitmagine.piranhaescape)
 - [Reverse Babylon](https://play.google.com/store/apps/details?id=com.PlastilinLepim.babylon)
+- [Rush: Endless Arcade](https://play.google.com/store/apps/details?id=org.haruntrkmn.rush)
 - [SLID - Letter Sliding Puzzle](https://play.google.com/store/apps/details?id=com.kamofa.slid)
 - [SpeedSnake](https://play.google.com/store/apps/details?id=com.mosscrow.speedsnake)
 - [Spin Mania](https://play.google.com/store/apps/details?id=com.kalzcoat.spinmania)

@@ -8,6 +8,8 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [12345 Rotors - Puzzle Game](https://play.google.com/store/apps/details?id=com.ross.numbergame12345)
 - [Ball Square](https://play.google.com/store/apps/details?id=com.mani.ballandsquare&hl=en_US)
 - [Ball Toss](https://play.google.com/store/apps/details?id=com.EGFABT.Ball_Toss)
+- [Bomber Pilot](https://play.google.com/store/apps/details?id=org.ohyaiamheregames.bomberpilot)
+- [Bomber Pilot 2](https://play.google.com/store/apps/details?id=org.ohyaiamheregames.bomberpilottwo)
 - [Break Bacteria](https://play.google.com/store/apps/details?id=com.turkicgames.breakbacteria)
 - [Cars On Tracks](https://play.google.com/store/apps/details?id=org.Introsflexion.CarsOnTracks)
 - [DeathGuy](https://play.google.com/store/apps/details?id=org.amdotblacksheep.deathguy)

@@ -9,7 +9,7 @@ Currently, this plugin supports:
 
 ## Setup
 
-- Configure, install  and enable the "Android Custom Template" for your project, just follow the [official documentation](https://docs.godotengine.org/en/latest/getting_started/workflow/export/android_custom_build.html);
+- Configure, install  and enable the "Android Custom Template" for your project, just follow the [official documentation](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html);
 - go to the [release tab](https://github.com/Shin-NiL/Godot-Android-AdMob-Plugin/releases), choose a version and download the respective ```GodotAdMobPlugin-x.x.x.zip``` package;
 - extract the content of the ```admob-plugin``` directory (```GodotAdmob.gdap``` and ```GodotAdmob.release.aar``` from the zip package) inside the ```res://android/plugins``` directory on your Godot project.
 - extract the ```admob-lib``` directory (from the zip package) inside the ```res://``` directory on your Godot project.
@@ -23,11 +23,16 @@ Currently, this plugin supports:
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
 ```
-One good place to add this metadata is just below these lines:
+One good place to add this metadata is just below these lines, inside of the **application** tag:
 ```
+<application>
+...
 <!-- Custom application XML added by add-ons. -->
 <!--CHUNK_APPLICATION_BEGIN-->
 <!--CHUNK_APPLICATION_END-->
+
+Here
+</application>
 ```
 
 **NOTE**: everytime you install a new version of the Android Build Template this step must be done again, as the ```AndroidManifest.xml``` file will be overriden.
@@ -65,11 +70,7 @@ Was this project useful for you? Wanna make a donation? These are the options:
 My [Paypal donation link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3MJE3M4FMJYGN&lc=BR&item_name=Shin%2dNiL%27s%20Github&item_number=Github&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)
 
 ### Brave Browser
-
-Even without spending any money you can still help me installing [Brave browser](https://brave.com/) using my [referral link](https://brave.com/shi012	). 
-If you do so and keep using the browser, I'll receive some reward.
-
-If you're already a Brave user, please consider donating some BATs ;) 
+If you're a Brave browser user, please consider donating some BATs ;) 
 
 
 ## API Reference

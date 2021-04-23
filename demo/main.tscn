@@ -123,12 +123,11 @@ script = ExtResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
-banner_size = "ADAPTIVE_BANNER"
 banner_id = "ca-app-pub-3940256099942544/6300978111"
 interstitial_id = "ca-app-pub-3940256099942544/1033173712"
 rewarded_id = "ca-app-pub-3940256099942544/5224354917"
 is_personalized = false
-max_ad_content_rate = "G"
+
 [connection signal="pressed" from="CanvasLayer/BtnReload" to="." method="_on_BtnReload_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnInterstitial" to="." method="_on_BtnInterstitial_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnBannerResize" to="." method="_on_BtnBannerResize_pressed"]

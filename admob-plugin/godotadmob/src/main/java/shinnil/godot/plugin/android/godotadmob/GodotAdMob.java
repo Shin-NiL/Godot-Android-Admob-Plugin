@@ -15,6 +15,7 @@ import com.google.android.gms.ads.RequestConfiguration;
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
+import org.godotengine.godot.plugin.UsedByGodot;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -46,7 +47,7 @@ public class GodotAdMob extends GodotPlugin {
 
     public GodotAdMob(Godot godot) {
         super(godot);
-        activity = godot;
+        this.activity = getActivity();
     }
 
     // create and add a new layout to Godot
@@ -64,31 +65,15 @@ public class GodotAdMob extends GodotPlugin {
 
     @NonNull
     @Override
-    public List<String> getPluginMethods() {
-        return Arrays.asList(
-                "init",
-                "initWithContentRating",
-                // banner
-                "loadBanner", "showBanner", "hideBanner", "getBannerWidth", "getBannerHeight", "resize", "move",
-                // Interstitial
-                "loadInterstitial", "showInterstitial",
-                // Rewarded video
-                "loadRewardedVideo", "showRewardedVideo");
-    }
-
-    @NonNull
-    @Override
     public Set<SignalInfo> getPluginSignals() {
         Set<SignalInfo> signals = new ArraySet<>();
 
         signals.add(new SignalInfo("on_admob_ad_loaded"));
         signals.add(new SignalInfo("on_admob_banner_failed_to_load", Integer.class));
 
-
         signals.add(new SignalInfo("on_interstitial_loaded"));
         signals.add(new SignalInfo("on_interstitial_failed_to_load", Integer.class));
         signals.add(new SignalInfo("on_interstitial_close"));
-
 
         signals.add(new SignalInfo("on_rewarded_video_ad_left_application"));
         signals.add(new SignalInfo("on_rewarded_video_ad_closed"));
@@ -110,6 +95,7 @@ public class GodotAdMob extends GodotPlugin {
      *
      * @param isReal     Tell if the enviroment is for real or test
      */
+    @UsedByGodot
     public void init(boolean isReal) {
         this.initWithContentRating(isReal, false, true, "");
     }
@@ -125,6 +111,7 @@ public class GodotAdMob extends GodotPlugin {
      *                                    ad personalization.
      * @param maxAdContentRating          must be "G", "PG", "T" or "MA"
      */
+    @UsedByGodot
     public void initWithContentRating(
             boolean isReal,
             boolean isForChildDirectedTreatment,
@@ -202,6 +189,7 @@ public class GodotAdMob extends GodotPlugin {
      *
      * @param id AdMod Rewarded video ID
      */
+    @UsedByGodot
     public void loadRewardedVideo(final String id) {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -255,6 +243,7 @@ public class GodotAdMob extends GodotPlugin {
     /**
      * Show a Rewarded Video
      */
+    @UsedByGodot
     public void showRewardedVideo() {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -277,6 +266,7 @@ public class GodotAdMob extends GodotPlugin {
      * @param id      AdMod Banner ID
      * @param isOnTop To made the banner top or bottom
      */
+    @UsedByGodot
     public void loadBanner(final String id, final boolean isOnTop, final String bannerSize) {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -300,6 +290,7 @@ public class GodotAdMob extends GodotPlugin {
     /**
      * Show the banner
      */
+    @UsedByGodot
     public void showBanner() {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -315,6 +306,7 @@ public class GodotAdMob extends GodotPlugin {
      * Resize the banner
      * @param isOnTop To made the banner top or bottom
      */
+    @UsedByGodot
     public void move(final boolean isOnTop) {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -329,6 +321,7 @@ public class GodotAdMob extends GodotPlugin {
     /**
      * Resize the banner
      */
+    @UsedByGodot
     public void resize() {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -344,6 +337,7 @@ public class GodotAdMob extends GodotPlugin {
     /**
      * Hide the banner
      */
+    @UsedByGodot
     public void hideBanner() {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -360,6 +354,7 @@ public class GodotAdMob extends GodotPlugin {
      *
      * @return int Banner width
      */
+    @UsedByGodot
     public int getBannerWidth() {
         if (banner != null) {
             return banner.getWidth();
@@ -372,6 +367,7 @@ public class GodotAdMob extends GodotPlugin {
      *
      * @return int Banner height
      */
+    @UsedByGodot
     public int getBannerHeight() {
         if (banner != null) {
             return banner.getHeight();
@@ -387,6 +383,7 @@ public class GodotAdMob extends GodotPlugin {
      *
      * @param id AdMod Interstitial ID
      */
+    @UsedByGodot
     public void loadInterstitial(final String id) {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -426,6 +423,7 @@ public class GodotAdMob extends GodotPlugin {
     /**
      * Show the interstitial
      */
+    @UsedByGodot
     public void showInterstitial() {
         activity.runOnUiThread(new Runnable() {
             @Override

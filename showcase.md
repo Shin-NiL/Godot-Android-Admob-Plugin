@@ -38,3 +38,4 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [WoW Death Roll Simulator](https://play.google.com/store/apps/details?id=ch.jackfruit.deathrollsimulator)
 - [Zeptris](https://play.google.com/store/apps/details?id=net.wynoo.zeptris)
 - [Zone Crush - A Match 3 Game 2020](https://play.google.com/store/apps/details?id=com.GamesForLife.ZoneCrush)
+- [Galaxy Fights - Space Shooter](https://play.google.com/store/apps/details?id=com.landapp.games.shooter)

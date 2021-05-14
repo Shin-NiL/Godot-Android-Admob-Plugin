@@ -15,6 +15,7 @@ If you like to add your game in this list open an issue or send me a pull reques
 - [DeathGuy](https://play.google.com/store/apps/details?id=org.amdotblacksheep.deathguy)
 - [Domino Trail](https://play.google.com/store/apps/details?id=org.losyk.dominotrail)
 - [Future Funk Soccer Racing](https://play.google.com/store/apps/details?id=org.godotengine.cargame)
+- [Galaxy Fights - Space Shooter](https://play.google.com/store/apps/details?id=com.landapp.games.shooter)
 - [Help Luigi!](https://play.google.com/store/apps/details?id=com.bananaonfire.helpluigi)
 - [HoverFlow - Endless Driver](https://play.google.com/store/apps/details?id=godot.pizzajuggler.hoverflow)
 - [iDrink – Drinking Game 🍻](https://play.google.com/store/apps/details?id=com.garfsapps.umgole)

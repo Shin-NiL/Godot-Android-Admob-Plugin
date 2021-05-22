@@ -9,6 +9,10 @@ Currently, this plugin supports:
 
 ## Setup
 
+### Video Guide
+Our friend *dQuigz* created a [nice video tutorial on how to use this plugin](https://youtu.be/0a6EvlNgLL0).
+
+### Text Instructions
 - Configure, install  and enable the "Android Custom Template" for your project, just follow the [official documentation](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html);
 - go to the [release tab](https://github.com/Shin-NiL/Godot-Android-AdMob-Plugin/releases), choose a version and download the respective ```GodotAdMobPlugin-x.x.x.zip``` package;
 - extract the content of the ```admob-plugin``` directory (```GodotAdmob.gdap``` and ```GodotAdmob.release.aar``` from the zip package) inside the ```res://android/plugins``` directory on your Godot project.

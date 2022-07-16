@@ -74,15 +74,16 @@ public class GodotAdMob extends GodotPlugin {
         signals.add(new SignalInfo("on_interstitial_loaded"));
         signals.add(new SignalInfo("on_interstitial_failed_to_load", Integer.class));
         signals.add(new SignalInfo("on_interstitial_close"));
+        signals.add(new SignalInfo("on_interstitial_clicked"));
+        signals.add(new SignalInfo("on_interstitial_impression"));
 
-        signals.add(new SignalInfo("on_rewarded_video_ad_left_application"));
         signals.add(new SignalInfo("on_rewarded_video_ad_closed"));
         signals.add(new SignalInfo("on_rewarded_video_ad_failed_to_load", Integer.class));
         signals.add(new SignalInfo("on_rewarded_video_ad_loaded"));
         signals.add(new SignalInfo("on_rewarded_video_ad_opened"));
         signals.add(new SignalInfo("on_rewarded", String.class, Integer.class));
-        signals.add(new SignalInfo("on_rewarded_video_started"));
-        signals.add(new SignalInfo("on_rewarded_video_completed"));
+        signals.add(new SignalInfo("on_rewarded_clicked"));
+        signals.add(new SignalInfo("on_rewarded_impression"));
 
         return signals;
     }
@@ -206,11 +207,6 @@ public class GodotAdMob extends GodotPlugin {
                     }
 
                     @Override
-                    public void onRewardedVideoLeftApplication() {
-                        emitSignal("on_rewarded_video_ad_left_application");
-                    }
-
-                    @Override
                     public void onRewardedVideoOpened() {
                         emitSignal("on_rewarded_video_ad_opened");
                     }
@@ -226,13 +222,13 @@ public class GodotAdMob extends GodotPlugin {
                     }
 
                     @Override
-                    public void onRewardedVideoStarted() {
-                        emitSignal("on_rewarded_video_started");
+                    public void onRewardedClicked() {
+                        emitSignal("on_rewarded_clicked");
                     }
 
                     @Override
-                    public void onRewardedVideoCompleted() {
-                        emitSignal("on_rewarded_video_completed");
+                    public void onRewardedAdImpression() {
+                        emitSignal("on_rewarded_impression");
                     }
                 });
                 rewardedVideo.load(id, getAdRequest());
@@ -406,14 +402,18 @@ public class GodotAdMob extends GodotPlugin {
                     }
 
                     @Override
-                    public void onInterstitialLeftApplication() {
-                        // Not Implemented
-                        // emitSignal("on_interstitial_left_application");
+                    public void onInterstitialClosed() {
+                        emitSignal("on_interstitial_close");
                     }
 
                     @Override
-                    public void onInterstitialClosed() {
-                        emitSignal("on_interstitial_close");
+                    public void onInterstitialClicked() {
+                        emitSignal("on_interstitial_clicked");
+                    }
+
+                    @Override
+                    public void onInterstitialImpression() {
+                        emitSignal("on_interstitial_impression");
                     }
                 });
             }

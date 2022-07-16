@@ -3,88 +3,127 @@ package shinnil.godot.plugin.android.godotadmob;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 interface RewardedVideoListener {
     void onRewardedVideoLoaded();
     void onRewardedVideoFailedToLoad(int errorCode);
-    void onRewardedVideoLeftApplication();
     void onRewardedVideoOpened();
     void onRewardedVideoClosed();
     void onRewarded(String type, int amount);
+    /* Removed in GMS Ads SDK version 19 or 20.
     void onRewardedVideoStarted();
     void onRewardedVideoCompleted();
+    */
+    // new
+    void onRewardedClicked();
+    void onRewardedAdImpression();
 }
 
 public class RewardedVideo {
-    private RewardedVideoAd rewardedVideoAd = null;
+    private RewardedAd rewardedAd = null;
+    private String id;
+    private AdRequest adRequest;
+    private Activity activity;
+    private RewardedVideoListener defaultRewardedVideoListener;
 
     public RewardedVideo(Activity activity, final RewardedVideoListener defaultRewardedVideoListener) {
+        this.activity = activity;
+        this.defaultRewardedVideoListener = defaultRewardedVideoListener;
         MobileAds.initialize(activity);
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity);
-        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+    }
+
+    public boolean isLoaded() {
+        return rewardedAd != null;
+    }
+
+    public void load(final String id, AdRequest adRequest) {
+        this.id = id;
+        this.adRequest = adRequest;
+
+        RewardedAd.load(activity, id, adRequest, new RewardedAdLoadCallback() {
             @Override
-            public void onRewardedVideoAdLoaded() {
-                Log.w("godot", "AdMob: onRewardedVideoAdLoaded");
+            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                super.onAdLoaded(rewardedAd);
+                setAd(rewardedAd);
+                Log.w("godot", "AdMob: onAdLoaded");
                 defaultRewardedVideoListener.onRewardedVideoLoaded();
             }
 
             @Override
-            public void onRewardedVideoAdFailedToLoad(int errorCode) {
-                Log.w("godot", "AdMob: onRewardedVideoAdFailedToLoad. errorCode: " + errorCode);
-                defaultRewardedVideoListener.onRewardedVideoFailedToLoad(errorCode);
-            }
-
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-                Log.w("godot", "AdMob: onRewardedVideoAdLeftApplication");
-                defaultRewardedVideoListener.onRewardedVideoLeftApplication();
-            }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-                Log.w("godot", "AdMob: onRewardedVideoAdOpened");
-                defaultRewardedVideoListener.onRewardedVideoOpened();
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-                Log.w("godot", "AdMob: onRewardedVideoAdClosed");
-                defaultRewardedVideoListener.onRewardedVideoClosed();
-            }
-
-            @Override
-            public void onRewarded(RewardItem reward) {
-                Log.w("godot", "AdMob: "
-                        + String.format(" onRewarded! currency: %s amount: %d", reward.getType(), reward.getAmount()));
-                defaultRewardedVideoListener.onRewarded(reward.getType(), reward.getAmount());
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-                Log.w("godot", "AdMob: onRewardedVideoStarted");
-                defaultRewardedVideoListener.onRewardedVideoStarted();
-            }
-
-            @Override
-            public void onRewardedVideoCompleted() {
-                Log.w("godot", "AdMob: onRewardedVideoCompleted");
-                defaultRewardedVideoListener.onRewardedVideoCompleted();
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                // safety
+                setAd(null);
+                Log.w("godot", "AdMob: onAdFailedToLoad. errorCode: " + loadAdError.getCode());
+                defaultRewardedVideoListener.onRewardedVideoFailedToLoad(loadAdError.getCode());
             }
         });
     }
 
-    public void load(final String id, AdRequest adRequest) {
-        rewardedVideoAd.loadAd(id, adRequest);
+    public void show() {
+        if (rewardedAd != null) {
+            rewardedAd.show(activity, rewardItem -> {
+                Log.w("godot", "AdMob: "
+                        + String.format(" onRewarded! currency: %s amount: %d", rewardItem.getType(), rewardItem.getAmount()));
+                defaultRewardedVideoListener.onRewarded(rewardItem.getType(), rewardItem.getAmount());
+            });
+        }
     }
 
-    public void show() {
-        if (rewardedVideoAd.isLoaded()) {
-            rewardedVideoAd.show();
+    private void setAd(RewardedAd rewardedAd) {
+        // Avoid memory leaks.
+        if (this.rewardedAd != null)
+            this.rewardedAd.setFullScreenContentCallback(null);
+        if (rewardedAd != null) {
+            rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdClicked() {
+                    super.onAdClicked();
+                    Log.w("godot", "AdMob: onAdClicked");
+                    defaultRewardedVideoListener.onRewardedClicked();
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    super.onAdDismissedFullScreenContent();
+                    // TODO: Test if new video ads are loaded
+//                    setAd(null);
+//                    RewardedAd.load(activity, id, adRequest, rewardedAdLoadCallback);
+                    Log.w("godot", "AdMob: onAdDismissedFullScreenContent");
+                    defaultRewardedVideoListener.onRewardedVideoClosed();
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                    super.onAdFailedToShowFullScreenContent(adError);
+                    Log.w("godot", "AdMob: onAdFailedToShowFullScreenContent");
+                    defaultRewardedVideoListener.onRewardedVideoFailedToLoad(adError.getCode());
+                }
+
+                @Override
+                public void onAdImpression() {
+                    super.onAdImpression();
+                    Log.w("godot", "AdMob: onAdImpression");
+                    defaultRewardedVideoListener.onRewardedAdImpression();
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    super.onAdShowedFullScreenContent();
+                    Log.w("godot", "AdMob: onAdShowedFullScreenContent");
+                    defaultRewardedVideoListener.onRewardedVideoOpened();
+                }
+            });
         }
+        this.rewardedAd = rewardedAd;
     }
 }

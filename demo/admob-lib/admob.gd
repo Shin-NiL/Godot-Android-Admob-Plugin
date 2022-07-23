@@ -6,10 +6,12 @@ class_name AdMob, "res://admob-lib/icon.png"
 signal banner_loaded
 signal banner_failed_to_load(error_code)
 signal interstitial_failed_to_load(error_code)
+# Consider separating opened and loaded signals
 signal interstitial_loaded
 signal interstitial_closed
 signal interstitial_clicked
 signal interstitial_impression
+# Consider separating opened and loaded signals
 signal rewarded_video_loaded
 signal rewarded_video_closed
 signal rewarded(currency, ammount)
@@ -44,7 +46,7 @@ func is_real_set(new_val) -> void:
 	is_real = new_val
 # warning-ignore:return_value_discarded
 	init()
-	
+
 func child_directed_set(new_val) -> void:
 	child_directed = new_val
 # warning-ignore:return_value_discarded
@@ -58,7 +60,7 @@ func is_personalized_set(new_val) -> void:
 func max_ad_content_rate_set(new_val) -> void:
 	if new_val != "G" and new_val != "PG" \
 		and new_val != "T" and new_val != "MA":
-			
+
 		max_ad_content_rate = "G"
 		print("Invalid max_ad_content_rate, using 'G'")
 	else:
@@ -100,7 +102,7 @@ func connect_signals() -> void:
 	_admob_singleton.connect("on_rewarded_video_ad_opened", self, "_on_rewarded_video_ad_opened")
 	_admob_singleton.connect("on_rewarded_clicked", self, "_on_rewarded_clicked")
 	_admob_singleton.connect("on_rewarded_impression", self, "_on_rewarded_impression")
-	
+
 # load
 
 func load_banner() -> void:
@@ -110,16 +112,16 @@ func load_banner() -> void:
 func load_interstitial() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.loadInterstitial(interstitial_id)
-		
+
 func is_interstitial_loaded() -> bool:
 	if _admob_singleton != null:
 		return _is_interstitial_loaded
 	return false
-		
+
 func load_rewarded_video() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.loadRewardedVideo(rewarded_id)
-		
+
 func is_rewarded_video_loaded() -> bool:
 	if _admob_singleton != null:
 		return _is_rewarded_video_loaded
@@ -130,7 +132,7 @@ func is_rewarded_video_loaded() -> bool:
 func show_banner() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.showBanner()
-		
+
 func hide_banner() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.hideBanner()
@@ -144,7 +146,7 @@ func show_interstitial() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.showInterstitial()
 		_is_interstitial_loaded = false
-		
+
 func show_rewarded_video() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.showRewardedVideo()
@@ -155,7 +157,7 @@ func show_rewarded_video() -> void:
 func banner_resize() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.resize()
-		
+
 # dimension
 func get_banner_dimension() -> Vector2:
 	if _admob_singleton != null:
@@ -166,10 +168,10 @@ func get_banner_dimension() -> Vector2:
 
 func _on_admob_ad_loaded() -> void:
 	emit_signal("banner_loaded")
-	
+
 func _on_admob_banner_failed_to_load(error_code:int) -> void:
 	emit_signal("banner_failed_to_load", error_code)
-	
+
 func _on_interstitial_failed_to_load(error_code:int) -> void:
 	_is_interstitial_loaded = false
 	emit_signal("interstitial_failed_to_load", error_code)
@@ -196,14 +198,14 @@ func _on_rewarded_video_ad_closed() -> void:
 
 func _on_rewarded(currency:String, amount:int) -> void:
 	emit_signal("rewarded", currency, amount)
-	
+
 func _on_rewarded_video_ad_failed_to_load(error_code:int) -> void:
 	_is_rewarded_video_loaded = false
 	emit_signal("rewarded_video_failed_to_load", error_code)
-	
+
 func _on_rewarded_video_ad_opened() -> void:
-	emit_signal("rewarded_video_opened")
-	
+	emit_signal("rewarded_video_loaded")
+
 func _on_rewarded_clicked() -> void:
 	emit_signal("rewarded_clicked")
 

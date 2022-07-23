@@ -59,18 +59,30 @@ func _on_AdMob_interstitial_loaded():
 	$"CanvasLayer/BtnInterstitial".disabled = false
 	debug_out.text = debug_out.text + "Interstitial loaded\n"
 
+func _on_AdMob_interstitial_clicked():
+	debug_out.text = debug_out.text + "Interstitial clicked\n"
+
 func _on_AdMob_interstitial_closed():
 	debug_out.text = debug_out.text + "Interstitial closed\n"
-	$"CanvasLayer/BtnInterstitial".disabled = true
+	$"CanvasLayer/BtnInterstitial".disabled = false
 
 func _on_AdMob_interstitial_failed_to_load(error_code):
 	debug_out.text = debug_out.text + "Interstitial failed to load: Error code " + str(error_code) + "\n"
+
+func _on_AdMob_interstitial_impression():
+	debug_out.text = debug_out.text + "Interstitial impression\n"
 
 func _on_AdMob_network_error():
 	debug_out.text = debug_out.text + "Network error\n"
 
 func _on_AdMob_rewarded(currency, amount):
 	debug_out.text = debug_out.text + "Rewarded watched, currency: " + str(currency) + " amount:"+ str(amount)+ "\n"
+
+func _on_AdMob_rewarded_clicked():
+	debug_out.text = debug_out.text + "Rewarded clicked\n"
+
+func _on_AdMob_rewarded_impression():
+	debug_out.text = debug_out.text + "Rewarded impression\n"
 
 func _on_AdMob_rewarded_video_closed():
 	debug_out.text = debug_out.text + "Rewarded video closed\n"
@@ -80,15 +92,6 @@ func _on_AdMob_rewarded_video_closed():
 func _on_AdMob_rewarded_video_failed_to_load(error_code):
 	debug_out.text = debug_out.text + "Rewarded video failed to load: Error code " + str(error_code) + "\n"
 
-func _on_AdMob_rewarded_video_left_application():
-	debug_out.text = debug_out.text + "Rewarded video left application\n"
-
 func _on_AdMob_rewarded_video_loaded():
 	$"CanvasLayer/BtnRewardedVideo".disabled = false
 	debug_out.text = debug_out.text + "Rewarded video loaded\n"
-
-func _on_AdMob_rewarded_video_opened():
-	debug_out.text = debug_out.text + "Rewarded video opened\n"
-
-func _on_AdMob_rewarded_video_started():
-	debug_out.text = debug_out.text + "Rewarded video started\n"

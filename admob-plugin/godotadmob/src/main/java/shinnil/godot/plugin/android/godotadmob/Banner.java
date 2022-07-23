@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -22,19 +24,17 @@ interface BannerListener {
 
 public class Banner {
     private AdView adView = null; // Banner view
-    private FrameLayout layout = null;
+    private final FrameLayout layout;
     private FrameLayout.LayoutParams adParams = null;
-    private AdRequest adRequest = null;
-    private Activity activity = null;
-    private BannerListener defaultBannerListener;
-    private String bannerSize;
+    private final AdRequest adRequest;
+    private final Activity activity;
+    private final String bannerSize;
 
 
     public Banner(final String id, final AdRequest adRequest, final Activity activity, final BannerListener defaultBannerListener, final boolean isOnTop, final FrameLayout layout, final String bannerSize) {
         this.activity = activity;
         this.layout = layout;
         this.adRequest = adRequest;
-        this.defaultBannerListener = defaultBannerListener;
         this.bannerSize = bannerSize;
                 
         AddBanner(id, (isOnTop ? Gravity.TOP : Gravity.BOTTOM), getAdSize(bannerSize), new AdListener() {
@@ -45,7 +45,7 @@ public class Banner {
             }
 
             @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                 Log.w("godot", "AdMob: onAdFailedToLoad. errorCode: " + adError.getCode());
                 defaultBannerListener.onBannerFailedToLoad(adError.getCode());
             }
@@ -148,6 +148,7 @@ public class Banner {
     private AdSize getAdSize(final String bannerSize) {
         switch (bannerSize) {
             case "SMART_BANNER":
+                //noinspection deprecation
                 return AdSize.SMART_BANNER;
             case "BANNER":
                 return AdSize.BANNER;

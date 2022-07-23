@@ -18,9 +18,7 @@ import org.godotengine.godot.GodotLib;
 
 public class GodotRewardedVideo {
     private RewardedAd rewardedAd = null;
-    private String id;
     private int instanceId;
-    private AdRequest adRequest;
     private Activity activity;
 
     public void init(Activity activity, final int instanceId) {
@@ -34,8 +32,6 @@ public class GodotRewardedVideo {
     }
 
     public void load(final String id, AdRequest adRequest) {
-        this.id = id;
-        this.adRequest = adRequest;
 
         RewardedAd.load(activity, id, adRequest, new RewardedAdLoadCallback() {
             @Override

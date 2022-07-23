@@ -30,10 +30,8 @@ interface RewardedVideoListener {
 
 public class RewardedVideo {
     private RewardedAd rewardedAd = null;
-    private String id;
-    private AdRequest adRequest;
-    private Activity activity;
-    private RewardedVideoListener defaultRewardedVideoListener;
+    private final Activity activity;
+    private final RewardedVideoListener defaultRewardedVideoListener;
 
     public RewardedVideo(Activity activity, final RewardedVideoListener defaultRewardedVideoListener) {
         this.activity = activity;
@@ -46,8 +44,6 @@ public class RewardedVideo {
     }
 
     public void load(final String id, AdRequest adRequest) {
-        this.id = id;
-        this.adRequest = adRequest;
 
         RewardedAd.load(activity, id, adRequest, new RewardedAdLoadCallback() {
             @Override

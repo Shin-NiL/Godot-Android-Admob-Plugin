@@ -24,14 +24,10 @@ interface InterstitialListener {
 
 public class Interstitial {
     private InterstitialAd interstitialAd = null; // Interstitial object
-    private String id;
-    private AdRequest adRequest;
-    private Activity activity;
-    private InterstitialListener defaultInterstitialListener;
+    private final Activity activity;
+    private final InterstitialListener defaultInterstitialListener;
 
     public Interstitial(final String id, final AdRequest adRequest, final Activity activity, final InterstitialListener defaultInterstitialListener) {
-        this.id = id;
-        this.adRequest = adRequest;
         this.activity = activity;
         this.defaultInterstitialListener = defaultInterstitialListener;
         InterstitialAd.load(activity, id, adRequest, new InterstitialAdLoadCallback() {
@@ -48,7 +44,7 @@ public class Interstitial {
                 super.onAdFailedToLoad(loadAdError);
                 // safety
                 setAd(null);
-                Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(loadAdError.getCode()));
+                Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + loadAdError.getCode());
                 defaultInterstitialListener.onInterstitialFailedToLoad(loadAdError.getCode());
             }
         });

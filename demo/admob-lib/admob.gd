@@ -6,12 +6,12 @@ class_name AdMob, "res://admob-lib/icon.png"
 signal banner_loaded
 signal banner_failed_to_load(error_code)
 signal interstitial_failed_to_load(error_code)
-# Consider separating opened and loaded signals
 signal interstitial_loaded
+signal interstitial_opened
 signal interstitial_closed
 signal interstitial_clicked
 signal interstitial_impression
-# Consider separating opened and loaded signals
+signal rewarded_video_opened
 signal rewarded_video_loaded
 signal rewarded_video_closed
 signal rewarded(currency, ammount)
@@ -91,6 +91,7 @@ func connect_signals() -> void:
 	_admob_singleton.connect("on_admob_ad_loaded", self, "_on_admob_ad_loaded")
 	_admob_singleton.connect("on_admob_banner_failed_to_load", self, "_on_admob_banner_failed_to_load")
 	_admob_singleton.connect("on_interstitial_failed_to_load", self, "_on_interstitial_failed_to_load")
+	_admob_singleton.connect("on_interstitial_opened", self, "_on_interstitial_opened")
 	_admob_singleton.connect("on_interstitial_loaded", self, "_on_interstitial_loaded")
 	_admob_singleton.connect("on_interstitial_close", self, "_on_interstitial_close")
 	_admob_singleton.connect("on_interstitial_clicked", self, "_on_interstitial_clicked")
@@ -176,6 +177,9 @@ func _on_interstitial_failed_to_load(error_code:int) -> void:
 	_is_interstitial_loaded = false
 	emit_signal("interstitial_failed_to_load", error_code)
 
+func _on_interstitial_opened() -> void:
+	emit_signal("interstitial_opened")
+
 func _on_interstitial_loaded() -> void:
 	_is_interstitial_loaded = true
 	emit_signal("interstitial_loaded")
@@ -204,7 +208,7 @@ func _on_rewarded_video_ad_failed_to_load(error_code:int) -> void:
 	emit_signal("rewarded_video_failed_to_load", error_code)
 
 func _on_rewarded_video_ad_opened() -> void:
-	emit_signal("rewarded_video_loaded")
+	emit_signal("rewarded_video_opened")
 
 func _on_rewarded_clicked() -> void:
 	emit_signal("rewarded_clicked")

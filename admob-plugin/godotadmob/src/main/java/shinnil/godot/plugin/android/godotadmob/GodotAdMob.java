@@ -76,6 +76,7 @@ public class GodotAdMob extends GodotPlugin {
         signals.add(new SignalInfo("on_interstitial_loaded"));
         signals.add(new SignalInfo("on_interstitial_failed_to_load", Integer.class));
         signals.add(new SignalInfo("on_interstitial_close"));
+        signals.add(new SignalInfo("on_interstitial_opened"));
         signals.add(new SignalInfo("on_interstitial_clicked"));
         signals.add(new SignalInfo("on_interstitial_impression"));
 
@@ -378,7 +379,7 @@ public class GodotAdMob extends GodotPlugin {
             @Override
             public void onInterstitialOpened() {
                 // Not Implemented
-                // emitSignal("on_interstitial_opened");
+                emitSignal("on_interstitial_opened");
             }
 
             @Override

@@ -105,9 +105,6 @@ margin_right = 76.0
 margin_bottom = 106.065
 disabled = true
 text = "Show Rewarded Video"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="AdMob" type="Node" parent="."]
 script = ExtResource( 2 )
@@ -132,9 +129,11 @@ is_personalized = false
 [connection signal="interstitial_failed_to_load" from="AdMob" to="." method="_on_AdMob_interstitial_failed_to_load"]
 [connection signal="interstitial_impression" from="AdMob" to="." method="_on_AdMob_interstitial_impression"]
 [connection signal="interstitial_loaded" from="AdMob" to="." method="_on_AdMob_interstitial_loaded"]
+[connection signal="interstitial_opened" from="AdMob" to="." method="_on_AdMob_interstitial_opened"]
 [connection signal="rewarded" from="AdMob" to="." method="_on_AdMob_rewarded"]
 [connection signal="rewarded_clicked" from="AdMob" to="." method="_on_AdMob_rewarded_clicked"]
 [connection signal="rewarded_impression" from="AdMob" to="." method="_on_AdMob_rewarded_impression"]
 [connection signal="rewarded_video_closed" from="AdMob" to="." method="_on_AdMob_rewarded_video_closed"]
 [connection signal="rewarded_video_failed_to_load" from="AdMob" to="." method="_on_AdMob_rewarded_video_failed_to_load"]
 [connection signal="rewarded_video_loaded" from="AdMob" to="." method="_on_AdMob_rewarded_video_loaded"]
+[connection signal="rewarded_video_opened" from="AdMob" to="." method="_on_AdMob_rewarded_video_opened"]

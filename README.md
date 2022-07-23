@@ -173,6 +173,9 @@ banner_failed_to_load(error_code)
 # Interstitial ad was loaded with success
 interstitial_loaded
 
+# Interstitial ad was opened
+interstitial_opened
+
 # Interstitial ad was closed
 interstitial_closed
 
@@ -188,6 +191,9 @@ interstitial_impression
 
 # Rewarded video ad was loaded with success
 rewarded_video_loaded
+
+# Rewarded video ad was opened
+rewarded_video_opened
 
 # Rewarded video ad was closed
 rewarded_video_closed

@@ -55,6 +55,9 @@ func _on_AdMob_banner_loaded():
 	debug_out.text = debug_out.text + "Banner loaded\n"
 	debug_out.text = debug_out.text + "Banner size = " + str(admob.get_banner_dimension()) +  "\n"
 
+func _on_AdMob_interstitial_opened():
+	debug_out.text = debug_out.text + "Interstitial opened\n"
+
 func _on_AdMob_interstitial_loaded():
 	$"CanvasLayer/BtnInterstitial".disabled = false
 	debug_out.text = debug_out.text + "Interstitial loaded\n"
@@ -95,3 +98,6 @@ func _on_AdMob_rewarded_video_failed_to_load(error_code):
 func _on_AdMob_rewarded_video_loaded():
 	$"CanvasLayer/BtnRewardedVideo".disabled = false
 	debug_out.text = debug_out.text + "Rewarded video loaded\n"
+
+func _on_AdMob_rewarded_video_opened():
+	debug_out.text = debug_out.text + "Rewarded video opened\n"

@@ -2,8 +2,8 @@ plugins {
     id 'com.android.library'
 }
 
-ext.pluginVersionCode = 4
-ext.pluginVersionName = "5.1.0"
+ext.pluginVersionCode = 5
+ext.pluginVersionName = "6.0.0"
 
 android {
     compileSdkVersion versions.compileSdk

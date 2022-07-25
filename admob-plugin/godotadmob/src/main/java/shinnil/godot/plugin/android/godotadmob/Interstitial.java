@@ -3,68 +3,122 @@ package shinnil.godot.plugin.android.godotadmob;
 import android.app.Activity;
 import android.util.Log;
 
-import com.google.android.gms.ads.AdListener;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 interface InterstitialListener {
     void onInterstitialLoaded();
     void onInterstitialFailedToLoad(int errorCode);
     void onInterstitialOpened();
-    void onInterstitialLeftApplication();
     void onInterstitialClosed();
+    // new
+    void onInterstitialClicked();
+    void onInterstitialImpression();
 }
 
 public class Interstitial {
+    private final String id;
+    private final AdRequest adRequest;
     private InterstitialAd interstitialAd = null; // Interstitial object
-    private InterstitialListener defaultInterstitialListener;
+    private final Activity activity;
+    private final InterstitialListener defaultInterstitialListener;
 
     public Interstitial(final String id, final AdRequest adRequest, final Activity activity, final InterstitialListener defaultInterstitialListener) {
+        this.activity = activity;
+        this.id = id;
+        this.adRequest = adRequest;
         this.defaultInterstitialListener = defaultInterstitialListener;
-        interstitialAd = new InterstitialAd(activity);
-        interstitialAd.setAdUnitId(id);
-        interstitialAd.setAdListener(new AdListener() {
+        load();
+    }
+
+    public void show() {
+        if (interstitialAd != null) {
+            interstitialAd.show(activity);
+        } else {
+            Log.w("w", "AdMob: showInterstitial - interstitial not loaded");
+        }
+    }
+
+    public boolean isLoaded() {
+        return interstitialAd != null;
+    }
+
+    private void setAd(InterstitialAd interstitialAd) {
+        if (interstitialAd == this.interstitialAd)
+            return;
+        // Avoid memory leaks
+        if (this.interstitialAd != null) {
+            this.interstitialAd.setFullScreenContentCallback(null);
+            this.interstitialAd.setOnPaidEventListener(null);
+        }
+        if (interstitialAd != null) {
+            interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdClicked() {
+                    super.onAdClicked();
+                    Log.w("godot", "AdMob: onAdClicked()");
+                    defaultInterstitialListener.onInterstitialClicked();
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    super.onAdDismissedFullScreenContent();
+                    // TODO: Test if new video ads are loaded
+                    setAd(null);
+                    Log.w("godot", "AdMob: onAdDismissedFullScreenContent");
+                    defaultInterstitialListener.onInterstitialClosed();
+                    load();
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                    super.onAdFailedToShowFullScreenContent(adError);
+                    Log.w("godot", "AdMob: onAdFailedToShowFullScreenContent");
+                    defaultInterstitialListener.onInterstitialFailedToLoad(adError.getCode());
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    super.onAdShowedFullScreenContent();
+                    Log.w("godot", "AdMob: onAdShowedFullScreenContent");
+                    defaultInterstitialListener.onInterstitialOpened();
+                }
+
+                @Override
+                public void onAdImpression() {
+                    super.onAdImpression();
+                    Log.w("godot", "AdMob: onAdImpression");
+                    defaultInterstitialListener.onInterstitialImpression();
+                }
+            });
+        }
+        this.interstitialAd = interstitialAd;
+    }
+
+    private void load() {
+        InterstitialAd.load(activity, id, adRequest, new InterstitialAdLoadCallback() {
             @Override
-            public void onAdLoaded() {
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                super.onAdLoaded(interstitialAd);
+                setAd(interstitialAd);
                 Log.w("godot", "AdMob: onAdLoaded");
                 defaultInterstitialListener.onInterstitialLoaded();
             }
 
             @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
-                Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + Integer.toString(adError.getCode()));
-                defaultInterstitialListener.onInterstitialFailedToLoad(adError.getCode());
-            }
-
-            @Override
-            public void onAdOpened() {
-                Log.w("godot", "AdMob: onAdOpened()");
-                defaultInterstitialListener.onInterstitialOpened();
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                Log.w("godot", "AdMob: onAdLeftApplication()");
-                defaultInterstitialListener.onInterstitialLeftApplication();
-            }
-
-            @Override
-            public void onAdClosed() {
-                interstitialAd.loadAd(adRequest);
-                Log.w("godot", "AdMob: onAdClosed");
-                defaultInterstitialListener.onInterstitialClosed();
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                // safety
+                setAd(null);
+                Log.w("godot", "AdMob: onAdFailedToLoad(int errorCode) - error code: " + loadAdError.getCode());
+                defaultInterstitialListener.onInterstitialFailedToLoad(loadAdError.getCode());
             }
         });
-
-        interstitialAd.loadAd(adRequest);
-    }
-
-    public void show() {
-        if (interstitialAd != null && interstitialAd.isLoaded()) {
-            interstitialAd.show();
-        } else {
-            Log.w("w", "AdMob: showInterstitial - interstitial not loaded");
-        }
     }
 }

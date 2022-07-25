@@ -52,9 +52,6 @@ margin_right = 75.0
 margin_bottom = -91.0766
 disabled = true
 text = "Show Interstitial"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="BtnBannerResize" type="Button" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -83,9 +80,6 @@ margin_bottom = 9.37061
 disabled = true
 toggle_mode = true
 text = "Show/Hide Banner"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="BtnBannerMove" type="Button" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -99,9 +93,6 @@ margin_bottom = 9.37061
 disabled = true
 toggle_mode = true
 text = "Move Banner"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="BtnRewardedVideo" type="Button" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -114,9 +105,6 @@ margin_right = 76.0
 margin_bottom = 106.065
 disabled = true
 text = "Show Rewarded Video"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="AdMob" type="Node" parent="."]
 script = ExtResource( 2 )
@@ -136,13 +124,16 @@ is_personalized = false
 [connection signal="pressed" from="CanvasLayer/BtnRewardedVideo" to="." method="_on_BtnRewardedVideo_pressed"]
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]
+[connection signal="interstitial_clicked" from="AdMob" to="." method="_on_AdMob_interstitial_clicked"]
 [connection signal="interstitial_closed" from="AdMob" to="." method="_on_AdMob_interstitial_closed"]
 [connection signal="interstitial_failed_to_load" from="AdMob" to="." method="_on_AdMob_interstitial_failed_to_load"]
+[connection signal="interstitial_impression" from="AdMob" to="." method="_on_AdMob_interstitial_impression"]
 [connection signal="interstitial_loaded" from="AdMob" to="." method="_on_AdMob_interstitial_loaded"]
+[connection signal="interstitial_opened" from="AdMob" to="." method="_on_AdMob_interstitial_opened"]
 [connection signal="rewarded" from="AdMob" to="." method="_on_AdMob_rewarded"]
+[connection signal="rewarded_clicked" from="AdMob" to="." method="_on_AdMob_rewarded_clicked"]
+[connection signal="rewarded_impression" from="AdMob" to="." method="_on_AdMob_rewarded_impression"]
 [connection signal="rewarded_video_closed" from="AdMob" to="." method="_on_AdMob_rewarded_video_closed"]
 [connection signal="rewarded_video_failed_to_load" from="AdMob" to="." method="_on_AdMob_rewarded_video_failed_to_load"]
-[connection signal="rewarded_video_left_application" from="AdMob" to="." method="_on_AdMob_rewarded_video_left_application"]
 [connection signal="rewarded_video_loaded" from="AdMob" to="." method="_on_AdMob_rewarded_video_loaded"]
 [connection signal="rewarded_video_opened" from="AdMob" to="." method="_on_AdMob_rewarded_video_opened"]
-[connection signal="rewarded_video_started" from="AdMob" to="." method="_on_AdMob_rewarded_video_started"]

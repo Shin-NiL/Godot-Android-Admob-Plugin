@@ -3,81 +3,112 @@ package shinnil.godot.plugin.android.godotadmob;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import org.godotengine.godot.GodotLib;
 
 
 public class GodotRewardedVideo {
-    private RewardedVideoAd rewardedVideoAd = null;
+    private RewardedAd rewardedAd = null;
+    private int instanceId;
+    private Activity activity;
 
     public void init(Activity activity, final int instanceId) {
+        this.activity = activity;
+        this.instanceId = instanceId;
         MobileAds.initialize(activity);
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity);
-        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-                Log.w("godot", "AdMob: onRewardedVideoAdLeftApplication");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_left_application", new Object[]{});
-            }
+    }
 
-            @Override
-            public void onRewardedVideoAdClosed() {
-                Log.w("godot", "AdMob: onRewardedVideoAdClosed");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_closed", new Object[]{});
-            }
+    public boolean isLoaded() {
+        return rewardedAd != null;
+    }
 
-            @Override
-            public void onRewardedVideoAdFailedToLoad(int errorCode) {
-                Log.w("godot", "AdMob: onRewardedVideoAdFailedToLoad. errorCode: " + errorCode);
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_failed_to_load", new Object[]{errorCode});
-            }
+    public void load(final String id, AdRequest adRequest) {
 
+        RewardedAd.load(activity, id, adRequest, new RewardedAdLoadCallback() {
             @Override
-            public void onRewardedVideoAdLoaded() {
-                Log.w("godot", "AdMob: onRewardedVideoAdLoaded");
+            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                super.onAdLoaded(rewardedAd);
+                setAd(rewardedAd);
+                Log.w("godot", "AdMob: onAdLoaded");
                 GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_loaded", new Object[]{});
             }
 
             @Override
-            public void onRewardedVideoAdOpened() {
-                Log.w("godot", "AdMob: onRewardedVideoAdOpened");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_opened", new Object[]{});
-            }
-
-            @Override
-            public void onRewarded(RewardItem reward) {
-                Log.w("godot", "AdMob: "
-                        + String.format(" onRewarded! currency: %s amount: %d", reward.getType(), reward.getAmount()));
-                GodotLib.calldeferred(instanceId, "_on_rewarded",
-                        new Object[]{reward.getType(), reward.getAmount()});
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-                Log.w("godot", "AdMob: onRewardedVideoStarted");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_started", new Object[]{});
-            }
-
-            @Override
-            public void onRewardedVideoCompleted() {
-                Log.w("godot", "AdMob: onRewardedVideoCompleted");
-                GodotLib.calldeferred(instanceId, "_on_rewarded_video_completed", new Object[]{});
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                // safety
+                setAd(null);
+                Log.w("godot", "AdMob: onAdFailedToLoad. errorCode: " + loadAdError.getCode());
+                GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_failed_to_load", new Object[]{loadAdError.getCode()});
             }
         });
     }
 
-    public void load(final String id, AdRequest adRequest) {
-        rewardedVideoAd.loadAd(id, adRequest);
+    public void show() {
+        if (rewardedAd != null) {
+            rewardedAd.show(activity, rewardItem -> {
+                Log.w("godot", "AdMob: "
+                        + String.format(" onRewarded! currency: %s amount: %d", rewardItem.getType(), rewardItem.getAmount()));
+                GodotLib.calldeferred(instanceId, "_on_rewarded",
+                        new Object[]{rewardItem.getType(), rewardItem.getAmount()});
+            });
+        }
     }
 
-    public void show() {
-        if (rewardedVideoAd.isLoaded()) {
-            rewardedVideoAd.show();
+    private void setAd(RewardedAd rewardedAd) {
+        // Avoid memory leaks.
+        if (this.rewardedAd != null)
+            this.rewardedAd.setFullScreenContentCallback(null);
+        if (rewardedAd != null) {
+            rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdClicked() {
+                    super.onAdClicked();
+                    Log.w("godot", "AdMob: onAdClicked");
+                    GodotLib.calldeferred(instanceId, "_on_rewarded_clicked", new Object[]{});
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    super.onAdDismissedFullScreenContent();
+                    // TODO: Test if new video ads are loaded
+//                    setAd(null);
+//                    RewardedAd.load(activity, id, adRequest, rewardedAdLoadCallback);
+                    Log.w("godot", "AdMob: onAdDismissedFullScreenContent");
+                    GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_closed", new Object[]{});
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                    super.onAdFailedToShowFullScreenContent(adError);
+                    Log.w("godot", "AdMob: onAdFailedToShowFullScreenContent");
+                    GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_failed_to_load", new Object[]{adError.getCode()});
+                }
+
+                @Override
+                public void onAdImpression() {
+                    super.onAdImpression();
+                    Log.w("godot", "AdMob: onAdImpression");
+                    GodotLib.calldeferred(instanceId, "_on_rewarded_impression", new Object[]{});
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    super.onAdShowedFullScreenContent();
+                    Log.w("godot", "AdMob: onAdShowedFullScreenContent");
+                    GodotLib.calldeferred(instanceId, "_on_rewarded_video_ad_opened", new Object[]{});
+                }
+            });
         }
+        this.rewardedAd = rewardedAd;
     }
 }

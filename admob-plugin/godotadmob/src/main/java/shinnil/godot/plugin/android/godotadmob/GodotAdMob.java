@@ -43,6 +43,7 @@ public class GodotAdMob extends GodotPlugin {
     private FrameLayout layout = null; // Store the layout
 
     private RewardedVideo rewardedVideo = null; // Rewarded Video object
+    private RewardedInterstitial rewardedInterstitial = null; // Rewarded Interstitial object
     private Interstitial interstitial = null; // Interstitial object
     private Banner banner = null; // Banner object
 
@@ -84,6 +85,13 @@ public class GodotAdMob extends GodotPlugin {
         signals.add(new SignalInfo("on_rewarded_video_ad_failed_to_load", Integer.class));
         signals.add(new SignalInfo("on_rewarded_video_ad_loaded"));
         signals.add(new SignalInfo("on_rewarded_video_ad_opened"));
+
+        signals.add(new SignalInfo("on_rewarded_interstitial_ad_loaded"));
+        signals.add(new SignalInfo("on_rewarded_interstitial_ad_opened"));
+        signals.add(new SignalInfo("on_rewarded_interstitial_ad_closed"));
+        signals.add(new SignalInfo("on_rewarded_interstitial_ad_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("on_rewarded_interstitial_ad_failed_to_show", Integer.class));
+
         signals.add(new SignalInfo("on_rewarded", String.class, Integer.class));
         signals.add(new SignalInfo("on_rewarded_clicked"));
         signals.add(new SignalInfo("on_rewarded_impression"));
@@ -248,6 +256,75 @@ public class GodotAdMob extends GodotPlugin {
                 return;
             }
             rewardedVideo.show();
+        });
+    }
+
+    /* Rewarded Interstitial
+     * ********************************************************************** */
+
+    /**
+     * Load a Rewarded Interstitial
+     *
+     * @param id AdMod Rewarded interstitial ID
+     */
+    @UsedByGodot
+    public void loadRewardedInterstitial(final String id) {
+        activity.runOnUiThread(() -> {
+            rewardedInterstitial = new RewardedInterstitial(activity, new RewardedInterstitialListener() {
+                @Override
+                public void onRewardedInterstitialLoaded() {
+                    emitSignal("on_rewarded_interstitial_ad_loaded");
+                }
+
+                @Override
+                public void onRewardedInterstitialOpened() {
+                    emitSignal("on_rewarded_interstitial_ad_opened");
+                }
+
+                @Override
+                public void onRewardedInterstitialClosed() {
+                    emitSignal("on_rewarded_interstitial_ad_closed");
+                }
+
+                @Override
+                public void onRewardedInterstitialFailedToLoad(int errorCode) {
+                    emitSignal("on_rewarded_interstitial_ad_failed_to_load", errorCode);
+                }
+
+                @Override
+                public void onRewardedInterstitialFailedToShow(int errorCode) {
+                    emitSignal("on_rewarded_interstitial_ad_failed_to_show", errorCode);
+                }
+
+                @Override
+                public void onRewarded(String type, int amount) {
+                    emitSignal("on_rewarded", type, amount);
+                }
+
+                @Override
+                public void onRewardedClicked() {
+                    emitSignal("on_rewarded_clicked");
+                }
+
+                @Override
+                public void onRewardedAdImpression() {
+                    emitSignal("on_rewarded_impression");
+                }
+            });
+            rewardedInterstitial.load(id, getAdRequest());
+        });
+    }
+
+    /**
+     * Show a Rewarded Interstitial
+     */
+    @UsedByGodot
+    public void showRewardedInterstitial() {
+        activity.runOnUiThread(() -> {
+            if (rewardedInterstitial == null) {
+                return;
+            }
+            rewardedInterstitial.show();
         });
     }
 

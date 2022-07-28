@@ -12,6 +12,7 @@ func loadAds() -> void:
 	admob.load_banner()
 	admob.load_interstitial()
 	admob.load_rewarded_video()
+	admob.load_rewarded_interstitial()
 
 # buttons callbacks
 func _on_BtnReload_pressed() -> void:
@@ -39,6 +40,11 @@ func _on_BtnRewardedVideo_pressed():
 	debug_out.text = debug_out.text + "Rewarded loaded before shown = " + str(admob.is_rewarded_video_loaded()) +"\n"
 	admob.show_rewarded_video()
 	debug_out.text = debug_out.text + "Rewarded loaded after shown = " + str(admob.is_rewarded_video_loaded()) +"\n"
+
+func _on_BtnRewardedInterstitial_pressed() -> void:
+	debug_out.text = debug_out.text + "Rewarded interstitial loaded before shown = " + str(admob.is_rewarded_interstitial_loaded()) +"\n"
+	admob.show_rewarded_interstitial()
+	debug_out.text = debug_out.text + "Rewarded interstitial loaded after shown = " + str(admob.is_rewarded_interstitial_loaded()) +"\n"
 
 # AdMob callbacks
 func _on_resize():
@@ -101,3 +107,21 @@ func _on_AdMob_rewarded_video_loaded():
 
 func _on_AdMob_rewarded_video_opened():
 	debug_out.text = debug_out.text + "Rewarded video opened\n"
+
+func _on_AdMob_rewarded_interstitial_loaded() -> void:
+	$CanvasLayer/BtnRewardedInterstitial.disabled = false
+	debug_out.text = debug_out.text + "Rewarded interstitial loaded\n"
+
+func _on_AdMob_rewarded_interstitial_opened() -> void:
+	debug_out.text = debug_out.text + "Rewarded interstitial opened\n"
+
+func _on_AdMob_rewarded_interstitial_closed() -> void:
+	debug_out.text = debug_out.text + "Rewarded interstitial closed\n"
+	$CanvasLayer/BtnRewardedInterstitial.disabled = true
+	admob.load_rewarded_interstitial()
+
+func _on_AdMob_rewarded_interstitial_failed_to_load(error_code) -> void:
+	debug_out.text = debug_out.text + "Rewarded interstitial failed to load: Error code " + str(error_code) + "\n"
+
+func _on_AdMob_rewarded_interstitial_failed_to_show(error_code) -> void:
+	debug_out.text = debug_out.text + "Rewarded interstitial failed to show: Error code " + str(error_code) + "\n"

@@ -107,7 +107,7 @@ public class Interstitial {
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 super.onAdLoaded(interstitialAd);
                 setAd(interstitialAd);
-                Log.w("godot", "AdMob: onAdLoaded");
+                Log.w("godot", "AdMob: onAdLoaded: interstitial");
                 defaultInterstitialListener.onInterstitialLoaded();
             }
 

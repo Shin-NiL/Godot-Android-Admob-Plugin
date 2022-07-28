@@ -10,32 +10,28 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
-interface RewardedVideoListener {
-    void onRewardedVideoLoaded();
-    void onRewardedVideoFailedToLoad(int errorCode);
-    void onRewardedVideoOpened();
-    void onRewardedVideoClosed();
+interface RewardedInterstitialListener {
+    void onRewardedInterstitialLoaded();
+    void onRewardedInterstitialOpened();
+    void onRewardedInterstitialClosed();
+    void onRewardedInterstitialFailedToLoad(int errorCode);
+    void onRewardedInterstitialFailedToShow(int errorCode);
     void onRewarded(String type, int amount);
-    /* Removed in GMS Ads SDK version 19 or 20.
-    void onRewardedVideoStarted();
-    void onRewardedVideoCompleted();
-    */
-    // new
     void onRewardedClicked();
     void onRewardedAdImpression();
 }
 
-public class RewardedVideo {
-    private RewardedAd rewardedAd = null;
+public class RewardedInterstitial {
+    private RewardedInterstitialAd rewardedAd = null;
     private final Activity activity;
-    private final RewardedVideoListener defaultRewardedVideoListener;
+    private final RewardedInterstitialListener defaultRewardedInterstitialListener;
 
-    public RewardedVideo(Activity activity, final RewardedVideoListener defaultRewardedVideoListener) {
+    public RewardedInterstitial(Activity activity, final RewardedInterstitialListener defaultRewardedInterstitialListener) {
         this.activity = activity;
-        this.defaultRewardedVideoListener = defaultRewardedVideoListener;
+        this.defaultRewardedInterstitialListener = defaultRewardedInterstitialListener;
         MobileAds.initialize(activity);
     }
 
@@ -45,13 +41,13 @@ public class RewardedVideo {
 
     public void load(final String id, AdRequest adRequest) {
 
-        RewardedAd.load(activity, id, adRequest, new RewardedAdLoadCallback() {
+        RewardedInterstitialAd.load(activity, id, adRequest, new RewardedInterstitialAdLoadCallback() {
             @Override
-            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+            public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedAd) {
                 super.onAdLoaded(rewardedAd);
                 setAd(rewardedAd);
-                Log.w("godot", "AdMob: onAdLoaded: rewarded video");
-                defaultRewardedVideoListener.onRewardedVideoLoaded();
+                Log.w("godot", "AdMob: onAdLoaded: rewarded interstitial");
+                defaultRewardedInterstitialListener.onRewardedInterstitialLoaded();
             }
 
             @Override
@@ -60,7 +56,7 @@ public class RewardedVideo {
                 // safety
                 setAd(null);
                 Log.w("godot", "AdMob: onAdFailedToLoad. errorCode: " + loadAdError.getCode());
-                defaultRewardedVideoListener.onRewardedVideoFailedToLoad(loadAdError.getCode());
+                defaultRewardedInterstitialListener.onRewardedInterstitialFailedToLoad(loadAdError.getCode());
             }
         });
     }
@@ -70,12 +66,12 @@ public class RewardedVideo {
             rewardedAd.show(activity, rewardItem -> {
                 Log.w("godot", "AdMob: "
                         + String.format(" onRewarded! currency: %s amount: %d", rewardItem.getType(), rewardItem.getAmount()));
-                defaultRewardedVideoListener.onRewarded(rewardItem.getType(), rewardItem.getAmount());
+                defaultRewardedInterstitialListener.onRewarded(rewardItem.getType(), rewardItem.getAmount());
             });
         }
     }
 
-    private void setAd(RewardedAd rewardedAd) {
+    private void setAd(RewardedInterstitialAd rewardedAd) {
         // Avoid memory leaks.
         if (this.rewardedAd != null)
             this.rewardedAd.setFullScreenContentCallback(null);
@@ -85,7 +81,7 @@ public class RewardedVideo {
                 public void onAdClicked() {
                     super.onAdClicked();
                     Log.w("godot", "AdMob: onAdClicked");
-                    defaultRewardedVideoListener.onRewardedClicked();
+                    defaultRewardedInterstitialListener.onRewardedClicked();
                 }
 
                 @Override
@@ -95,28 +91,28 @@ public class RewardedVideo {
 //                    setAd(null);
 //                    RewardedAd.load(activity, id, adRequest, rewardedAdLoadCallback);
                     Log.w("godot", "AdMob: onAdDismissedFullScreenContent");
-                    defaultRewardedVideoListener.onRewardedVideoClosed();
+                    defaultRewardedInterstitialListener.onRewardedInterstitialClosed();
                 }
 
                 @Override
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     super.onAdFailedToShowFullScreenContent(adError);
                     Log.w("godot", "AdMob: onAdFailedToShowFullScreenContent");
-                    defaultRewardedVideoListener.onRewardedVideoFailedToLoad(adError.getCode());
+                    defaultRewardedInterstitialListener.onRewardedInterstitialFailedToShow(adError.getCode());
                 }
 
                 @Override
                 public void onAdImpression() {
                     super.onAdImpression();
                     Log.w("godot", "AdMob: onAdImpression");
-                    defaultRewardedVideoListener.onRewardedAdImpression();
+                    defaultRewardedInterstitialListener.onRewardedAdImpression();
                 }
 
                 @Override
                 public void onAdShowedFullScreenContent() {
                     super.onAdShowedFullScreenContent();
                     Log.w("godot", "AdMob: onAdShowedFullScreenContent");
-                    defaultRewardedVideoListener.onRewardedVideoOpened();
+                    defaultRewardedInterstitialListener.onRewardedInterstitialOpened();
                 }
             });
         }

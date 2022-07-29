@@ -14,8 +14,13 @@ signal interstitial_impression
 signal rewarded_video_opened
 signal rewarded_video_loaded
 signal rewarded_video_closed
-signal rewarded(currency, ammount)
 signal rewarded_video_failed_to_load(error_code)
+signal rewarded_interstitial_opened
+signal rewarded_interstitial_loaded
+signal rewarded_interstitial_closed
+signal rewarded_interstitial_failed_to_load(error_code)
+signal rewarded_interstitial_failed_to_show(error_code)
+signal rewarded(currency, amount)
 signal rewarded_clicked
 signal rewarded_impression
 
@@ -27,6 +32,7 @@ export(String, "ADAPTIVE_BANNER", "SMART_BANNER", "BANNER", "LARGE_BANNER", "MED
 export var banner_id:String
 export var interstitial_id:String
 export var rewarded_id:String
+export var rewarded_interstitial_id:String
 export var child_directed:bool = false setget child_directed_set
 export var is_personalized:bool = true setget is_personalized_set
 export(String, "G", "PG", "T", "MA") var max_ad_content_rate = "G" setget max_ad_content_rate_set
@@ -35,6 +41,7 @@ export(String, "G", "PG", "T", "MA") var max_ad_content_rate = "G" setget max_ad
 var _admob_singleton = null
 var _is_interstitial_loaded:bool = false
 var _is_rewarded_video_loaded:bool = false
+var _is_rewarded_interstitial_loaded:bool = false
 
 
 func _enter_tree():
@@ -97,10 +104,15 @@ func connect_signals() -> void:
 	_admob_singleton.connect("on_interstitial_clicked", self, "_on_interstitial_clicked")
 	_admob_singleton.connect("on_interstitial_impression", self, "_on_interstitial_impression")
 	_admob_singleton.connect("on_rewarded_video_ad_loaded", self, "_on_rewarded_video_ad_loaded")
-	_admob_singleton.connect("on_rewarded_video_ad_closed", self, "_on_rewarded_video_ad_closed")
-	_admob_singleton.connect("on_rewarded", self, "_on_rewarded")
-	_admob_singleton.connect("on_rewarded_video_ad_failed_to_load", self, "_on_rewarded_video_ad_failed_to_load")
 	_admob_singleton.connect("on_rewarded_video_ad_opened", self, "_on_rewarded_video_ad_opened")
+	_admob_singleton.connect("on_rewarded_video_ad_closed", self, "_on_rewarded_video_ad_closed")
+	_admob_singleton.connect("on_rewarded_video_ad_failed_to_load", self, "_on_rewarded_video_ad_failed_to_load")
+	_admob_singleton.connect("on_rewarded_interstitial_ad_loaded", self, "_on_rewarded_interstitial_ad_loaded")
+	_admob_singleton.connect("on_rewarded_interstitial_ad_opened", self, "_on_rewarded_interstitial_ad_opened")
+	_admob_singleton.connect("on_rewarded_interstitial_ad_closed", self, "_on_rewarded_interstitial_ad_closed")
+	_admob_singleton.connect("on_rewarded_interstitial_ad_failed_to_load", self, "_on_rewarded_interstitial_ad_failed_to_load")
+	_admob_singleton.connect("on_rewarded_interstitial_ad_failed_to_show", self, "_on_rewarded_interstitial_ad_failed_to_show")
+	_admob_singleton.connect("on_rewarded", self, "_on_rewarded")
 	_admob_singleton.connect("on_rewarded_clicked", self, "_on_rewarded_clicked")
 	_admob_singleton.connect("on_rewarded_impression", self, "_on_rewarded_impression")
 
@@ -128,6 +140,15 @@ func is_rewarded_video_loaded() -> bool:
 		return _is_rewarded_video_loaded
 	return false
 
+func load_rewarded_interstitial() -> void:
+	if _admob_singleton != null:
+		_admob_singleton.loadRewardedInterstitial(rewarded_interstitial_id)
+
+func is_rewarded_interstitial_loaded() -> bool:
+	if _admob_singleton != null:
+		return _is_rewarded_interstitial_loaded
+	return false
+
 # show / hide
 
 func show_banner() -> void:
@@ -152,6 +173,11 @@ func show_rewarded_video() -> void:
 	if _admob_singleton != null:
 		_admob_singleton.showRewardedVideo()
 		_is_rewarded_video_loaded = false
+
+func show_rewarded_interstitial() -> void:
+	if _admob_singleton != null:
+		_admob_singleton.showRewardedInterstitial()
+		_is_rewarded_interstitial_loaded = false
 
 # resize
 
@@ -197,22 +223,39 @@ func _on_rewarded_video_ad_loaded() -> void:
 	_is_rewarded_video_loaded = true
 	emit_signal("rewarded_video_loaded")
 
+func _on_rewarded_video_ad_opened() -> void:
+	emit_signal("rewarded_video_opened")
+
 func _on_rewarded_video_ad_closed() -> void:
 	emit_signal("rewarded_video_closed")
-
-func _on_rewarded(currency:String, amount:int) -> void:
-	emit_signal("rewarded", currency, amount)
 
 func _on_rewarded_video_ad_failed_to_load(error_code:int) -> void:
 	_is_rewarded_video_loaded = false
 	emit_signal("rewarded_video_failed_to_load", error_code)
 
-func _on_rewarded_video_ad_opened() -> void:
-	emit_signal("rewarded_video_opened")
+func _on_rewarded_interstitial_ad_opened() -> void:
+	emit_signal("rewarded_interstitial_opened")
+
+func _on_rewarded_interstitial_ad_loaded() -> void:
+	_is_rewarded_interstitial_loaded = true
+	emit_signal("rewarded_interstitial_loaded")
+
+func _on_rewarded_interstitial_ad_closed() -> void:
+	emit_signal("rewarded_interstitial_closed")
+
+func _on_rewarded_interstitial_ad_failed_to_load(error_code:int) -> void:
+	_is_rewarded_interstitial_loaded = false
+	emit_signal("rewarded_interstitial_failed_to_load", error_code)
+
+func _on_rewarded_interstitial_ad_failed_to_show(error_code:int) -> void:
+	_is_rewarded_interstitial_loaded = false
+	emit_signal("rewarded_interstitial_failed_to_show", error_code)
+
+func _on_rewarded(currency:String, amount:int) -> void:
+	emit_signal("rewarded", currency, amount)
 
 func _on_rewarded_clicked() -> void:
 	emit_signal("rewarded_clicked")
 
 func _on_rewarded_impression() -> void:
 	emit_signal("rewarded_impression")
-

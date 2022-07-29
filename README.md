@@ -6,6 +6,7 @@ Currently, this plugin supports:
 - Banner
 - Interstitial
 - Rewarded Video
+- [Rewarded Interstitial](https://developers.google.com/admob/android/rewarded-interstitial)
 
 ## Setup
 
@@ -105,6 +106,10 @@ interstitial_id
 # type String, optional
 rewarded_id
 
+# Your app rewarded interstitial ad ID
+# type String, optional
+rewarded_interstitial_id
+
 # If true, set the ads to children directed. If true, max_ad_content_rate will be ignored (your max_ad_content_rate would can not be other than "G")
 # type bool, default false
 child_directed
@@ -130,6 +135,9 @@ load_interstitial()
 # Load the rewarded video ad
 load_rewarded_video()
 
+# Load the rewarded interstitial ad
+load_rewarded_interstitial()
+
 # Show the banner ad
 show_banner()
 
@@ -145,6 +153,9 @@ show_interstitial()
 # Show the rewarded video ad
 show_rewarded_video()
 
+# Show the rewarded interstitial ad
+show_rewarded_interstitial()
+
 # Check if the interstitial ad is loaded
 # @return bool true if is loaded
 is_interstitial_loaded()
@@ -152,6 +163,10 @@ is_interstitial_loaded()
 # Check if the rewarded video ad is loaded
 # @return bool true if is loaded
 is_rewarded_video_loaded()
+
+# Check if the rewarded interstitial ad is loaded
+# @return bool true if is loaded
+is_rewarded_interstitial_loaded()
 
 # Resize the banner (useful when the orientation changes for example)
 banner_resize()
@@ -198,14 +213,31 @@ rewarded_video_opened
 # Rewarded video ad was closed
 rewarded_video_closed
 
-# Rewarded video ad was watched and will reward the user
-# @param String currency The reward item description, ex: coin
-# @param int amount The reward item amount
-rewarded(currency, amount)
-
 # Rewarded video ad has failed to load
 # @param int error_code the error code
 rewarded_video_failed_to_load(error_code)
+
+# Rewarded interstitial ad was loaded with success
+rewarded_interstitial_loaded
+
+# Rewarded interstitial ad was opened
+rewarded_interstitial_opened
+
+# Rewarded interstitial ad was closed
+rewarded_interstitial_closed
+
+# Rewarded interstitial ad has failed to load
+# @param int error_code the error code
+rewarded_interstitial_failed_to_load(error_code)
+
+# Rewarded interstitial ad has failed to show
+# @param int error_code the error code
+rewarded_interstitial_failed_to_show(error_code)
+
+# Rewarded video/interstitial ad was watched and will reward the user
+# @param String currency The reward item description, ex: coin
+# @param int amount The reward item amount
+rewarded(currency, amount)
 
 # Rewarded video was clicked
 rewarded_clicked

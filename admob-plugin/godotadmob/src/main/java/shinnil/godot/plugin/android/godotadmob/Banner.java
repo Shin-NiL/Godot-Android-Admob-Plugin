@@ -40,7 +40,7 @@ public class Banner {
         AddBanner(id, (isOnTop ? Gravity.TOP : Gravity.BOTTOM), getAdSize(bannerSize), new AdListener() {
             @Override
             public void onAdLoaded() {
-                Log.w("godot", "AdMob: onAdLoaded");
+                Log.w("godot", "AdMob: onAdLoaded: banner");
                 defaultBannerListener.onBannerLoaded();
             }
 

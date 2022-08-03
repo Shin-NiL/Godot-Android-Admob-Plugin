@@ -39,6 +39,17 @@ One good place to add this metadata is just below these lines, inside of the **a
 Here
 </application>
 ```
+- To avoid the mergeDex error, enable the multidex support. Edit the file ```res://android/build/build.gradle``` and insert the line `multiDexEnabled = true` inside the `android` => `defaultConfig`:
+```
+android {
+    defaultConfig {
+        ...
+        multiDexEnabled = true
+        ...
+    }
+}
+```
+
 - (Temporary workaround, not required for Godot 3.5 and later) edit the file ```res://android/build/config.gradle``` to set proper SDK version.  Change compileSdk to 30 and buildTools to '30.0.0'
 Play services after version 20.4.0 require compileSdk 31 or higher.  Applications will not compile with 30.  The Godot 3.x, branch after 3.4, sets the compileSdk to 32, which is why Godot 3.5 will no longer require this step to modify config.gradle.
 

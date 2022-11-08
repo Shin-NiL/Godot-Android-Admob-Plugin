@@ -1,18 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 // TODO: Copy config.gradle from the build template of a specific Godot version.
 apply from: "../demo/android/build/config.gradle"
+apply from: 'version.gradle'
 
 buildscript {
     apply from: "../demo/android/build/config.gradle"
-    ext.gradle_plugin_version = versions.androidGradlePlugin
 
     repositories {
         google()
         mavenCentral()
-        
     }
+
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradle_plugin_version"
+        classpath "com.android.tools.build:gradle:${versions.androidGradlePlugin}"
 
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -24,7 +24,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        
     }
 }
 

@@ -2,9 +2,6 @@ plugins {
     id 'com.android.library'
 }
 
-ext.pluginVersionCode = 7
-ext.pluginVersionName = "6.1.1"
-
 android {
     compileSdk versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -38,11 +35,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     compileOnly project(':godot-lib.release')
-    // Greater than 20.4.0 requires compileSdk >= 31
-    implementation 'com.google.android.gms:play-services-ads:21.1.0'
+    implementation "com.google.android.gms:play-services-ads:${playServicesAdsVersion}"
 
-    // Greater than 1.3.1 requires compileSdk >= 31
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation "androidx.appcompat:appcompat:${appcompatVersion}"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

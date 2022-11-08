@@ -3,6 +3,7 @@
 *.import
 .import
 .mono
+.idea
 *.o
 demo/android
 tools/releases

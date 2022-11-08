@@ -1,0 +1,4 @@
+ext.pluginVersionCode = 7
+ext.pluginVersionName = "6.1.1"
+ext.playServicesAdsVersion = "21.3.0"
+ext.appcompatVersion = "1.5.1"

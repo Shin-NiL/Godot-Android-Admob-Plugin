@@ -16,10 +16,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -186.0
+margin_left = -75.0
 margin_top = 120.0
-margin_right = 194.0
-margin_bottom = 179.0
+margin_right = 305.0
+margin_bottom = 208.0
 text = "
 "
 scroll_following = true
@@ -61,9 +61,28 @@ margin_right = -101.0
 margin_bottom = 9.37061
 disabled = true
 text = "Resize Banner"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="BtnRequestConsentInfoUpdate" type="Button" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -251.0
+margin_top = 31.0
+margin_right = -101.0
+margin_bottom = 106.0
+text = "Request Consent"
+
+[node name="BtnResetConsent" type="Button" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -251.0
+margin_top = 120.0
+margin_right = -101.0
+margin_bottom = 195.0
+text = "Reset Consent"
 
 [node name="BtnBanner" type="Button" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -129,12 +148,17 @@ is_personalized = false
 [connection signal="pressed" from="CanvasLayer/BtnReload" to="." method="_on_BtnReload_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnInterstitial" to="." method="_on_BtnInterstitial_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnBannerResize" to="." method="_on_BtnBannerResize_pressed"]
+[connection signal="pressed" from="CanvasLayer/BtnRequestConsentInfoUpdate" to="." method="_on_BtnRequestConsentInfoUpdate_pressed"]
+[connection signal="pressed" from="CanvasLayer/BtnResetConsent" to="." method="_on_BtnResetConsent_pressed"]
 [connection signal="toggled" from="CanvasLayer/BtnBanner" to="." method="_on_BtnBanner_toggled"]
 [connection signal="toggled" from="CanvasLayer/BtnBannerMove" to="." method="_on_BtnBannerMove_toggled"]
 [connection signal="pressed" from="CanvasLayer/BtnRewardedVideo" to="." method="_on_BtnRewardedVideo_pressed"]
 [connection signal="pressed" from="CanvasLayer/BtnRewardedInterstitial" to="." method="_on_BtnRewardedInterstitial_pressed"]
 [connection signal="banner_failed_to_load" from="AdMob" to="." method="_on_AdMob_banner_failed_to_load"]
 [connection signal="banner_loaded" from="AdMob" to="." method="_on_AdMob_banner_loaded"]
+[connection signal="consent_app_can_request_ad" from="AdMob" to="." method="_on_AdMob_consent_app_can_request_ad"]
+[connection signal="consent_info_update_failure" from="AdMob" to="." method="_on_AdMob_consent_info_update_failure"]
+[connection signal="consent_info_update_success" from="AdMob" to="." method="_on_AdMob_consent_info_update_success"]
 [connection signal="interstitial_clicked" from="AdMob" to="." method="_on_AdMob_interstitial_clicked"]
 [connection signal="interstitial_closed" from="AdMob" to="." method="_on_AdMob_interstitial_closed"]
 [connection signal="interstitial_failed_to_load" from="AdMob" to="." method="_on_AdMob_interstitial_failed_to_load"]

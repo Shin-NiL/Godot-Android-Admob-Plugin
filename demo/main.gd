@@ -4,7 +4,12 @@ onready var admob = $AdMob
 onready var debug_out = $CanvasLayer/DebugOut
 
 func _ready():
-	loadAds()
+	
+	if not admob.ads_using_consent:
+		print('Ads without consent verification')
+		loadAds()
+	else:
+		print('Ads with consent')
 # warning-ignore:return_value_discarded
 	get_tree().connect("screen_resized", self, "_on_resize")
 
@@ -125,3 +130,26 @@ func _on_AdMob_rewarded_interstitial_failed_to_load(error_code) -> void:
 
 func _on_AdMob_rewarded_interstitial_failed_to_show(error_code) -> void:
 	debug_out.text = debug_out.text + "Rewarded interstitial failed to show: Error code " + str(error_code) + "\n"
+
+func _on_BtnRequestConsentInfoUpdate_pressed():
+	debug_out.text = debug_out.text + "Request Consent\n"
+	admob.request_consent_info_update()
+	
+
+
+func _on_BtnResetConsent_pressed():
+	debug_out.text = debug_out.text + "RESET Consent\n"
+	admob.reset_consent()
+
+
+func _on_AdMob_consent_app_can_request_ad(consent_status):
+	debug_out.text = debug_out.text + 'App can start requesting ads.'
+	print('App can start requesting ads.')
+	loadAds()
+
+func _on_AdMob_consent_info_update_failure(error_code, error_message):
+	debug_out.text = debug_out.text + 'Consent failure: ' + "(" + str(error_code) + "," + error_message + ")"
+
+
+func _on_AdMob_consent_info_update_success():
+	debug_out.text = debug_out.text + '_on_AdMob_consent_info_update_success'

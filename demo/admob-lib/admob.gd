@@ -24,6 +24,11 @@ signal rewarded(currency, amount)
 signal rewarded_clicked
 signal rewarded_impression
 
+signal consent_info_update_success
+signal consent_info_update_failure(error_code, error_message)
+signal consent_app_can_request_ad(consent_status)
+
+
 # properties
 export var is_real:bool setget is_real_set
 export var banner_on_top:bool = true
@@ -36,6 +41,11 @@ export var rewarded_interstitial_id:String
 export var child_directed:bool = false setget child_directed_set
 export var is_personalized:bool = true setget is_personalized_set
 export(String, "G", "PG", "T", "MA") var max_ad_content_rate = "G" setget max_ad_content_rate_set
+
+# Testing consent flag
+export var ads_using_consent:bool setget ads_using_consent
+export var testing_consent:bool setget testing_consent_set
+
 
 # "private" properties
 var _admob_singleton = null
@@ -53,6 +63,12 @@ func is_real_set(new_val) -> void:
 	is_real = new_val
 # warning-ignore:return_value_discarded
 	init()
+
+func testing_consent_set(new_val) -> void:
+	testing_consent = new_val
+
+func ads_using_consent(new_val) -> void:
+	ads_using_consent = new_val
 
 func child_directed_set(new_val) -> void:
 	child_directed = new_val
@@ -115,6 +131,10 @@ func connect_signals() -> void:
 	_admob_singleton.connect("on_rewarded", self, "_on_rewarded")
 	_admob_singleton.connect("on_rewarded_clicked", self, "_on_rewarded_clicked")
 	_admob_singleton.connect("on_rewarded_impression", self, "_on_rewarded_impression")
+
+	_admob_singleton.connect("on_consent_info_update_success", self, "_on_consent_info_update_success")
+	_admob_singleton.connect("on_consent_info_update_failure", self, "_on_consent_info_update_failure")
+	_admob_singleton.connect("on_app_can_request_ads", self, "_on_app_can_request_ads")
 
 # load
 
@@ -191,6 +211,14 @@ func get_banner_dimension() -> Vector2:
 		return Vector2(_admob_singleton.getBannerWidth(), _admob_singleton.getBannerHeight())
 	return Vector2()
 
+func request_consent_info_update() -> void:
+	if _admob_singleton != null:
+		_admob_singleton.requestConsentInfoUpdate(testing_consent)
+
+func reset_consent() -> void:
+	if _admob_singleton != null:
+		_admob_singleton.resetConsentInformation()
+
 # callbacks
 
 func _on_admob_ad_loaded() -> void:
@@ -259,3 +287,12 @@ func _on_rewarded_clicked() -> void:
 
 func _on_rewarded_impression() -> void:
 	emit_signal("rewarded_impression")
+
+func _on_consent_info_update_success() -> void:
+	emit_signal("consent_info_update_success")
+	
+func _on_consent_info_update_failure(error_code:int, error_message:String) -> void:
+	emit_signal("consent_info_update_failure", error_code, error_message)
+	
+func _on_app_can_request_ads(consent_status:int) -> void:
+	emit_signal("consent_app_can_request_ad", consent_status)

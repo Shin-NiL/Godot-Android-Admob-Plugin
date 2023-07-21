@@ -132,6 +132,13 @@ is_personalized
 # Its value must be "G", "PG", "T" or "MA". If the rating of your app in Play Console and your config of max_ad_content_rate in AdMob are not matched, your app can be banned by Google
 # type String, default G
 max_ad_content_rate
+
+# If true, ads should be displayed after consent verification (calling method request_consent_info_update())
+ads_using_consent
+
+# True for testing purpose only
+# False for production environment
+testing_consent
 ```
 
 ### Methods
@@ -185,6 +192,14 @@ banner_resize()
 # Get the current banner dimension
 # @return Vector2 (width, height)
 get_banner_dimension()
+
+# Verify consent status
+request_consent_info_update()
+
+# Reset consent status
+# Should by called only for testing purpose OR 'if you decide to remove the UMP SDK completely from your project.'
+# See: https://developers.google.com/admob/android/privacy#reset_consent_state
+reset_consent()
 
 ```
 ### Signals
@@ -255,6 +270,15 @@ rewarded_clicked
 
 # The user has given an impression for a rewarded video.
 rewarded_impression
+
+# Good for nothing. Only used for debug information. 
+consent_info_update_success
+
+# Error on consent verification
+consent_info_update_failure(error_code, error_message)
+
+# Now you can show ads to user
+consent_app_can_request_ad(consent_status)
 ```
 
 ## Compiling the Plugin (optional)

@@ -19,6 +19,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 
 import org.godotengine.godot.Godot;
+import org.godotengine.godot.GodotLib;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
 import org.godotengine.godot.plugin.UsedByGodot;
@@ -46,6 +47,7 @@ public class GodotAdMob extends GodotPlugin {
     private RewardedInterstitial rewardedInterstitial = null; // Rewarded Interstitial object
     private Interstitial interstitial = null; // Interstitial object
     private Banner banner = null; // Banner object
+    private CMP cmp; // Google Consent Management Platform (CMP)
 
 
     public GodotAdMob(Godot godot) {
@@ -95,6 +97,12 @@ public class GodotAdMob extends GodotPlugin {
         signals.add(new SignalInfo("on_rewarded", String.class, Integer.class));
         signals.add(new SignalInfo("on_rewarded_clicked"));
         signals.add(new SignalInfo("on_rewarded_impression"));
+
+        signals.add(new SignalInfo("on_consent_info_update_success"));
+        signals.add(
+                new SignalInfo("on_consent_info_update_failure",
+                        Integer.class, String.class));
+        signals.add(new SignalInfo("on_app_can_request_ads", Integer.class));
 
         return signals;
     }
@@ -486,6 +494,40 @@ public class GodotAdMob extends GodotPlugin {
                 interstitial.show();
             }
         });
+    }
+
+    /* ConsentInformation
+     * ********************************************************************** */
+    @UsedByGodot
+    public void requestConsentInfoUpdate(final boolean testingConsent){
+
+        activity.runOnUiThread(() -> cmp = new CMP(activity,
+                testingConsent,
+                testingConsent ? getAdMobDeviceId() : "",
+                new CMPListener() {
+            @Override
+            public void onConsentInfoUpdateSuccess() {
+                emitSignal("on_consent_info_update_success");
+            }
+
+            @Override
+            public void onConsentInfoUpdateFailure(int errorCode, String errorMessage) {
+                emitSignal("on_consent_info_update_failure", errorCode, errorMessage);
+            }
+
+            @Override
+            public void onAppCanRequestAds(int consentStatus) {
+                emitSignal("on_app_can_request_ads", consentStatus);
+            }
+        }));
+    }
+
+    @UsedByGodot
+    public void resetConsentInformation(){
+        Log.w("godot", "Removing consent: ");
+        if(cmp != null) {
+            cmp.resetConsentInformation();
+        }
     }
 
     /* Utils

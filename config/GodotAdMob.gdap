@@ -2,8 +2,8 @@
 
 name="GodotAdMob"
 binary_type="local"
-binary="GodotAdMob.6.1.1.release.aar"
+binary="GodotAdMob.6.2.0.release.aar"
 
 [dependencies]
 
-remote=["com.google.android.gms:play-services-ads:21.3.0", "androidx.appcompat:appcompat:1.5.1"]
+remote=["com.google.android.gms:play-services-ads:22.2.0", "androidx.appcompat:appcompat:1.5.1"]

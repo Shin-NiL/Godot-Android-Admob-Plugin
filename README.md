@@ -144,6 +144,9 @@ testing_consent
 ### Methods
 ```python
 
+# Initialize AdMob on a background thread for optimization
+initialize_on_background_thread()
+
 # Load the banner (and show inmediatly)
 load_banner()
 
@@ -204,6 +207,9 @@ reset_consent()
 ```
 ### Signals
 ```python
+# AdMob Background Initialization Success
+admob_initialized
+
 # Banner ad was loaded with success
 banner_loaded
 
@@ -313,6 +319,19 @@ adb logcat -s godot
 * Any other error code: you can find more information about the error codes [here](https://support.google.com/admob/thread/3494603). Please don't open issues on this repository asking for help about that, as we can't provide any, sorry.
 
 * Banner sizes: [Adaptive Banners](https://developers.google.com/admob/android/banner/adaptive) and [Smart Banners](https://developers.google.com/admob/android/banner/smart) uses dynamic banner sizes, the [other options](https://developers.google.com/admob/android/banner) uses fixed sizes, please check its respectives documentation for more details. Smart banners are deprecated and may not work properly.
+
+## Optimize AdMob
+
+To prevent ["Application Not Responding" (ANR)](https://developer.android.com/topic/performance/vitals/anr) issues, you can follow some of the optimization strategies mentioned below.
+
+Before making any method calls to load ads, call `initialize_on_background_thread()` to initialize AdMob. The signal `admob_initialized` will be triggered, indicating that the initialization was successful.
+
+Alternatively, you can update your manifest with the optimization flag `OPTIMIZE_INITIALIZATION` to improve initialization without using a background thread.
+
+You can also use the `OPTIMIZE_AD_LOADING` flag to improve ad loading performance.
+
+Learn more at [Optimize initialization and ad loading (Beta)](https://developers.google.com/admob/android/optimize-initialization).
+
 
 ## References
 

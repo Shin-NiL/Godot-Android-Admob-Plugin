@@ -3,6 +3,8 @@ extends Node
 class_name AdMob, "res://admob-lib/icon.png"
 
 # signals
+signal admob_initialized
+
 signal banner_loaded
 signal banner_failed_to_load(error_code)
 signal interstitial_failed_to_load(error_code)
@@ -111,6 +113,8 @@ func init() -> bool:
 
 # connect the AdMob Java signals
 func connect_signals() -> void:
+	_admob_singleton.connect("on_admob_initialized", self, "_on_admob_initialized")
+
 	_admob_singleton.connect("on_admob_ad_loaded", self, "_on_admob_ad_loaded")
 	_admob_singleton.connect("on_admob_banner_failed_to_load", self, "_on_admob_banner_failed_to_load")
 	_admob_singleton.connect("on_interstitial_failed_to_load", self, "_on_interstitial_failed_to_load")
@@ -135,6 +139,12 @@ func connect_signals() -> void:
 	_admob_singleton.connect("on_consent_info_update_success", self, "_on_consent_info_update_success")
 	_admob_singleton.connect("on_consent_info_update_failure", self, "_on_consent_info_update_failure")
 	_admob_singleton.connect("on_app_can_request_ads", self, "_on_app_can_request_ads")
+
+
+# initialize
+func initialize_on_background_thread() -> void:
+	if _admob_singleton != null:
+		_admob_singleton.initializeOnBackgroundThread()
 
 # load
 
@@ -220,6 +230,9 @@ func reset_consent() -> void:
 		_admob_singleton.resetConsentInformation()
 
 # callbacks
+
+func _on_admob_initialized() -> void:
+	emit_signal("admob_initialized")
 
 func _on_admob_ad_loaded() -> void:
 	emit_signal("banner_loaded")

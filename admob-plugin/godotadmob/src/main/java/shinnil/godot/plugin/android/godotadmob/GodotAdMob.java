@@ -17,6 +17,8 @@ import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.GodotLib;
@@ -72,6 +74,8 @@ public class GodotAdMob extends GodotPlugin {
     @Override
     public Set<SignalInfo> getPluginSignals() {
         Set<SignalInfo> signals = new ArraySet<>();
+
+        signals.add(new SignalInfo("on_admob_initialized"));
 
         signals.add(new SignalInfo("on_admob_ad_loaded"));
         signals.add(new SignalInfo("on_admob_banner_failed_to_load", Integer.class));
@@ -201,6 +205,21 @@ public class GodotAdMob extends GodotPlugin {
 
         adRequest = adBuilder.build();
         return adRequest;
+    }
+
+    /**
+     * To Initializes AdMob on a background thread to improve performance.
+     */
+    @UsedByGodot
+    public void initializeOnBackgroundThread() {
+        new Thread(() -> {
+            MobileAds.initialize(activity, new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
+                    emitSignal("on_admob_initialized");
+                }
+            });
+        }).start();
     }
 
     /* Rewarded Video
